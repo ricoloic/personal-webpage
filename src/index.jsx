@@ -8,21 +8,18 @@ import FlowField from './routes/sketches/flow-field/FlowField';
 import IntersectingBubbles from './routes/sketches/intersecting-bubbles/IntersectingBubbles';
 import MouseFollow from './routes/sketches/mouse-follow/MouseFollow';
 import ChaosGame from './routes/sketches/chaos-game/ChaosGame';
-import Layout from './Layout';
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Navigation />} />
-          <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
-          <Route path="/sketches/chaos-game" element={<ChaosGame />} />
-          <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />
-          <Route path="/sketches/black-hole" element={<BlackHole />} />
-          <Route path="/sketches/flow-field" element={<FlowField />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/" element={<Navigation />} />
+        <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
+        <Route path="/sketches/chaos-game" element={<ChaosGame />} />
+        <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />
+        <Route path="/sketches/black-hole" element={<BlackHole />} />
+        <Route path="/sketches/flow-field" element={<FlowField />} />
+      </Routes>
     </BrowserRouter>
   </React.StrictMode>,
   // eslint-disable-next-line no-undef

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { Particle } from './particle';
 import { Flow } from './flow';
+import Layout from '../../../Layout';
 
 let scl = 10;
 let inc = 0.1;
@@ -22,7 +23,7 @@ const FlowField = function () {
       };
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight, p.P2D).parent('parent');
+        p.createCanvas(window.innerWidth, window.innerHeight, p.P2D).parent('parent');
         // fs = p5.createP("");
 
         p.background(255);
@@ -91,7 +92,9 @@ const FlowField = function () {
   }, []);
 
   return (
-    <div id="parent" className="sketch-container" />
+    <Layout>
+      <div id="parent" className="sketch-container" />
+    </Layout>
   );
 };
 

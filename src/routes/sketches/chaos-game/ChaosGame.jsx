@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import Layout from '../../../Layout';
 
 const options = {
   triangle: {
@@ -20,9 +21,6 @@ const options = {
 };
 
 let option = options.triangle;
-const { type } = option;
-const { lerpAmount } = option;
-const { pointAmount } = option;
 let randomPoints = false;
 let iteration = 100;
 let size = 0;
@@ -43,13 +41,13 @@ const pickSeedPoints = (p, rando = false) => {
   };
 
   const pointInCircle = (i) => {
-    const angle = (i * p.TWO_PI) / pointAmount;
+    const angle = (i * p.TWO_PI) / option.pointAmount;
     const x = radius * p.cos(angle) + p.width / 2;
     const y = radius * p.sin(angle) + p.height / 2;
     return { x, y };
   };
 
-  for (let i = 0; i < pointAmount; i++) {
+  for (let i = 0; i < option.pointAmount; i++) {
     if (rando) point = randomPoint();
     else point = pointInCircle(i);
     points.push(point);
@@ -59,8 +57,8 @@ const pickSeedPoints = (p, rando = false) => {
 
 const drawChaosPoints = (p, typeS = '') => {
   const lerpCurrent = (currentP, nextP) => {
-    currentP.x = p.lerp(nextP.x, currentP.x, lerpAmount);
-    currentP.y = p.lerp(nextP.y, currentP.y, lerpAmount);
+    currentP.x = p.lerp(nextP.x, currentP.x, option.lerpAmount);
+    currentP.y = p.lerp(nextP.y, currentP.y, option.lerpAmount);
   };
 
   for (let i = 0; i < iteration; i++) {
@@ -84,35 +82,36 @@ const drawChaosPoints = (p, typeS = '') => {
   }
 };
 
-const ChaosGame = function () {
-  const [, setSketch] = React.useState(null);
+const makeSketch = () => new P5((p) => {
+  p.windowResized = () => {
+    p.resizeCanvas(p.windowWidth, p.windowHeight);
+  };
 
-  useEffect(() => {
-    const newSketch = new P5((p) => {
-      p.windowResized = () => {
-        p.resizeCanvas(p.windowWidth, p.windowHeight);
-      };
+  p.setup = () => {
+    size = window.innerWidth <= window.innerHeight ? window.innerWidth : window.innerHeight;
+    maxSize = size - size / 50;
+    p.createCanvas(size, size).parent('parent');
+    current = { x: p.random(size), y: p.random(size) };
+    seedPoints = pickSeedPoints(p, randomPoints);
+    p.background(30);
+  };
 
-      p.setup = () => {
-        size = p.windowWidth <= p.windowHeight ? p.windowWidth : p.windowHeight;
-        maxSize = size - size / 50;
-        p.createCanvas(size, size).parent('parent');
-        current = { x: p.random(size), y: p.random(size) };
-        seedPoints = pickSeedPoints(p, randomPoints);
-        p.background(30);
-      };
-
-      p.draw = () => {
-        p.stroke(255);
-        p.strokeWeight(10);
-        seedPoints.forEach((point) => {
-          p.point(point.x, point.y);
-        });
-
-        drawChaosPoints(p, type);
-      };
+  p.draw = () => {
+    p.stroke(255);
+    p.strokeWeight(10);
+    seedPoints.forEach((point) => {
+      p.point(point.x, point.y);
     });
 
+    drawChaosPoints(p, option.type);
+  };
+});
+
+const ChaosGame = function () {
+  const [sketch, setSketch] = React.useState(null);
+
+  useEffect(() => {
+    const newSketch = makeSketch();
     setSketch(newSketch);
 
     return () => {
@@ -128,7 +127,25 @@ const ChaosGame = function () {
     };
   }, []);
 
-  return <div style={{ display: 'grid', placeItems: 'center', backgroundColor: 'hsl(0, 0%, 11.7%)' }} id="parent" className="sketch-container" />;
+  const handleOptionChange = ({ target: { value } }) => {
+    sketch.remove();
+    option = options[value];
+    setSketch(makeSketch());
+  };
+
+  return (
+    <Layout
+      rightComponent={(
+        <select onChange={handleOptionChange}>
+          <option value="triangle">Triangle</option>
+          <option value="square">Square</option>
+          <option value="pentagon">Pentagon</option>
+        </select>
+      )}
+    >
+      <div style={{ display: 'grid', placeItems: 'center', backgroundColor: 'hsl(0, 0%, 11.7%)' }} id="parent" className="sketch-container" />
+    </Layout>
+  );
 };
 
 export default ChaosGame;

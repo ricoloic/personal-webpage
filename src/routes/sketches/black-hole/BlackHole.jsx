@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { Particle } from './particle';
+import Layout from '../../../Layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
@@ -28,7 +29,7 @@ const BlackHole = function () {
       };
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight).parent('parent');
+        p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
         p.ellipseMode(p.CENTER);
         center = { x: p.width / 2, y: p.height / 2 };
         blackHole = { pos: p.createVector(center.x, center.y) };
@@ -79,7 +80,9 @@ const BlackHole = function () {
   }, []);
 
   return (
-    <div id="parent" className="sketch-container" />
+    <Layout>
+      <div id="parent" className="sketch-container" />
+    </Layout>
   );
 };
 

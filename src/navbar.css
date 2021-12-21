@@ -15,7 +15,7 @@
 }
 
 .back-arrow {
-    max-width: 75px;
+    max-width: max-content;
     margin: auto;
 }
 
@@ -27,11 +27,31 @@
     cursor: grab;
 }
 
+img {
+    min-width: 3.5rem;
+}
+
 .no-btn {
-    min-width: 75px;
-    min-height: 75px;
+    min-width: 3.5rem;
+    aspect-ratio: 1;
     background: transparent !important;
     border: none !important;
+}
+
+.inside-nav {
+    min-height: inherit;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 15px;
+}
+
+.right-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 /*.navbar:focus {*/

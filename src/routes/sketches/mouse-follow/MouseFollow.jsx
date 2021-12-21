@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { Particle } from './particle';
+import Layout from '../../../Layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
@@ -15,7 +16,7 @@ const MouseFollow = function () {
       };
 
       p.setup = () => {
-        p.createCanvas(p.windowWidth, p.windowHeight).parent('parent');
+        p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
         center.x = p.width / 2;
         center.y = p.height / 2;
       };
@@ -55,7 +56,11 @@ const MouseFollow = function () {
     };
   }, []);
 
-  return <div id="parent" className="sketch-container" />;
+  return (
+    <Layout>
+      <div id="parent" className="sketch-container" />
+    </Layout>
+  );
 };
 
 export default MouseFollow;
