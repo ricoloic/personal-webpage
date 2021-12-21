@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import './navbar.css';
 import { useNavigate } from 'react-router-dom';
 import BackArrow from './images/back-arrow.svg';
+import RefreshArrow from './images/refresh-arrow.svg';
 
-const Layout = function ({ children, rightComponent }) {
+const Layout = function ({ children, handleRefresh, rightComponent }) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -16,8 +17,13 @@ const Layout = function ({ children, rightComponent }) {
       <div className="navbar">
         <div className="inside-nav">
           <button className="no-btn" type="button" onClick={handleGoBack} onKeyUp={handleGoBack}>
-            <img alt="back arrow" src={BackArrow} className="back-arrow" />
+            <img unselectable="on" alt="back arrow" src={BackArrow} className="back-arrow" />
           </button>
+          {handleRefresh && (
+            <button className="no-btn" type="button" onClick={handleRefresh} onKeyUp={handleRefresh}>
+              <img unselectable="on" alt="menu" src={RefreshArrow} className="refresh-arrow" />
+            </button>
+          )}
           <div className="right-container">
             {rightComponent}
           </div>
@@ -32,9 +38,11 @@ export default Layout;
 
 Layout.defaultProps = {
   rightComponent: null,
+  handleRefresh: null,
 };
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   rightComponent: PropTypes.node,
+  handleRefresh: PropTypes.func,
 };

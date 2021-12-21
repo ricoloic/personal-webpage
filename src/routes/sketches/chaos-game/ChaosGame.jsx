@@ -133,8 +133,15 @@ const ChaosGame = function () {
     setSketch(makeSketch());
   };
 
+  const handleRefresh = () => {
+    sketch.remove();
+    const newSketch = makeSketch();
+    setSketch(newSketch);
+  };
+
   return (
     <Layout
+      handleRefresh={handleRefresh}
       rightComponent={(
         <select onChange={handleOptionChange}>
           <option value="triangle">Triangle</option>

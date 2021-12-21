@@ -72,16 +72,21 @@ const IntersectingBubbles = function () {
     };
   }, []);
 
-  const handleBubbleAmountChange = ({ target: { value } }) => {
+  const handleRefresh = () => {
     sketch.remove();
     bubbles = [];
-    bubbleAmount = value;
     const newSketch = makeSketch();
     setSketch(newSketch);
   };
 
+  const handleBubbleAmountChange = ({ target: { value } }) => {
+    bubbleAmount = value;
+    handleRefresh();
+  };
+
   return (
     <Layout
+      handleRefresh={handleRefresh}
       rightComponent={(
         <label htmlFor="bubble-amount" style={{ color: 'white' }}>
           Bubble Amount

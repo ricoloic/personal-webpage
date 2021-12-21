@@ -14,21 +14,29 @@
     background-color: hsla(0, 0%, 0%, 0.5);
 }
 
-.back-arrow {
+.refresh-arrow {
+    min-width: 1rem;
+    max-width: 2.5rem !important;
+}
+
+.back-arrow, .refresh-arrow {
     max-width: max-content;
     margin: auto;
 }
 
-.back-arrow:hover {
+.back-arrow:hover, .refresh-arrow:hover {
     cursor: pointer;
 }
 
-.back-arrow:focus {
+.back-arrow:focus, .refresh-arrow:focus {
     cursor: grab;
 }
 
 img {
     min-width: 3.5rem;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .no-btn {
@@ -39,12 +47,15 @@ img {
 }
 
 .inside-nav {
-    min-height: inherit;
+    max-height: inherit;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
     align-items: center;
     padding: 0 15px;
+}
+
+.no-btn:last-of-type {
+    margin-right: auto;
 }
 
 .right-container {
