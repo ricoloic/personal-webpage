@@ -14,7 +14,7 @@ const getImgStyle = (img) => ({
   backgroundRepeat: 'no-repeat',
 });
 
-const App = function () {
+const Navigation = function () {
   return (
     <main className="gridTestimonial">
       <Link to="/sketches/mouse-follow" className="testimonial title" style={{ ...getImgStyle(mouseFollowPreview) }}>
@@ -36,4 +36,4 @@ const App = function () {
   );
 };
 
-export default App;
+export default Navigation;
