@@ -1,0 +1,107 @@
+.gridTestimonial {
+    display: grid;
+    gap: 1.5rem;
+    grid-auto-columns: 1fr;
+    grid-template-areas: "one" "two" "three" "four" "five";
+    padding-block: 2rem;
+    width: min(95%, 100rem);
+    margin-inline: auto;
+}
+
+@media screen and (min-width: 33em) {
+    .gridTestimonial {
+        grid-template-areas:
+      "one one"
+      "two three"
+      "five five"
+      "four four";
+    }
+}
+
+@media screen and (min-width: 38em) {
+    .gridTestimonial {
+        grid-template-areas:
+     'one one'
+     'two five'
+     'three five'
+     'four four';
+    }
+}
+
+@media screen and (min-width: 54em) {
+    .gridTestimonial {
+        grid-template-areas:
+      "one one two"
+      "five five five"
+      "three four four";
+    }
+}
+
+@media screen and (min-width: 75em) {
+    .gridTestimonial {
+        grid-template-areas:
+      "one one two five"
+      "three four four five";
+    }
+}
+
+.testimonial:nth-child(1) {
+    grid-area: one;
+}
+
+.testimonial:nth-child(2) {
+    grid-area: two;
+}
+
+.testimonial:nth-child(3) {
+    grid-area: three;
+}
+
+.testimonial:nth-child(4) {
+    grid-area: four;
+}
+
+.testimonial:nth-child(5) {
+    grid-area: five;
+}
+
+.testimonial {
+    min-height: 270px;
+    color: white;
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.testimonial:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.testimonial:active {
+    cursor: grab;
+}
+
+.title {
+    font-weight: 500;
+    font-size: 1.4rem;
+}
+
+.bgPurple {
+    background-color: #8e44ad;
+}
+
+.bgLightGray {
+    background-color: #555a77;
+}
+
+.bgDarkGray {
+    background-color: #1b1c22;
+}
+
+.bgWhite {
+    background-color: #fff;
+}
+
+.colorWhite {
+    color: #fff;
+}

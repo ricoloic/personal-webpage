@@ -1,0 +1,34 @@
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    background-color: hsl(0, 0%, 90%);
+}
+
+p {
+    margin: 0.5rem 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+a:active {
+    cursor: grab;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.sketch-container {
+    height: 100vh;
+}
