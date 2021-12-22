@@ -2,7 +2,7 @@
   display: grid;
   gap: 1.5rem;
   grid-auto-columns: 1fr;
-  grid-template-areas: "one" "two" "three" "four" "five" "six" "seven";
+  grid-template-areas: "one" "two" "three" "four" "five" "six" "seven" "eight";
   padding-block: 2rem;
   width: min(95%, 100rem);
   margin-inline: auto;
@@ -16,7 +16,8 @@
       "five five"
       "four four"
       "six six"
-      "seven seven";
+      "seven seven"
+      "eight eight";
   }
 }
 
@@ -28,7 +29,8 @@
       'three five'
       'four four'
       'six six'
-      'seven seven';
+      'seven seven'
+      'eight eight';
   }
 }
 
@@ -38,7 +40,8 @@
       "one one two"
       "five five five"
       "three four four"
-      "six six seven";
+      "eight seven seven"
+      "six six six";
   }
 }
 
@@ -47,7 +50,8 @@
     grid-template-areas:
       "one one two five"
       "three four four five"
-      "six six seven seven";
+      "eight eight seven seven"
+      "six six six six";
   }
 }
 
@@ -77,6 +81,10 @@
 
 .testimonial:nth-child(7) {
   grid-area: seven;
+}
+
+.testimonial:nth-child(8) {
+  grid-area: eight;
 }
 
 .testimonial {

@@ -10,6 +10,7 @@ import MouseFollow from './routes/sketches/mouse-follow/MouseFollow';
 import ChaosGame from './routes/sketches/chaos-game/ChaosGame';
 import Flocking from './routes/sketches/flocking/Flocking';
 import CircularMotion from './routes/sketches/circular-motion/CircularMotion';
+import MouseConfetti from './routes/sketches/mouse-confetti/MouseConfetti';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -23,6 +24,7 @@ ReactDOM.render(
         <Route path="/sketches/flow-field" element={<FlowField />} />
         <Route path="/sketches/flocking" element={<Flocking />} />
         <Route path="/sketches/circular-motion" element={<CircularMotion />} />
+        <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

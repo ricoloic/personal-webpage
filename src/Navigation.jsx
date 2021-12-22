@@ -7,6 +7,7 @@ import blackHolePreview from './images/previews/black-hole-preview.png';
 import flowFieldPreview from './images/previews/flow-field-preview.png';
 import flockingPreview from './images/previews/flocking-preview.png';
 import circularMotionPreview from './images/previews/circular-motion-preview.png';
+import mouseConfettiPreview from './images/previews/mouse-confetti-preview.png';
 import './main.css';
 
 const getImgStyle = (img) => ({
@@ -39,6 +40,10 @@ const Navigation = function () {
       </Link>
       <Link to="/sketches/circular-motion" className="testimonial title" style={{ ...getImgStyle(circularMotionPreview) }}>
         My head is spinning like CRAZY !! Ahhhhh...
+      </Link>
+      <Link to="/sketches/mouse-confetti" className="testimonial title" style={{ ...getImgStyle(mouseConfettiPreview) }}>
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        So many confetties, I think I'm in heaven now
       </Link>
     </main>
   );
