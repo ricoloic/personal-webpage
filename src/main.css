@@ -16,8 +16,7 @@
       "five five"
       "four four"
       "six six"
-      "seven seven"
-      "eight eight";
+      "seven eight";
   }
 }
 
@@ -28,9 +27,8 @@
       'two five'
       'three five'
       'four four'
-      'six six'
-      'seven seven'
-      'eight eight';
+      'seven eight'
+      'six six';
   }
 }
 
@@ -40,7 +38,7 @@
       "one one two"
       "five five five"
       "three four four"
-      "eight seven seven"
+      "seven seven eight"
       "six six six";
   }
 }
@@ -50,7 +48,7 @@
     grid-template-areas:
       "one one two five"
       "three four four five"
-      "eight eight seven seven"
+      "seven seven eight eight"
       "six six six six";
   }
 }
