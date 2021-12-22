@@ -13,8 +13,8 @@
     grid-template-areas:
       "one one"
       "two three"
-      "five five"
       "four four"
+      "five five"
       "six six"
       "seven eight";
   }
@@ -27,8 +27,8 @@
       'two five'
       'three five'
       'four four'
-      'seven eight'
-      'six six';
+      'six six'
+      'seven eight';
   }
 }
 
@@ -38,8 +38,8 @@
       "one one two"
       "five five five"
       "three four four"
-      "seven seven eight"
-      "six six six";
+      "six six six"
+      "seven seven eight";
   }
 }
 
@@ -48,8 +48,8 @@
     grid-template-areas:
       "one one two five"
       "three four four five"
-      "seven seven eight eight"
-      "six six six six";
+      "six six six six"
+      "seven seven eight eight";
   }
 }
 
@@ -86,19 +86,24 @@
 }
 
 .testimonial {
-  min-height: 270px;
+  min-height: 350px;
   color: white;
   padding: 2rem;
-  border-radius: 0.5rem;
+  border-radius: 0.2rem;
 }
 
-.testimonial:hover {
+.testimonial:hover, .testimonial:focus {
   text-decoration: underline;
   cursor: pointer;
+  transition: 0.2s;
+  transform: scale(1.02);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
 }
 
-.testimonial:active {
+.testimonial:active  {
   cursor: grab;
+  transform: scale(1.02);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.4);
 }
 
 .title {
