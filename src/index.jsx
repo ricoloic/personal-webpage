@@ -9,6 +9,7 @@ import IntersectingBubbles from './routes/sketches/intersecting-bubbles/Intersec
 import MouseFollow from './routes/sketches/mouse-follow/MouseFollow';
 import ChaosGame from './routes/sketches/chaos-game/ChaosGame';
 import Flocking from './routes/sketches/flocking/Flocking';
+import CircularMotion from './routes/sketches/circular-motion/CircularMotion';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -21,6 +22,7 @@ ReactDOM.render(
         <Route path="/sketches/black-hole" element={<BlackHole />} />
         <Route path="/sketches/flow-field" element={<FlowField />} />
         <Route path="/sketches/flocking" element={<Flocking />} />
+        <Route path="/sketches/circular-motion" element={<CircularMotion />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

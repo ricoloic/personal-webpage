@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import mouseFollowPreview from './images/mouse-follow-preview.png';
-import chaosGamePreview from './images/chaos-game-preview.png';
-import intersectingBubblesPreview from './images/intersecting-bubbles-preview.png';
-import blackHolePreview from './images/black-hole-preview.png';
-import flowFieldPreview from './images/flow-field-preview.png';
-import flockingPreview from './images/flocking-preview.png';
+import mouseFollowPreview from './images/previews/mouse-follow-preview.png';
+import chaosGamePreview from './images/previews/chaos-game-preview.png';
+import intersectingBubblesPreview from './images/previews/intersecting-bubbles-preview.png';
+import blackHolePreview from './images/previews/black-hole-preview.png';
+import flowFieldPreview from './images/previews/flow-field-preview.png';
+import flockingPreview from './images/previews/flocking-preview.png';
+import circularMotionPreview from './images/previews/circular-motion-preview.png';
 import './main.css';
 
 const getImgStyle = (img) => ({
@@ -33,9 +34,11 @@ const Navigation = function () {
       <Link to="/sketches/flow-field" className="testimonial title" style={{ ...getImgStyle(flowFieldPreview) }}>
         A flow field as beautiful as the ocean
       </Link>
-
       <Link to="/sketches/flocking" className="testimonial title" style={{ ...getImgStyle(flockingPreview) }}>
         Hein, are those birds ?
+      </Link>
+      <Link to="/sketches/circular-motion" className="testimonial title" style={{ ...getImgStyle(circularMotionPreview) }}>
+        My head is spinning like CRAZY !! Ahhhhh...
       </Link>
     </main>
   );
