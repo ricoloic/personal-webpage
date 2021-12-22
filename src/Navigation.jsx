@@ -5,6 +5,7 @@ import chaosGamePreview from './images/chaos-game-preview.png';
 import intersectingBubblesPreview from './images/intersecting-bubbles-preview.png';
 import blackHolePreview from './images/black-hole-preview.png';
 import flowFieldPreview from './images/flow-field-preview.png';
+import flockingPreview from './images/flocking-preview.png';
 import './main.css';
 
 const getImgStyle = (img) => ({
@@ -31,6 +32,10 @@ const Navigation = function () {
       </Link>
       <Link to="/sketches/flow-field" className="testimonial title" style={{ ...getImgStyle(flowFieldPreview) }}>
         A flow field as beautiful as the ocean
+      </Link>
+
+      <Link to="/sketches/flocking" className="testimonial title" style={{ ...getImgStyle(flockingPreview) }}>
+        Hein, are those birds ?
       </Link>
     </main>
   );

@@ -47,6 +47,7 @@ img {
 }
 
 .inside-nav {
+    min-height: inherit;
     max-height: inherit;
     display: flex;
     flex-direction: row;

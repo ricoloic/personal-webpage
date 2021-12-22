@@ -3,10 +3,9 @@ import P5 from 'p5';
 import { Bubble } from './bubble';
 import Layout from '../../../Layout';
 
-let bubbleAmount = 120;
 let bubbles = [];
 
-const makeSketch = () => new P5((p) => {
+const makeSketch = (bubbleAmount) => new P5((p) => {
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
@@ -59,14 +58,14 @@ const makeSketch = () => new P5((p) => {
 
 const IntersectingBubbles = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [bubbleAmount, setBubbleAmount] = React.useState(120);
 
   useEffect(() => {
-    const newSketch = makeSketch();
+    const newSketch = makeSketch(bubbleAmount);
 
     setSketch(newSketch);
 
     return () => {
-      bubbleAmount = 120;
       bubbles = [];
       newSketch.remove();
     };
@@ -75,12 +74,12 @@ const IntersectingBubbles = function () {
   const handleRefresh = () => {
     sketch.remove();
     bubbles = [];
-    const newSketch = makeSketch();
+    const newSketch = makeSketch(bubbleAmount);
     setSketch(newSketch);
   };
 
   const handleBubbleAmountChange = ({ target: { value } }) => {
-    bubbleAmount = value;
+    setBubbleAmount(value);
     handleRefresh();
   };
 
@@ -88,8 +87,10 @@ const IntersectingBubbles = function () {
     <Layout
       handleRefresh={handleRefresh}
       rightComponent={(
-        <label htmlFor="bubble-amount" style={{ color: 'white' }}>
+        <label htmlFor="bubble-amount" type="range">
           Bubble Amount
+          {' '}
+          {bubbleAmount}
           <input
             id="bubble-amount"
             type="range"
