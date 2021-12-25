@@ -16,11 +16,11 @@ const Layout = function ({ children, handleRefresh, rightComponent }) {
     <>
       <div className="navbar">
         <div className="inside-nav">
-          <button className="no-btn" type="button" onClick={handleGoBack} onKeyUp={handleGoBack}>
+          <button className="no-btn" type="button" onClick={handleGoBack}>
             <img unselectable="on" alt="back arrow" src={BackArrow} className="back-arrow" />
           </button>
           {handleRefresh && (
-            <button className="no-btn" type="button" onClick={handleRefresh} onKeyUp={handleRefresh}>
+            <button className="no-btn" type="button" onClick={handleRefresh}>
               <img unselectable="on" alt="menu" src={RefreshArrow} className="refresh-arrow" />
             </button>
           )}

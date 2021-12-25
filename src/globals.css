@@ -29,9 +29,12 @@ input[type="range"] {
 }
 
 label[type="range"] {
-    color: white;
     max-width: 180px;
     margin: 0 0.5em;
+}
+
+label {
+  color: white;
 }
 
 p {
@@ -58,6 +61,7 @@ a:active {
 
 .sketch-container {
     height: 100vh;
+    overflow-y: hidden;
 }
 
 canvas {

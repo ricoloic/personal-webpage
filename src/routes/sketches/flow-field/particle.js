@@ -20,10 +20,10 @@ Particle.prototype.applyForce = function (force) {
   this.acc.add(force);
 };
 
-Particle.prototype.show = function () {
+Particle.prototype.show = function (color = [26, 51, 43, 0.1]) {
   this.wrapAround();
   // this.p5.strokeWeight(8)
-  // this.p5.stroke(1)
+  this.p5.stroke(...color);
   this.p5.line(this.pos.x, this.pos.y, this.prevPos.x, this.prevPos.y);
 };
 

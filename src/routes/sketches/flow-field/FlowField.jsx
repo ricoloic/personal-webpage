@@ -4,6 +4,17 @@ import { Particle } from './particle';
 import { Flow } from './flow';
 import Layout from '../../../Layout';
 
+const colorOptions = {
+  original: () => [26, 51, 43, 0.1],
+  dark: () => [0, 0, 0, 0.1],
+  colorful: (frameCount) => [frameCount % 255, 255, 255, 0.1],
+  blue: (frameCount) => [(frameCount % 75) + 180, 255, 255, 0.1],
+  turqouise: (frameCount) => [(frameCount % 60) + 150, 255, 255, 0.1],
+  fire: (frameCount) => [(frameCount % 70) + 10, 255, 255, 0.1],
+};
+
+let selectedColor = 'original';
+
 let scl = 10;
 let inc = 0.1;
 let cols = null;
@@ -39,6 +50,7 @@ const makeSketch = () => new P5((p) => {
     for (let i = 0; i < 2000; i++) {
       particles.push(new Particle(p));
     }
+    p.colorMode(p.HSB);
   };
 
   p.draw = () => {
@@ -59,11 +71,12 @@ const makeSketch = () => new P5((p) => {
     }
     zoff += 0.001;
 
+    const color = colorOptions[selectedColor](p.frameCount);
     particles.forEach((particle) => {
       particle.update();
       particle.wrapAround();
       particle.follow(scl, cols, flowField);
-      particle.show();
+      particle.show(color);
     });
 
     // fs.html(floor(frameRate()));
@@ -71,6 +84,10 @@ const makeSketch = () => new P5((p) => {
     // p.noLoop();
   };
 });
+
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 const FlowField = function () {
   const [sketch, setSketch] = React.useState(null);
@@ -95,8 +112,6 @@ const FlowField = function () {
 
   const handleRefresh = () => {
     sketch.remove();
-    scl = 10;
-    inc = 0.1;
     cols = null;
     rows = null;
     // fs = null;
@@ -107,8 +122,32 @@ const FlowField = function () {
     setSketch(newSketch);
   };
 
+  const handleColorChange = ({ target: { value } }) => {
+    selectedColor = value;
+    handleRefresh();
+  };
+
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Layout
+      handleRefresh={handleRefresh}
+      rightComponent={(
+        <label htmlFor="select-color">
+          <select
+            id="select-color"
+            onChange={handleColorChange}
+          >
+            {Object.keys(colorOptions).map((color) => (
+              <option
+                key={color}
+                value={color}
+              >
+                {capitalizeFirstLetter(color)}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
+    >
       <div id="parent" className="sketch-container" />
     </Layout>
   );
