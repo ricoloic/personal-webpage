@@ -23,6 +23,8 @@ let rows = null;
 let zoff = 0;
 let particles = [];
 let flowField = [];
+let lod = 10;
+let fallOff = 0.6;
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -36,7 +38,7 @@ const makeSketch = () => new P5((p) => {
     p.background(255);
     // strokeWeight(4);
     p.stroke(0, 2);
-    p.noiseDetail(10, 0.6);
+    p.noiseDetail(lod, fallOff);
 
     cols = p.floor(p.width / scl);
     rows = p.floor(p.height / scl);
@@ -91,6 +93,8 @@ function capitalizeFirstLetter(string) {
 
 const FlowField = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [lodState, setLodState] = React.useState(lod);
+  const [fallOffState, setFallOffState] = React.useState(fallOff);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -127,25 +131,56 @@ const FlowField = function () {
     handleRefresh();
   };
 
+  const handleLodChange = ({ target: { value } }) => {
+    setLodState(value);
+    lod = parseFloat(value);
+    handleRefresh();
+  };
+
+  const handleFallOffChange = ({ target: { value } }) => {
+    setFallOffState(value);
+    fallOff = parseFloat(value);
+    handleRefresh();
+  };
+
+  const handleSave = () => {
+    sketch.saveCanvas(sketch.canvas, 'flowfield', 'png');
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
+      handleSave={handleSave}
       rightComponent={(
-        <label htmlFor="select-color">
-          <select
-            id="select-color"
-            onChange={handleColorChange}
-          >
-            {Object.keys(colorOptions).map((color) => (
-              <option
-                key={color}
-                value={color}
-              >
-                {capitalizeFirstLetter(color)}
-              </option>
-            ))}
-          </select>
-        </label>
+        <>
+          <label htmlFor="select-lod" type="range">
+            Lod
+            {' '}
+            {lodState}
+            <input type="range" id="select-lod" onChange={handleLodChange} min={2} max={20} step={1} value={lodState} />
+          </label>
+          <label htmlFor="select-falloff" type="range">
+            Fall Off
+            {' '}
+            {fallOffState}
+            <input type="range" id="select-falloff" onChange={handleFallOffChange} min={0.5} max={1} step={0.05} value={fallOffState} />
+          </label>
+          <label htmlFor="select-color">
+            <select
+              id="select-color"
+              onChange={handleColorChange}
+            >
+              {Object.keys(colorOptions).map((color) => (
+                <option
+                  key={color}
+                  value={color}
+                >
+                  {capitalizeFirstLetter(color)}
+                </option>
+              ))}
+            </select>
+          </label>
+        </>
       )}
     >
       <div id="parent" className="sketch-container" />

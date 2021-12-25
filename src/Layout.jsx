@@ -4,8 +4,14 @@ import './navbar.css';
 import { useNavigate } from 'react-router-dom';
 import BackArrow from './images/back-arrow.svg';
 import RefreshArrow from './images/refresh-arrow.svg';
+import SaveIcon from './images/save-icon.svg';
 
-const Layout = function ({ children, handleRefresh, rightComponent }) {
+const Layout = function ({
+  children,
+  handleRefresh,
+  handleSave,
+  rightComponent,
+}) {
   const navigate = useNavigate();
 
   const handleGoBack = () => {
@@ -24,6 +30,11 @@ const Layout = function ({ children, handleRefresh, rightComponent }) {
               <img unselectable="on" alt="menu" src={RefreshArrow} className="refresh-arrow" />
             </button>
           )}
+          {handleSave && (
+            <button className="no-btn" type="button" onClick={handleSave}>
+              <img unselectable="on" alt="save canvas" src={SaveIcon} className="save-icon" />
+            </button>
+          )}
           <div className="right-container">
             {rightComponent}
           </div>
@@ -39,10 +50,12 @@ export default Layout;
 Layout.defaultProps = {
   rightComponent: null,
   handleRefresh: null,
+  handleSave: null,
 };
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   rightComponent: PropTypes.node,
   handleRefresh: PropTypes.func,
+  handleSave: PropTypes.func,
 };

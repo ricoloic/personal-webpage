@@ -14,21 +14,26 @@
     background-color: hsla(0, 0%, 0%, 0.5);
 }
 
+.save-icon {
+    max-width: 60px;
+    scale: 1;
+}
+
 .refresh-arrow {
     min-width: 1rem;
     max-width: 2.5rem !important;
 }
 
-.back-arrow, .refresh-arrow {
+.back-arrow, .refresh-arrow, .save-icon {
     max-width: max-content;
     margin: auto;
 }
 
-.back-arrow:hover, .refresh-arrow:hover {
+.back-arrow:hover, .refresh-arrow:hover, .save-icon:hover {
     cursor: pointer;
 }
 
-.back-arrow:focus, .refresh-arrow:focus {
+.back-arrow:focus, .refresh-arrow:focus, .save-icon:focus {
     cursor: grab;
 }
 
