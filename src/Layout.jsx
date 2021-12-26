@@ -49,6 +49,7 @@ const Layout = function ({
               <img unselectable="on" alt="play pause" src={isLooping ? PauseIcon : PlayIcon} className="arrow-icon" />
             </button>
           )}
+
           <div className="right-container">
             {rightComponent}
           </div>

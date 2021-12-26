@@ -40,9 +40,14 @@ img {
   color: #fff;
   fill: #fff;
   min-width: 3.5rem;
+  max-width: 75px;
   aspect-ratio: 1;
   background: transparent !important;
   border: none !important;
+}
+
+.btn:focus-visible {
+  outline: none;
 }
 
 .p-1 {
