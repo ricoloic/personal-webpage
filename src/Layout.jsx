@@ -2,15 +2,19 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './navbar.css';
 import { useNavigate } from 'react-router-dom';
-import BackArrow from './images/back-arrow.svg';
-import RefreshArrow from './images/refresh-arrow.svg';
-import SaveIcon from './images/save-icon.svg';
+import BackArrow from './images/left-arrow.png';
+import RefreshArrow from './images/refresh-icon.png';
+import SaveIcon from './images/diskette-icon.png';
+import PlayIcon from './images/play-icon.png';
+import PauseIcon from './images/pause-icon.png';
 
 const Layout = function ({
   children,
   handleRefresh,
   handleSave,
   rightComponent,
+  handleLooping,
+  isLooping,
 }) {
   const navigate = useNavigate();
 
@@ -22,17 +26,27 @@ const Layout = function ({
     <>
       <div className="navbar">
         <div className="inside-nav">
-          <button className="no-btn" type="button" onClick={handleGoBack}>
-            <img unselectable="on" alt="back arrow" src={BackArrow} className="back-arrow" />
+          <button className="btn p-2" type="button" onClick={handleGoBack}>
+            <img
+              unselectable="on"
+              alt="back arrow"
+              src={BackArrow}
+              className="p-2 arrow-icon"
+            />
           </button>
           {handleRefresh && (
-            <button className="no-btn" type="button" onClick={handleRefresh}>
-              <img unselectable="on" alt="menu" src={RefreshArrow} className="refresh-arrow" />
+            <button className="btn p-2" type="button" onClick={handleRefresh}>
+              <img unselectable="on" alt="refresh" src={RefreshArrow} className="arrow-icon" />
             </button>
           )}
           {handleSave && (
-            <button className="no-btn" type="button" onClick={handleSave}>
-              <img unselectable="on" alt="save canvas" src={SaveIcon} className="save-icon" />
+            <button className="btn p-2" type="button" onClick={handleSave}>
+              <img unselectable="on" alt="save" src={SaveIcon} className="arrow-icon" />
+            </button>
+          )}
+          {handleLooping && (
+            <button className="btn p-2" type="button" onClick={handleLooping}>
+              <img unselectable="on" alt="play pause" src={isLooping ? PauseIcon : PlayIcon} className="arrow-icon" />
             </button>
           )}
           <div className="right-container">
@@ -51,6 +65,8 @@ Layout.defaultProps = {
   rightComponent: null,
   handleRefresh: null,
   handleSave: null,
+  handleLooping: null,
+  isLooping: true,
 };
 
 Layout.propTypes = {
@@ -58,4 +74,6 @@ Layout.propTypes = {
   rightComponent: PropTypes.node,
   handleRefresh: PropTypes.func,
   handleSave: PropTypes.func,
+  handleLooping: PropTypes.func,
+  isLooping: PropTypes.bool,
 };

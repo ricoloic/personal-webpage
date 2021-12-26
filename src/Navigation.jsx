@@ -4,7 +4,7 @@ import mouseFollowPreview from './images/previews/mouse-follow-preview.png';
 import chaosGamePreview from './images/previews/chaos-game-preview.png';
 import intersectingBubblesPreview from './images/previews/intersecting-bubbles-preview.png';
 import blackHolePreview from './images/previews/black-hole-preview.png';
-import flowFieldPreview from './images/previews/flow-field-preview.png';
+import flowFieldPreview from './images/previews/flow-field-preview.webp';
 import flockingPreview from './images/previews/flocking-preview.png';
 import circularMotionPreview from './images/previews/circular-motion-preview.png';
 import mouseConfettiPreview from './images/previews/mouse-confetti-preview.png';

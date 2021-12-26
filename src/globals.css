@@ -17,15 +17,14 @@ select {
     color: hsl(0, 0%, 0%);
 }
 
+select:focus {
+    /* style the select input when it is focused */
+    outline: none;
+    border-color: hsl(0, 0%, 50%);
+}
+
 input[type="range"] {
-    /* style the range input */
-    -webkit-appearance: none;
-    width: 100%;
-    height: 1.5em;
-    border: 1px solid #ccc;
-    border-radius: 0.25em;
-    background-color: hsl(0, 0%, 100%);
-    color: hsl(0, 0%, 0%);
+  display: block;
 }
 
 label[type="range"] {

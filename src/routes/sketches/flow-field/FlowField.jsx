@@ -3,6 +3,7 @@ import P5 from 'p5';
 import { Particle } from './particle';
 import { Flow } from './flow';
 import Layout from '../../../Layout';
+import { useLooping } from '../utils';
 
 const colorOptions = {
   original: () => [26, 51, 43, 0.1],
@@ -25,6 +26,7 @@ let particles = [];
 let flowField = [];
 let lod = 10;
 let fallOff = 0.6;
+const isLoop = true;
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -53,6 +55,7 @@ const makeSketch = () => new P5((p) => {
       particles.push(new Particle(p));
     }
     p.colorMode(p.HSB);
+    p.frameRate(20);
   };
 
   p.draw = () => {
@@ -95,6 +98,7 @@ const FlowField = function () {
   const [sketch, setSketch] = React.useState(null);
   const [lodState, setLodState] = React.useState(lod);
   const [fallOffState, setFallOffState] = React.useState(fallOff);
+  const [isLooping, setIsLooping] = useLooping(sketch, isLoop);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -149,6 +153,8 @@ const FlowField = function () {
 
   return (
     <Layout
+      isLooping={isLooping}
+      handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
       handleSave={handleSave}
       rightComponent={(

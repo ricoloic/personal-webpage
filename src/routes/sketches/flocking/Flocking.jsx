@@ -6,6 +6,7 @@ import Boid from './boid';
 import QuadTree from './quadtree/quadtree';
 import Point from './quadtree/point';
 import Circle from './quadtree/circle';
+import { useLooping } from '../utils';
 
 let boundary = null;
 let boids = [];
@@ -68,6 +69,7 @@ const Flocking = function () {
   const [boidAmount, setBoidAmount] = React.useState(250);
   const [separationValue, setSeparationValue] = React.useState(4.3);
   const separationRef = React.useRef(null);
+  const [isLooping, setIsLooping] = useLooping(sketch);
 
   useEffect(() => {
     const newSketch = makeSketch(boidAmount);
@@ -108,6 +110,8 @@ const Flocking = function () {
 
   return (
     <Layout
+      isLooping={isLooping}
+      handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
       rightComponent={(
         <>

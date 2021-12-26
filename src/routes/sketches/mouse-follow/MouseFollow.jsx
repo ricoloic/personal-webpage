@@ -15,6 +15,7 @@ const makeSketch = () => new P5((p) => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
     center.x = p.width / 2;
     center.y = p.height / 2;
+    p.noStroke();
   };
 
   p.draw = () => {
@@ -37,8 +38,6 @@ const makeSketch = () => new P5((p) => {
       new p.constructor.Vector(0, 0),
     );
     const cntV = sumV.div(particles.length);
-
-    p.fill(255, 0, 0);
     p.circle(cntV.x, cntV.y, 50);
   };
 });
