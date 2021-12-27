@@ -20,12 +20,12 @@ let scl = 10;
 let inc = 0.1;
 let cols = null;
 let rows = null;
-// let fs;
 let zoff = 0;
 let particles = [];
 let flowField = [];
 let lod = 10;
 let fallOff = 0.6;
+let displayFlow = false;
 const isLoop = true;
 
 const makeSketch = () => new P5((p) => {
@@ -35,10 +35,8 @@ const makeSketch = () => new P5((p) => {
 
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight, p.P2D).parent('parent');
-    // fs = p5.createP("");
 
     p.background(255);
-    // strokeWeight(4);
     p.stroke(0, 2);
     p.noiseDetail(lod, fallOff);
 
@@ -55,20 +53,27 @@ const makeSketch = () => new P5((p) => {
       particles.push(new Particle(p));
     }
     p.colorMode(p.HSB);
-    p.frameRate(20);
+    // p.frameRate(20);
   };
 
   p.draw = () => {
-    // p.background(225);
-
+    if (displayFlow) {
+      p.background(225);
+    }
     let yoff = 0;
     for (let y = 0; y <= rows; y++) {
       let xoff = 0;
       for (let x = 0; x <= cols; x++) {
         const index = x + y * cols;
         const flow = flowField[index];
+
         flow.update(xoff, yoff, zoff);
-        // flow.show(scl, x, y);
+        if (displayFlow) {
+          // console.log('hey');
+          p.stroke(0, 0, 0, 1);
+          p.strokeWeight(2);
+          flow.show(scl, x, y);
+        }
 
         xoff += inc;
       }
@@ -76,17 +81,15 @@ const makeSketch = () => new P5((p) => {
     }
     zoff += 0.001;
 
-    const color = colorOptions[selectedColor](p.frameCount);
-    particles.forEach((particle) => {
-      particle.update();
-      particle.wrapAround();
-      particle.follow(scl, cols, flowField);
-      particle.show(color);
-    });
-
-    // fs.html(floor(frameRate()));
-    // console.log(frameRate());
-    // p.noLoop();
+    if (!displayFlow) {
+      const color = colorOptions[selectedColor](p.frameCount);
+      particles.forEach((particle) => {
+        particle.update();
+        particle.wrapAround();
+        particle.follow(scl, cols, flowField);
+        particle.show(color);
+      });
+    }
   };
 });
 
@@ -114,6 +117,7 @@ const FlowField = function () {
       zoff = 0;
       particles = [];
       flowField = [];
+      selectedColor = 'original';
       newSketch.remove();
     };
   }, []);
@@ -151,6 +155,13 @@ const FlowField = function () {
     sketch.saveCanvas(sketch.canvas, 'flowfield', 'png');
   };
 
+  const handleDisplayFlowChange = () => {
+    displayFlow = !displayFlow;
+    if (displayFlow) scl = 40;
+    else scl = 10;
+    handleRefresh();
+  };
+
   return (
     <Layout
       isLooping={isLooping}
@@ -159,6 +170,10 @@ const FlowField = function () {
       handleSave={handleSave}
       rightComponent={(
         <>
+          <label htmlFor="display-flow">
+            Display Flow
+            <input id="fisplay-flow" type="checkbox" value={displayFlow} onChange={handleDisplayFlowChange} />
+          </label>
           <label htmlFor="select-lod" type="range">
             Lod
             {' '}
