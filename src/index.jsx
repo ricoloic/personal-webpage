@@ -11,6 +11,7 @@ import ChaosGame from './routes/sketches/chaos-game/ChaosGame';
 import Flocking from './routes/sketches/flocking/Flocking';
 import CircularMotion from './routes/sketches/circular-motion/CircularMotion';
 import MouseConfetti from './routes/sketches/mouse-confetti/MouseConfetti';
+import MaurerRose from './routes/sketches/maurer-rose/MaurerRose';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +26,7 @@ ReactDOM.render(
         <Route path="/sketches/flocking" element={<Flocking />} />
         <Route path="/sketches/circular-motion" element={<CircularMotion />} />
         <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
+        <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

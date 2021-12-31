@@ -8,6 +8,7 @@ import flowFieldPreview from './images/previews/flow-field-preview.webp';
 import flockingPreview from './images/previews/flocking-preview.png';
 import circularMotionPreview from './images/previews/circular-motion-preview.png';
 import mouseConfettiPreview from './images/previews/mouse-confetti-preview.png';
+import maurerRosePreview from './images/previews/maurer-rose-preview.png';
 import './main.css';
 
 const getImgStyle = (img) => ({
@@ -44,6 +45,10 @@ const Navigation = function () {
       <Link to="/sketches/mouse-confetti" className="testimonial title" style={{ ...getImgStyle(mouseConfettiPreview) }}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         So many confetties, I think I'm in heaven now
+      </Link>
+      <Link to="/sketches/maurer-rose" className="testimonial title" style={{ ...getImgStyle(maurerRosePreview) }}>
+        {/* eslint-disable-next-line react/no-unescaped-entities */}
+        This Rose is so beautiful, I can't stop thinking about it
       </Link>
     </main>
   );
