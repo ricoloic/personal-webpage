@@ -79,7 +79,6 @@ const makeSketch = () => new P5((p) => {
   };
 
   p.keyPressed = () => {
-    p.noLoop();
   };
 });
 
