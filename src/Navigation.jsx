@@ -9,6 +9,7 @@ import flockingPreview from './images/previews/flocking-preview.png';
 import circularMotionPreview from './images/previews/circular-motion-preview.png';
 import mouseConfettiPreview from './images/previews/mouse-confetti-preview.png';
 import maurerRosePreview from './images/previews/maurer-rose-preview.png';
+import asteroidPreview from './images/previews/asteroid-preview.png';
 import './main.css';
 
 const getImgStyle = (img) => ({
@@ -49,6 +50,9 @@ const Navigation = function () {
       <Link to="/sketches/maurer-rose" className="testimonial title" style={{ ...getImgStyle(maurerRosePreview) }}>
         {/* eslint-disable-next-line react/no-unescaped-entities */}
         This Rose is so beautiful, I can't stop thinking about it
+      </Link>
+      <Link to="/sketches/asteroid" className="testimonial title" style={{ ...getImgStyle(asteroidPreview) }}>
+        So many asteroids, will I survive ?!!
       </Link>
     </main>
   );
