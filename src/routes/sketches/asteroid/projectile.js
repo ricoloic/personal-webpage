@@ -2,7 +2,7 @@ export class Projectile {
   constructor(p5, initialPosition, initialVelocity, projectileSize) {
     this.p5 = p5;
     this.position = initialPosition;
-    this.velocity = initialVelocity.setMag(2.5);
+    this.velocity = initialVelocity;
     this.projectileSize = projectileSize;
   }
 
@@ -25,7 +25,7 @@ export class Projectile {
         this.position,
       );
 
-      if (distanceProjectileAsteroid <= asteroid.avgRadius) {
+      if (distanceProjectileAsteroid <= asteroid.radius) {
         return asteroid;
       }
     }
