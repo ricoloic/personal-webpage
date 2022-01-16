@@ -100,14 +100,34 @@ const AudioSpectrum = function () {
     setSketch(newSketch);
 
     return () => {
-      sketch.remove();
+      file.pause();
+      file.stop();
+
+      newSketch.remove();
       center = {};
+      file = null;
       ninetyDegrees = null;
     };
   }, []);
 
+  const handleRefresh = () => {
+    file.pause();
+    file.stop();
+
+    sketch.remove();
+    center = {};
+    file = null;
+    ninetyDegrees = null;
+
+    const newSketch = makeSketch();
+
+    setSketch(newSketch);
+  };
+
   return (
-    <Layout>
+    <Layout
+      handleRefresh={handleRefresh}
+    >
       <div id="parent" className="sketch-container" />
     </Layout>
   );
