@@ -62,7 +62,7 @@ const makeSketch = () => new p5((p) => {
 
     spectrum = fft.analyze();
 
-    for (let k = 0; k < 5; k++) {
+    for (let k = 0; k < 1; k++) {
       // p.stroke(360 - (k * 15 + 200), 100, 100);
       p.stroke(k * 20);
       p.beginShape();
