@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import {
+  FormControl, InputLabel, MenuItem, Select,
+} from '@material-ui/core';
 import Layout from '../../../Layout';
 
 const options = {
@@ -109,6 +112,7 @@ const makeSketch = () => new P5((p) => {
 
 const ChaosGame = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [type, setType] = React.useState('triangle');
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -130,6 +134,7 @@ const ChaosGame = function () {
   const handleOptionChange = ({ target: { value } }) => {
     sketch.remove();
     option = options[value];
+    setType(value);
     setSketch(makeSketch());
   };
 
@@ -142,13 +147,33 @@ const ChaosGame = function () {
   return (
     <Layout
       handleRefresh={handleRefresh}
-      rightComponent={(
-        <select onChange={handleOptionChange}>
-          <option value="triangle">Triangle</option>
-          <option value="square">Square</option>
-          <option value="pentagon">Pentagon</option>
-        </select>
-      )}
+      controls={[
+        {
+          key: 'Type',
+          control: (
+            <FormControl fullWidth>
+              <InputLabel id="type-label">Type</InputLabel>
+              <Select
+                labelId="type-label"
+                id="type-select"
+                value={type}
+                label="Color"
+                onChange={handleOptionChange}
+              >
+                <MenuItem value="triangle">
+                  Triangle
+                </MenuItem>
+                <MenuItem value="square">
+                  Square
+                </MenuItem>
+                <MenuItem value="pentagon">
+                  Pentagon
+                </MenuItem>
+              </Select>
+            </FormControl>
+          ),
+        },
+      ]}
     >
       <div style={{ display: 'grid', placeItems: 'center', backgroundColor: 'hsl(0, 0%, 11.7%)' }} id="parent" className="sketch-container" />
     </Layout>

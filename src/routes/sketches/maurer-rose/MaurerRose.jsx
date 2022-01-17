@@ -1,9 +1,12 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import {
+  Checkbox, FormControlLabel, Slider, Typography,
+} from '@material-ui/core';
 import Layout from '../../../Layout';
 
-let n = 2; let
-  d = 29;
+let n = 2;
+let d = 29;
 let color = true;
 
 const makeSketch = () => new P5((p) => {
@@ -70,6 +73,9 @@ const MaurerRose = function () {
     sketch.remove();
     n = 2;
     d = 29;
+
+    const newSketch = makeSketch();
+    setSketch(newSketch);
   };
 
   const handleChangeColor = () => {
@@ -77,54 +83,63 @@ const MaurerRose = function () {
     setColorState(color);
   };
 
-  const handleChangeN = ({ target: { value } }) => {
-    n = parseFloat(value);
-    setNState(n);
+  const handleChangeN = (v) => {
+    n = v;
+    setNState(v);
   };
 
-  const handleChangeD = ({ target: { value } }) => {
-    d = parseFloat(value);
+  const handleChangeD = (v) => {
+    d = v;
     setDState(d);
   };
 
   return (
     <Layout
       handleRefresh={handleRefresh}
-      rightComponent={(
-        <>
-          <label htmlFor="color">
-            Display Color
-            <input
-              type="checkbox"
-              id="color"
-              onChange={handleChangeColor}
-              checked={colorState}
+      controls={[
+        {
+          key: 'Color',
+          control: (
+            <FormControlLabel
+              label="Color"
+              control={(
+                <Checkbox
+                  checked={colorState}
+                  onChange={handleChangeColor}
+                />
+              )}
             />
-          </label>
-          <label type="range" htmlFor="n">
-            n
-            {' '}
-            {nState}
-            <input
-              id="n"
-              type="range"
-              value={nState}
-              onChange={handleChangeN}
-            />
-          </label>
-          <label type="range" htmlFor="d">
-            d
-            {' '}
-            {dState}
-            <input
-              id="d"
-              type="range"
-              value={dState}
-              onChange={handleChangeD}
-            />
-          </label>
-        </>
-      )}
+          ),
+        },
+        {
+          key: 'N',
+          control: (
+            <>
+              <Typography>N</Typography>
+              <Slider
+                value={nState}
+                onChange={(e, v) => handleChangeN(v)}
+                defaultValue={2}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'D',
+          control: (
+            <>
+              <Typography>D</Typography>
+              <Slider
+                value={dState}
+                onChange={(e, v) => handleChangeD(v)}
+                defaultValue={2}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
     >
       <div id="parent" className="sketch-container" />
     </Layout>

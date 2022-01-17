@@ -16,24 +16,22 @@ import AsteroidGame from './routes/sketches/asteroid/AsteroidGame';
 import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigation />} />
-        <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
-        <Route path="/sketches/chaos-game" element={<ChaosGame />} />
-        <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />
-        <Route path="/sketches/black-hole" element={<BlackHole />} />
-        <Route path="/sketches/flow-field" element={<FlowField />} />
-        <Route path="/sketches/flocking" element={<Flocking />} />
-        <Route path="/sketches/circular-motion" element={<CircularMotion />} />
-        <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
-        <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
-        <Route path="/sketches/asteroid" element={<AsteroidGame />} />
-        <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>,
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Navigation />} />
+      <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
+      <Route path="/sketches/chaos-game" element={<ChaosGame />} />
+      <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />
+      <Route path="/sketches/black-hole" element={<BlackHole />} />
+      <Route path="/sketches/flow-field" element={<FlowField />} />
+      <Route path="/sketches/flocking" element={<Flocking />} />
+      <Route path="/sketches/circular-motion" element={<CircularMotion />} />
+      <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
+      <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
+      <Route path="/sketches/asteroid" element={<AsteroidGame />} />
+      <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
+    </Routes>
+  </BrowserRouter>,
   // eslint-disable-next-line no-undef
   document.getElementById('root'),
 );

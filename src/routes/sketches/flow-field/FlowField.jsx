@@ -1,5 +1,8 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import {
+  Checkbox, FormControlLabel, Slider, Typography, FormControl, MenuItem, Select, InputLabel,
+} from '@material-ui/core';
 import { Particle } from './particle';
 import { Flow } from './flow';
 import Layout from '../../../Layout';
@@ -101,6 +104,7 @@ const FlowField = function () {
   const [sketch, setSketch] = React.useState(null);
   const [lodState, setLodState] = React.useState(lod);
   const [fallOffState, setFallOffState] = React.useState(fallOff);
+  const [colorState, setColorState] = React.useState(selectedColor);
   const [isLooping, setIsLooping] = useLooping(sketch, isLoop);
 
   useEffect(() => {
@@ -135,19 +139,20 @@ const FlowField = function () {
   };
 
   const handleColorChange = ({ target: { value } }) => {
+    setColorState(value);
     selectedColor = value;
     handleRefresh();
   };
 
-  const handleLodChange = ({ target: { value } }) => {
-    setLodState(value);
-    lod = parseFloat(value);
+  const handleLodChange = (v) => {
+    setLodState(v);
+    lod = v;
     handleRefresh();
   };
 
-  const handleFallOffChange = ({ target: { value } }) => {
-    setFallOffState(value);
-    fallOff = parseFloat(value);
+  const handleFallOffChange = (v) => {
+    setFallOffState(v);
+    fallOff = v;
     handleRefresh();
   };
 
@@ -168,41 +173,80 @@ const FlowField = function () {
       handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
       handleSave={handleSave}
-      rightComponent={(
-        <>
-          <label htmlFor="display-flow">
-            Display Flow
-            <input id="fisplay-flow" type="checkbox" value={displayFlow} onChange={handleDisplayFlowChange} />
-          </label>
-          <label htmlFor="select-lod" type="range">
-            Lod
-            {' '}
-            {lodState}
-            <input type="range" id="select-lod" onChange={handleLodChange} min={2} max={20} step={1} value={lodState} />
-          </label>
-          <label htmlFor="select-falloff" type="range">
-            Fall Off
-            {' '}
-            {fallOffState}
-            <input type="range" id="select-falloff" onChange={handleFallOffChange} min={0.5} max={1} step={0.05} value={fallOffState} />
-          </label>
-          <label htmlFor="select-color">
-            <select
-              id="select-color"
-              onChange={handleColorChange}
-            >
-              {Object.keys(colorOptions).map((color) => (
-                <option
-                  key={color}
-                  value={color}
-                >
-                  {capitalizeFirstLetter(color)}
-                </option>
-              ))}
-            </select>
-          </label>
-        </>
-      )}
+      controls={[
+        {
+          key: 'Display Flow',
+          control: (
+            <FormControlLabel
+              label="Display Flow"
+              control={(
+                <Checkbox
+                  checked={displayFlow}
+                  onChange={handleDisplayFlowChange}
+                />
+              )}
+            />
+          ),
+        },
+        {
+          key: 'Lod',
+          control: (
+            <>
+              <Typography>Lod</Typography>
+              <Slider
+                value={lodState}
+                onChange={(e, v) => handleLodChange(v)}
+                min={2}
+                max={20}
+                step={1}
+                defaultValue={2}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Fall Off',
+          control: (
+            <>
+              <Typography>Fall Off</Typography>
+              <Slider
+                value={fallOffState}
+                onChange={(e, v) => handleFallOffChange(v)}
+                min={0.5}
+                max={1}
+                step={0.05}
+                defaultValue={2}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Color',
+          control: (
+            <FormControl fullWidth>
+              <InputLabel id="color-label">Color</InputLabel>
+              <Select
+                labelId="color-label"
+                id="color-select"
+                value={colorState}
+                label="Color"
+                onChange={handleColorChange}
+              >
+                {Object.keys(colorOptions).map((color) => (
+                  <MenuItem
+                    key={color}
+                    value={color}
+                  >
+                    {capitalizeFirstLetter(color)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ),
+        },
+      ]}
     >
       <div id="parent" className="sketch-container" />
     </Layout>

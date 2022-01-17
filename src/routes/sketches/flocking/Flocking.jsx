@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import { Slider, Typography } from '@material-ui/core';
 import Layout from '../../../Layout';
 import Rectangle from './quadtree/rectangle';
 import Boid from './boid';
@@ -68,7 +69,6 @@ const Flocking = function () {
   const [sketch, setSketch] = React.useState(null);
   const [boidAmount, setBoidAmount] = React.useState(250);
   const [separationValue, setSeparationValue] = React.useState(4.3);
-  const separationRef = React.useRef(null);
   const [isLooping, setIsLooping] = useLooping(sketch);
 
   useEffect(() => {
@@ -98,14 +98,14 @@ const Flocking = function () {
     setSketch(newSketch);
   };
 
-  const handleBoidAmountChange = ({ target: { value } }) => {
-    setBoidAmount(value);
+  const handleBoidAmountChange = (v) => {
+    setBoidAmount(v);
     handleRefresh();
   };
 
-  const handleSeparationForceChange = ({ target: { value } }) => {
-    separationForce = parseFloat(value);
-    setSeparationValue(value);
+  const handleSeparationForceChange = (v) => {
+    separationForce = v;
+    setSeparationValue(v);
   };
 
   return (
@@ -113,38 +113,41 @@ const Flocking = function () {
       isLooping={isLooping}
       handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
-      rightComponent={(
-        <>
-          <label htmlFor="separation-force" type="range">
-            Separation Force
-            {' '}
-            {separationValue}
-            <input
-              id="separation-separation-force"
-              type="range"
-              defaultValue={separationForce}
-              step={0.01}
-              min="1"
-              max="10"
-              ref={separationRef}
-              onChange={handleSeparationForceChange}
-            />
-          </label>
-          <label htmlFor="boid-amount" type="range">
-            Boid Amount
-            {' '}
-            {boidAmount}
-            <input
-              id="boid-amount"
-              type="range"
-              min="50"
-              max="500"
-              value={boidAmount}
-              onChange={handleBoidAmountChange}
-            />
-          </label>
-        </>
-      )}
+      controls={[
+        {
+          key: 'Separation Force',
+          control: (
+            <>
+              <Typography>Separation Force</Typography>
+              <Slider
+                value={separationValue}
+                onChange={(e, v) => handleSeparationForceChange(v)}
+                min={1}
+                max={10}
+                step={0.01}
+                defaultValue={4.3}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Boid Amount',
+          control: (
+            <>
+              <Typography>Boid Amount</Typography>
+              <Slider
+                value={boidAmount}
+                onChange={(e, v) => handleBoidAmountChange(v)}
+                min={50}
+                max={500}
+                defaultValue={250}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
     >
       <div id="parent" className="sketch-container" />
     </Layout>

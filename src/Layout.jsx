@@ -2,21 +2,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './navbar.css';
 import { useNavigate } from 'react-router-dom';
-import BackArrow from './images/left-arrow.png';
-import RefreshArrow from './images/refresh-icon.png';
-import SaveIcon from './images/diskette-icon.png';
-import PlayIcon from './images/play-icon.png';
-import PauseIcon from './images/pause-icon.png';
+import {
+  Box,
+  Button, Divider, List, ListItem, Popover,
+} from '@material-ui/core';
+import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace';
+import Replay from '@material-ui/icons/Replay';
+import Save from '@material-ui/icons/Save';
+import Pause from '@material-ui/icons/Pause';
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Menu from '@material-ui/icons/Menu';
 
 const Layout = function ({
   children,
   handleRefresh,
   handleSave,
-  rightComponent,
   handleLooping,
   isLooping,
+  controls,
 }) {
+  const anchorEl = React.useRef(null);
+  const [open, setOpen] = React.useState(false);
   const navigate = useNavigate();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const handleGoBack = () => {
     navigate('/');
@@ -26,33 +41,64 @@ const Layout = function ({
     <>
       <div className="navbar">
         <div className="inside-nav">
-          <button className="btn p-2" type="button" onClick={handleGoBack}>
-            <img
-              unselectable="on"
-              alt="back arrow"
-              src={BackArrow}
-              className="p-2 arrow-icon"
-            />
-          </button>
+          <Button className="btn" onClick={handleGoBack}>
+            <KeyboardBackspace htmlColor="#fff" fontSize="large" />
+          </Button>
+
           {handleRefresh && (
-            <button className="btn p-2" type="button" onClick={handleRefresh}>
-              <img unselectable="on" alt="refresh" src={RefreshArrow} className="arrow-icon" />
-            </button>
-          )}
-          {handleSave && (
-            <button className="btn p-2" type="button" onClick={handleSave}>
-              <img unselectable="on" alt="save" src={SaveIcon} className="arrow-icon" />
-            </button>
-          )}
-          {handleLooping && (
-            <button className="btn p-2" type="button" onClick={handleLooping}>
-              <img unselectable="on" alt="play pause" src={isLooping ? PauseIcon : PlayIcon} className="arrow-icon" />
-            </button>
+            <Button className="btn" onClick={handleRefresh}>
+              <Replay htmlColor="#fff" fontSize="large" />
+            </Button>
           )}
 
-          <div className="right-container">
-            {rightComponent}
-          </div>
+          {handleSave && (
+            <Button className="btn" onClick={handleSave}>
+              <Save htmlColor="#fff" fontSize="large" />
+            </Button>
+          )}
+
+          {handleLooping && (
+            <Button className="btn" onClick={handleLooping}>
+              {isLooping ? (
+                <Pause htmlColor="#fff" fontSize="large" />
+              ) : (
+                <PlayArrow htmlColor="#fff" fontSize="large" />
+              )}
+            </Button>
+          )}
+
+          {controls && (
+            <>
+              <Button onClick={handleOpen} ref={anchorEl}>
+                <Menu htmlColor="#fff" fontSize="large" />
+              </Button>
+              <Popover
+                id="controls-menu"
+                open={open}
+                anchorEl={anchorEl?.current}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+              >
+                <Box minWidth="100px">
+                  <List>
+                    {controls.map(({ key, control }, i) => (
+                      <React.Fragment key={key}>
+                        <ListItem minWidth="100%">
+                          <Box width="100%">
+                            {control}
+                          </Box>
+                        </ListItem>
+                        {i !== controls.length - 1 && <Divider />}
+                      </React.Fragment>
+                    ))}
+                  </List>
+                </Box>
+              </Popover>
+            </>
+          )}
         </div>
       </div>
       { children }
@@ -63,7 +109,7 @@ const Layout = function ({
 export default Layout;
 
 Layout.defaultProps = {
-  rightComponent: null,
+  controls: null,
   handleRefresh: null,
   handleSave: null,
   handleLooping: null,
@@ -72,7 +118,10 @@ Layout.defaultProps = {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  rightComponent: PropTypes.node,
+  controls: PropTypes.arrayOf(PropTypes.shape({
+    key: PropTypes.string.isRequired,
+    control: PropTypes.node.isRequired,
+  })),
   handleRefresh: PropTypes.func,
   handleSave: PropTypes.func,
   handleLooping: PropTypes.func,
