@@ -1,14 +1,19 @@
 import React, { useEffect } from 'react';
 import p5 from 'p5';
 import '../../../js/p5/p5.sound';
-import { Slider, Typography } from '@material-ui/core';
+import {
+  Checkbox, FormControlLabel, Slider, Typography,
+} from '@material-ui/core';
 import Layout from '../../../Layout';
 import kirraAudio from './audio/Kirra.mp3';
 
 let fft;
+let fftMic;
+let mic;
 let file;
+let useMic = false;
 let layerAmount = 3;
-const divider = 5;
+let divider = 5;
 const bands = 4096;
 const borderWeight = 5;
 let spectrum = null;
@@ -41,7 +46,10 @@ const makeSketch = () => new p5((p) => {
     p.strokeWeight(borderWeight);
     p.noLoop();
 
+    mic = new p5.AudioIn();
+    fftMic = new p5.FFT(0.7, bands);
     fft = new p5.FFT(0.5, bands);
+    fftMic.setInput(mic);
     fft.setInput(file);
     file.setVolume(0.5);
     // file.jump(40);
@@ -62,7 +70,11 @@ const makeSketch = () => new p5((p) => {
     p.rotate(ninetyDegrees);
     p.background(255);
 
-    spectrum = fft.analyze();
+    if (useMic) {
+      spectrum = fftMic.analyze();
+    } else {
+      spectrum = fft.analyze();
+    }
 
     for (let k = 0; k < layerAmount; k++) {
       p.stroke(k * 15);
@@ -78,24 +90,13 @@ const makeSketch = () => new p5((p) => {
       p.endShape(p.CLOSE);
     }
   };
-
-  p.keyPressed = () => {
-    if (!file.isLoaded()) return;
-    if (p.keyCode === 32) {
-      if (file.isPlaying()) {
-        p.noLoop();
-        file.pause();
-      } else {
-        p.loop();
-        file.play();
-      }
-    }
-  };
 });
 const AudioSpectrum = function () {
   const [sketch, setSketch] = React.useState();
   const [isLooping, setIsLooping] = React.useState(false);
   const [layerAmountState, setLayerAmountState] = React.useState(layerAmount);
+  const [useMicState, setUseMicState] = React.useState(useMic);
+  const [dividerState, setDividerState] = React.useState(divider);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -109,18 +110,31 @@ const AudioSpectrum = function () {
       newSketch.remove();
       center = {};
       file = null;
+      mic = null;
+      fft = null;
+      fftMic = null;
       ninetyDegrees = null;
       layerAmount = 3;
+      divider = 5;
+      useMic = false;
     };
   }, []);
 
   const handleLooping = () => {
     if (isLooping) {
       sketch.noLoop();
-      file.pause();
+      if (!useMic) {
+        file.pause();
+      } else {
+        mic.stop();
+      }
     } else {
       sketch.loop();
-      file.play();
+      if (!useMic) {
+        file.play();
+      } else {
+        mic.start();
+      }
     }
     setIsLooping(!isLooping);
   };
@@ -130,11 +144,17 @@ const AudioSpectrum = function () {
 
     file.pause();
     file.stop();
+    mic.stop();
 
     sketch.remove();
     center = {};
     file = null;
+    mic = null;
+    fft = null;
+    fftMic = null;
     ninetyDegrees = null;
+    divider = 5;
+    useMic = false;
 
     const newSketch = makeSketch();
 
@@ -146,12 +166,46 @@ const AudioSpectrum = function () {
     setLayerAmountState(v);
   };
 
+  const handleUseMicChange = () => {
+    if (!useMic) {
+      sketch.loop();
+      mic.start();
+      file.stop();
+    } else {
+      sketch.loop();
+      mic.stop();
+      file.play();
+    }
+    setIsLooping(true);
+    setUseMicState(!useMicState);
+    useMic = !useMic;
+  };
+
+  const handleDividerChange = (v) => {
+    setDividerState(v);
+    divider = v;
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
       isLooping={isLooping}
       handleLooping={handleLooping}
       controls={[
+        {
+          key: 'Use Microphone',
+          control: (
+            <FormControlLabel
+              label="Use Microphone"
+              control={(
+                <Checkbox
+                  checked={useMicState}
+                  onChange={handleUseMicChange}
+                />
+              )}
+            />
+          ),
+        },
         {
           key: 'Layer Amount',
           control: (
@@ -164,6 +218,23 @@ const AudioSpectrum = function () {
                 max={10}
                 step={1}
                 defaultValue={3}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Divider',
+          control: (
+            <>
+              <Typography>Divider</Typography>
+              <Slider
+                value={dividerState}
+                onChange={(e, v) => handleDividerChange(v)}
+                min={1}
+                max={5}
+                step={1}
+                defaultValue={5}
                 valueLabelDisplay="auto"
               />
             </>
