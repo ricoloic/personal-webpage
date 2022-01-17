@@ -1,13 +1,16 @@
 import React, { useEffect } from 'react';
 import p5 from 'p5';
 import '../../../js/p5/p5.sound';
+import { Slider, Typography } from '@material-ui/core';
 import Layout from '../../../Layout';
 import kirraAudio from './audio/Kirra.mp3';
 
 let fft;
 let file;
+let layerAmount = 3;
 const divider = 5;
 const bands = 4096;
+const borderWeight = 5;
 let spectrum = null;
 const vSize = 160;
 
@@ -22,6 +25,10 @@ const makeSketch = () => new p5((p) => {
     center.y = p.height / 2;
   };
 
+  p.preload = () => {
+    file = p.loadSound(kirraAudio);
+  };
+
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
 
@@ -29,26 +36,25 @@ const makeSketch = () => new p5((p) => {
     center.x = p.width / 2;
     center.y = p.height / 2;
 
+    p.colorMode(p.HSB);
     p.noFill();
-    p.stroke(0);
-    p.strokeWeight(3);
+    p.strokeWeight(borderWeight);
+    p.noLoop();
 
     fft = new p5.FFT(0.5, bands);
-    file = p.loadSound(kirraAudio, (sound) => {
-      fft.setInput(sound);
-      file.setVolume(0.5);
-      file.play();
-      p.loop();
-    });
+    fft.setInput(file);
+    file.setVolume(0.5);
+    // file.jump(40);
+    file.pause();
   };
 
-  const getPosAndRadius = (spectrumIndex, i) => {
+  const getPosAndRadius = (spectrumIndex, i, offset = 0) => {
     const currentFreq = spectrum[spectrumIndex];
-    const r = 150 + p.map(currentFreq, 0, 255, -50, vSize);
+    const r = 150 + p.map(currentFreq, 0, 255, -50, vSize) + offset;
     const a = p.radians(i);
     const x = r * p.cos(a);
     const y = r * p.sin(a);
-    return { x, y, r };
+    return { x, y };
   };
 
   p.draw = () => {
@@ -58,41 +64,38 @@ const makeSketch = () => new p5((p) => {
 
     spectrum = fft.analyze();
 
-    let smallestR = 5000;
+    for (let k = 0; k < layerAmount; k++) {
+      p.stroke(k * 15);
+      p.beginShape();
+      for (let angle = 359; angle >= 0; angle--) {
+        const modAngle = angle % 180;
+        const i = angle >= 180 ? modAngle : 179 - modAngle;
 
-    p.beginShape();
-    for (let angle = 359; angle >= 0; angle--) {
-      const modAngle = angle % 180;
-      const i = angle >= 180 ? modAngle : 179 - modAngle;
-
-      const spectrumIndex = p.floor(i / divider);
-      const { x, y, r } = getPosAndRadius(spectrumIndex, angle);
-      p.vertex(x, y);
-
-      if (r < smallestR) {
-        smallestR = r;
+        const spectrumIndex = p.floor(i / divider);
+        const { x, y } = getPosAndRadius(spectrumIndex, angle, k * borderWeight);
+        p.vertex(x, y);
       }
+      p.endShape(p.CLOSE);
     }
-    p.endShape(p.CLOSE);
   };
 
   p.keyPressed = () => {
+    if (!file.isLoaded()) return;
     if (p.keyCode === 32) {
       if (file.isPlaying()) {
+        p.noLoop();
         file.pause();
       } else {
+        p.loop();
         file.play();
       }
-    } else if (p.keyCode === 78) {
-      p.noLoop(); file.pause();
-    } else if (p.keyCode === 76) {
-      p.loop(); file.play();
     }
   };
 });
-
 const AudioSpectrum = function () {
   const [sketch, setSketch] = React.useState();
+  const [isLooping, setIsLooping] = React.useState(false);
+  const [layerAmountState, setLayerAmountState] = React.useState(layerAmount);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -107,10 +110,24 @@ const AudioSpectrum = function () {
       center = {};
       file = null;
       ninetyDegrees = null;
+      layerAmount = 3;
     };
   }, []);
 
+  const handleLooping = () => {
+    if (isLooping) {
+      sketch.noLoop();
+      file.pause();
+    } else {
+      sketch.loop();
+      file.play();
+    }
+    setIsLooping(!isLooping);
+  };
+
   const handleRefresh = () => {
+    setIsLooping(false);
+
     file.pause();
     file.stop();
 
@@ -124,9 +141,35 @@ const AudioSpectrum = function () {
     setSketch(newSketch);
   };
 
+  const handleLayerAmountChange = (v) => {
+    layerAmount = v;
+    setLayerAmountState(v);
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
+      isLooping={isLooping}
+      handleLooping={handleLooping}
+      controls={[
+        {
+          key: 'Layer Amount',
+          control: (
+            <>
+              <Typography>layer Amount</Typography>
+              <Slider
+                value={layerAmountState}
+                onChange={(e, v) => handleLayerAmountChange(v)}
+                min={1}
+                max={10}
+                step={1}
+                defaultValue={3}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
     >
       <div id="parent" className="sketch-container" />
     </Layout>

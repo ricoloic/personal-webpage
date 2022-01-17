@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import { Slider, Typography } from '@material-ui/core';
 import { Bubble } from './bubble';
 import Layout from '../../../Layout';
 
@@ -78,29 +79,32 @@ const IntersectingBubbles = function () {
     setSketch(newSketch);
   };
 
-  const handleBubbleAmountChange = ({ target: { value } }) => {
-    setBubbleAmount(value);
+  const handleBubbleAmountChange = (v) => {
+    setBubbleAmount(v);
     handleRefresh();
   };
 
   return (
     <Layout
       handleRefresh={handleRefresh}
-      rightComponent={(
-        <label htmlFor="bubble-amount" type="range">
-          Bubble Amount
-          {' '}
-          {bubbleAmount}
-          <input
-            id="bubble-amount"
-            type="range"
-            min="10"
-            max="250"
-            value={bubbleAmount}
-            onChange={handleBubbleAmountChange}
-          />
-        </label>
-      )}
+      controls={[
+        {
+          key: 'Bubble Amount',
+          control: (
+            <>
+              <Typography>Bubble Amount</Typography>
+              <Slider
+                value={bubbleAmount}
+                onChange={(e, v) => handleBubbleAmountChange(v)}
+                min={10}
+                max={250}
+                defaultValue={120}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
     >
       <div id="parent" className="sketch-container" />
     </Layout>

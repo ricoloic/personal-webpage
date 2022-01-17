@@ -7,47 +7,6 @@ body {
     background-color: hsl(0, 0%, 90%);
 }
 
-select {
-    /* style the select input */
-    font-size: 1em;
-    padding: 0.5em;
-    border: 1px solid #ccc;
-    border-radius: 0.25em;
-    background-color: hsl(0, 0%, 100%);
-    color: hsl(0, 0%, 0%);
-}
-
-select:focus {
-    /* style the select input when it is focused */
-    outline: none;
-    border-color: hsl(0, 0%, 50%);
-}
-
-input[type="range"] {
-  display: block;
-}
-
-input[type="checkbox"] {
-    /* style the checkbox input to be bigger and smooter */
-    width: 2.5em;
-    height: 2.5em;
-    margin: 0.25em;
-    border: 1px solid #ccc;
-    border-radius: 0.25em;
-    background-color: hsl(0, 0%, 100%);
-    color: hsl(0, 0%, 0%);
-    display: block;
-}
-
-label[type="range"] {
-    max-width: 180px;
-    margin: 0 0.5em;
-}
-
-label {
-  color: white;
-}
-
 p {
     margin: 0.5rem 0;
 }
@@ -77,8 +36,4 @@ a:active {
 
 canvas {
     display: block
-}
-
-img {
-    fill: white;
 }
