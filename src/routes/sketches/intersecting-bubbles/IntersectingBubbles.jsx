@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import { Slider, Typography } from '@material-ui/core';
+import { ListItemText, Slider } from '@material-ui/core';
 import { Bubble } from './bubble';
 import Layout from '../../../Layout';
 
@@ -92,7 +92,7 @@ const IntersectingBubbles = function () {
           key: 'Bubble Amount',
           control: (
             <>
-              <Typography>Bubble Amount</Typography>
+              <ListItemText>Bubble Amount</ListItemText>
               <Slider
                 value={bubbleAmount}
                 onChange={(e, v) => handleBubbleAmountChange(v)}

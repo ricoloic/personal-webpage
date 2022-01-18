@@ -3,8 +3,8 @@
   left: 0;
   right: 0;
   top: 0;
-  min-height: 75px;
-  max-height: 75px;
+  min-height: 60px;
+  max-height: 60px;
   background-color: hsla(0, 0%, 0%, 0.1);
   transition: background-color 0.3s linear;
 }

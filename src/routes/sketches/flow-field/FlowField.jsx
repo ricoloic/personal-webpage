@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import {
-  Checkbox, FormControlLabel, Slider, Typography, FormControl, MenuItem, Select, InputLabel,
+  Checkbox,
+  FormControlLabel,
+  Slider, FormControl, MenuItem, Select,
+  ListItemText,
 } from '@material-ui/core';
 import { Particle } from './particle';
 import { Flow } from './flow';
@@ -19,6 +22,7 @@ const colorOptions = {
 
 let selectedColor = 'original';
 
+const particleAmount = 2000;
 let scl = 10;
 let inc = 0.1;
 let cols = null;
@@ -52,7 +56,7 @@ const makeSketch = () => new P5((p) => {
       }
     }
 
-    for (let i = 0; i < 2000; i++) {
+    for (let i = 0; i < particleAmount; i++) {
       particles.push(new Particle(p));
     }
     p.colorMode(p.HSB);
@@ -70,6 +74,7 @@ const makeSketch = () => new P5((p) => {
         const index = x + y * cols;
         const flow = flowField[index];
 
+        if (!flow) return;
         flow.update(xoff, yoff, zoff);
         if (displayFlow) {
           // console.log('hey');
@@ -178,7 +183,7 @@ const FlowField = function () {
           key: 'Display Flow',
           control: (
             <FormControlLabel
-              label="Display Flow"
+              label={<ListItemText>Display Flow</ListItemText>}
               control={(
                 <Checkbox
                   checked={displayFlow}
@@ -192,7 +197,7 @@ const FlowField = function () {
           key: 'Lod',
           control: (
             <>
-              <Typography>Lod</Typography>
+              <ListItemText>Lod</ListItemText>
               <Slider
                 value={lodState}
                 onChange={(e, v) => handleLodChange(v)}
@@ -209,7 +214,9 @@ const FlowField = function () {
           key: 'Fall Off',
           control: (
             <>
-              <Typography>Fall Off</Typography>
+              <ListItemText>
+                Fall Off
+              </ListItemText>
               <Slider
                 value={fallOffState}
                 onChange={(e, v) => handleFallOffChange(v)}
@@ -226,13 +233,17 @@ const FlowField = function () {
           key: 'Color',
           control: (
             <FormControl fullWidth>
-              <InputLabel id="color-label">Color</InputLabel>
+              <ListItemText>
+                Color
+              </ListItemText>
               <Select
                 labelId="color-label"
                 id="color-select"
                 value={colorState}
                 label="Color"
                 onChange={handleColorChange}
+                variant="filled"
+                size="small"
               >
                 {Object.keys(colorOptions).map((color) => (
                   <MenuItem

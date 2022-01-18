@@ -86,7 +86,7 @@ const Layout = function ({
                   <List>
                     {controls.map(({ key, control }, i) => (
                       <React.Fragment key={key}>
-                        <ListItem minWidth="100%">
+                        <ListItem>
                           <Box width="100%">
                             {control}
                           </Box>

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import {
-  Checkbox, FormControlLabel, Slider, Typography,
+  Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
 import Layout from '../../../Layout';
 
@@ -93,15 +93,20 @@ const MaurerRose = function () {
     setDState(d);
   };
 
+  const handleSave = () => {
+    sketch.saveCanvas(sketch.canvas, 'flowfield', 'png');
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
+      handleSave={handleSave}
       controls={[
         {
           key: 'Color',
           control: (
             <FormControlLabel
-              label="Color"
+              label={<ListItemText>Color</ListItemText>}
               control={(
                 <Checkbox
                   checked={colorState}
@@ -115,10 +120,12 @@ const MaurerRose = function () {
           key: 'N',
           control: (
             <>
-              <Typography>N</Typography>
+              <ListItemText>N</ListItemText>
               <Slider
                 value={nState}
                 onChange={(e, v) => handleChangeN(v)}
+                min={2}
+                max={59}
                 defaultValue={2}
                 valueLabelDisplay="auto"
               />
@@ -129,10 +136,12 @@ const MaurerRose = function () {
           key: 'D',
           control: (
             <>
-              <Typography>D</Typography>
+              <ListItemText>D</ListItemText>
               <Slider
                 value={dState}
                 onChange={(e, v) => handleChangeD(v)}
+                min={2}
+                max={59}
                 defaultValue={2}
                 valueLabelDisplay="auto"
               />
