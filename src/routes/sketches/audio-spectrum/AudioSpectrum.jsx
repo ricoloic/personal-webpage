@@ -2,10 +2,11 @@ import React, { useEffect } from 'react';
 import p5 from 'p5';
 import '../../../js/p5/p5.sound';
 import {
-  Checkbox, FormControlLabel, Slider, Typography,
+  Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
 import Layout from '../../../Layout';
 import kirraAudio from './audio/Kirra.mp3';
+import 'p5/lib/addons/p5.dom';
 
 let fft;
 let fftMic;
@@ -13,17 +14,18 @@ let mic;
 let file;
 let useMic = false;
 let layerAmount = 3;
-let divider = 5;
-const bands = 4096;
+let divider = 2;
+const bands = 1024;
 const borderWeight = 5;
 let spectrum = null;
 const vSize = 160;
+let fileInfoP = null;
 
 let ninetyDegrees = null;
 let center = {};
 
 // eslint-disable-next-line new-cap
-const makeSketch = () => new p5((p) => {
+const makeSketch = (setIsLooping) => new p5((p) => {
   p.windowResized = () => {
     p.resizeCanvas(window.innerWidth, window.innerHeight);
     center.x = p.width / 2;
@@ -34,8 +36,33 @@ const makeSketch = () => new p5((p) => {
     file = p.loadSound(kirraAudio);
   };
 
+  function displayFileInfo(fileData) {
+    fileInfoP.html(`
+      <p>
+        <strong style="user-select: none;">File: </strong> ${fileData.file.name}
+      </p>
+    `);
+  }
+
+  const dropFiles = (tempFile) => {
+    setIsLooping(true);
+    p.loadSound(tempFile, (sound) => {
+      file.stop();
+      file = sound;
+      fft.setInput(sound);
+      file.setVolume(0.5);
+      p.loop();
+      file.play();
+      displayFileInfo(sound);
+    });
+  };
+
   p.setup = () => {
+    fileInfoP = p.select('#file-info');
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
+
+    const cnv = p.select('canvas');
+    cnv.drop(dropFiles);
 
     ninetyDegrees = p.PI / 2;
     center.x = p.width / 2;
@@ -48,12 +75,12 @@ const makeSketch = () => new p5((p) => {
 
     mic = new p5.AudioIn();
     fftMic = new p5.FFT(0.7, bands);
-    fft = new p5.FFT(0.5, bands);
+    fft = new p5.FFT(0.7, bands);
     fftMic.setInput(mic);
     fft.setInput(file);
     file.setVolume(0.5);
-    // file.jump(40);
     file.pause();
+    displayFileInfo({ file: { name: 'Kirra - CharlestheFirst' } });
   };
 
   const getPosAndRadius = (spectrumIndex, i, offset = 0) => {
@@ -91,6 +118,7 @@ const makeSketch = () => new p5((p) => {
     }
   };
 });
+
 const AudioSpectrum = function () {
   const [sketch, setSketch] = React.useState();
   const [isLooping, setIsLooping] = React.useState(false);
@@ -99,7 +127,7 @@ const AudioSpectrum = function () {
   const [dividerState, setDividerState] = React.useState(divider);
 
   useEffect(() => {
-    const newSketch = makeSketch();
+    const newSketch = makeSketch(setIsLooping);
 
     setSketch(newSketch);
 
@@ -156,7 +184,7 @@ const AudioSpectrum = function () {
     divider = 5;
     useMic = false;
 
-    const newSketch = makeSketch();
+    const newSketch = makeSketch(setIsLooping);
 
     setSketch(newSketch);
   };
@@ -196,7 +224,7 @@ const AudioSpectrum = function () {
           key: 'Use Microphone',
           control: (
             <FormControlLabel
-              label="Use Microphone"
+              label={<ListItemText>Use Microphone</ListItemText>}
               control={(
                 <Checkbox
                   checked={useMicState}
@@ -210,7 +238,7 @@ const AudioSpectrum = function () {
           key: 'Layer Amount',
           control: (
             <>
-              <Typography>layer Amount</Typography>
+              <ListItemText>Layer Amount</ListItemText>
               <Slider
                 value={layerAmountState}
                 onChange={(e, v) => handleLayerAmountChange(v)}
@@ -227,7 +255,7 @@ const AudioSpectrum = function () {
           key: 'Divider',
           control: (
             <>
-              <Typography>Divider</Typography>
+              <ListItemText>Divider</ListItemText>
               <Slider
                 value={dividerState}
                 onChange={(e, v) => handleDividerChange(v)}
@@ -242,6 +270,40 @@ const AudioSpectrum = function () {
         },
       ]}
     >
+      <style jsx="true">
+        {`
+          #file-info {
+            position: absolute;
+            top: 51.5px;
+            min-width: 100vw;
+            max-width: 100vw;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: space-evenly;
+            align-items: center;
+            font-size: 1em;
+            transition: 0.3s
+          }
+          #file-info p {
+            overflow: hidden;
+            position: relative;
+            display: inline-block;
+            margin: 0.5rem 0.2rem;
+            text-align: center;
+            text-decoration: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+          #file-info:hover {
+            background: rgba(0, 0, 0, 0.5);
+          }
+        `}
+      </style>
+      <p id="file-info" />
       <div id="parent" className="sketch-container" />
     </Layout>
   );

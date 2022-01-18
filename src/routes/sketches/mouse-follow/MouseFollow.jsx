@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
+import { Slider } from '@material-ui/core';
 import { Particle } from './particle';
 import Layout from '../../../Layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
+let color = 0;
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -16,11 +18,13 @@ const makeSketch = () => new P5((p) => {
     center.x = p.width / 2;
     center.y = p.height / 2;
     p.noStroke();
+    p.colorMode(p.HSB);
   };
 
   p.draw = () => {
     p.background(100);
     p.translate(center.x, center.y);
+    p.fill(color, 100, 100);
 
     for (let i = 0; i < 10; i++) {
       const particle = new Particle(p, center);
@@ -66,7 +70,28 @@ const MouseFollow = function () {
   };
 
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Layout
+      handleRefresh={handleRefresh}
+      controls={[
+        {
+          key: 'Color',
+          control: (
+            <Slider
+              value={color}
+              onChange={(e, v) => {
+                color = v;
+              }}
+              min={0}
+              max={360}
+              step={1}
+              defaultValue={0}
+              valueLabelDisplay="auto"
+            />
+          ),
+        },
+      ]}
+    >
+      <div id="parent" />
       <div id="parent" className="sketch-container" />
     </Layout>
   );
