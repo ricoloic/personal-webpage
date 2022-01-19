@@ -1,12 +1,15 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import { Slider } from '@material-ui/core';
+import {
+  Checkbox, FormControlLabel, ListItemText, Slider,
+} from '@material-ui/core';
 import { Particle } from './particle';
 import Layout from '../../../Layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
 let color = 0;
+let showParticles = true;
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -24,7 +27,6 @@ const makeSketch = () => new P5((p) => {
   p.draw = () => {
     p.background(100);
     p.translate(center.x, center.y);
-    p.fill(color, 100, 100);
 
     for (let i = 0; i < 10; i++) {
       const particle = new Particle(p, center);
@@ -33,6 +35,7 @@ const makeSketch = () => new P5((p) => {
 
     particles.forEach((particle) => {
       particle.update();
+      if (!showParticles) return;
       particle.show();
     });
     particles = particles.filter((particle) => !particle.finished());
@@ -42,12 +45,15 @@ const makeSketch = () => new P5((p) => {
       new p.constructor.Vector(0, 0),
     );
     const cntV = sumV.div(particles.length);
+    p.fill(color, 100, 100);
     p.circle(cntV.x, cntV.y, 50);
   };
 });
 
 const MouseFollow = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [colorState, setColorState] = React.useState(0);
+  const [showParticlesState, setShowParticlesState] = React.useState(true);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -69,29 +75,51 @@ const MouseFollow = function () {
     setSketch(newSketch);
   };
 
+  const handleShowParticlesChange = () => {
+    showParticles = !showParticles;
+    setShowParticlesState(showParticles);
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
       controls={[
         {
+          key: 'Show Particles',
+          control: (
+            <FormControlLabel
+              label={<ListItemText>Show Particles</ListItemText>}
+              control={(
+                <Checkbox
+                  checked={showParticlesState}
+                  onChange={handleShowParticlesChange}
+                />
+              )}
+            />
+          ),
+        },
+        {
           key: 'Color',
           control: (
-            <Slider
-              value={color}
-              onChange={(e, v) => {
-                color = v;
-              }}
-              min={0}
-              max={360}
-              step={1}
-              defaultValue={0}
-              valueLabelDisplay="auto"
-            />
+            <>
+              <ListItemText>Color (HSB)</ListItemText>
+              <Slider
+                value={colorState}
+                onChange={(e, v) => {
+                  color = v;
+                  setColorState(v);
+                }}
+                min={0}
+                max={360}
+                step={1}
+                defaultValue={0}
+                valueLabelDisplay="auto"
+              />
+            </>
           ),
         },
       ]}
     >
-      <div id="parent" />
       <div id="parent" className="sketch-container" />
     </Layout>
   );

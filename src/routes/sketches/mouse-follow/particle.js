@@ -18,9 +18,8 @@ export class Particle {
 
   show() {
     this.p5.noStroke();
-    // this.p5.stroke(255);
-    // this.p5.fill(this.col.x);
-    this.p5.fill(255, this.lifespan);
+    this.p5.stroke(255);
+    this.p5.fill(0, 100, 100);
     this.p5.ellipse(this.pos.x, this.pos.y, 16);
   }
 
