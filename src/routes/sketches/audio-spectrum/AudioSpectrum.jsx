@@ -2,30 +2,74 @@ import React, { useEffect } from 'react';
 import p5 from 'p5';
 import '../../../js/p5/p5.sound';
 import {
+  Button,
   Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
 import Layout from '../../../Layout';
 import kirraAudio from './audio/Kirra.mp3';
 import 'p5/lib/addons/p5.dom';
 
+import {
+  drawSpectrum, jumpSoundFile, pauseSoundFile, playSoundFile, startMic, stopMic, stopSoundFile,
+} from './sketch';
+
 let fft;
 let fftMic;
 let mic;
-let file;
+let defaultSoundFile;
 let useMic = false;
 let layerAmount = 3;
 let divider = 2;
 const bands = 1024;
 const borderWeight = 5;
 let spectrum = null;
-const vSize = 160;
+let minSpectrumSize = -50;
+let maxSpectrumSize = 160;
+let baseSize = 150;
 let fileInfoP = null;
-
 let ninetyDegrees = null;
 let center = {};
 
+const resetVariables = () => {
+  center = {};
+  defaultSoundFile = null;
+  mic = null;
+  fft = null;
+  fftMic = null;
+  ninetyDegrees = null;
+  useMic = false;
+  baseSize = 150;
+};
+
+const displayFileInfo = (fileData) => {
+  fileInfoP.html(`
+    <p>
+      <strong style="user-select: none;">File: </strong> ${fileData.file.name}
+    </p>
+  `);
+};
+
+const dropFiles = (p, setIsLooping, setUseMic, tempFile) => {
+  p.loadSound(tempFile, (sound) => {
+    useMic = false;
+    setUseMic(false);
+    stopMic(mic);
+    stopSoundFile(defaultSoundFile);
+    defaultSoundFile = sound;
+    fft.setInput(defaultSoundFile);
+    defaultSoundFile.setVolume(0.5);
+    p.loop();
+    setIsLooping(true);
+    playSoundFile(defaultSoundFile);
+    displayFileInfo(sound);
+  });
+};
+
+const isMouseOnRightSide = (p) => p.mouseX > p.width / 2;
+
 // eslint-disable-next-line new-cap
-const makeSketch = (setIsLooping) => new p5((p) => {
+const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
+  // const cnv = null;
   p.windowResized = () => {
     p.resizeCanvas(window.innerWidth, window.innerHeight);
     center.x = p.width / 2;
@@ -33,28 +77,7 @@ const makeSketch = (setIsLooping) => new p5((p) => {
   };
 
   p.preload = () => {
-    file = p.loadSound(kirraAudio);
-  };
-
-  function displayFileInfo(fileData) {
-    fileInfoP.html(`
-      <p>
-        <strong style="user-select: none;">File: </strong> ${fileData.file.name}
-      </p>
-    `);
-  }
-
-  const dropFiles = (tempFile) => {
-    setIsLooping(true);
-    p.loadSound(tempFile, (sound) => {
-      file.stop();
-      file = sound;
-      fft.setInput(sound);
-      file.setVolume(0.5);
-      p.loop();
-      file.play();
-      displayFileInfo(sound);
-    });
+    defaultSoundFile = p.loadSound(kirraAudio);
   };
 
   p.setup = () => {
@@ -62,7 +85,7 @@ const makeSketch = (setIsLooping) => new p5((p) => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
 
     const cnv = p.select('canvas');
-    cnv.drop(dropFiles);
+    cnv.drop(p, setIsLooping, setUseMic, dropFiles);
 
     ninetyDegrees = p.PI / 2;
     center.x = p.width / 2;
@@ -77,25 +100,26 @@ const makeSketch = (setIsLooping) => new p5((p) => {
     fftMic = new p5.FFT(0.7, bands);
     fft = new p5.FFT(0.7, bands);
     fftMic.setInput(mic);
-    fft.setInput(file);
-    file.setVolume(0.5);
-    file.pause();
+    fft.setInput(defaultSoundFile);
+    defaultSoundFile.setVolume(0.5);
+    defaultSoundFile.pause();
     displayFileInfo({ file: { name: 'Kirra - CharlestheFirst' } });
   };
 
-  const getPosAndRadius = (spectrumIndex, i, offset = 0) => {
-    const currentFreq = spectrum[spectrumIndex];
-    const r = 150 + p.map(currentFreq, 0, 255, -50, vSize) + offset;
-    const a = p.radians(i);
-    const x = r * p.cos(a);
-    const y = r * p.sin(a);
-    return { x, y };
-  };
-
   p.draw = () => {
+    p.background(255);
+
+    // p.fill(0, 0.1);
+    // p.noStroke();
+    // if (isMouseOnRightSide(p)) {
+    //   p.rect(center.x, 0, p.width / 2, p.height);
+    // } else {
+    //   p.rect(0, 0, p.width / 2, p.height);
+    // }
+    // p.noFill();
+
     p.translate(center.x, center.y);
     p.rotate(ninetyDegrees);
-    p.background(255);
 
     if (useMic) {
       spectrum = fftMic.analyze();
@@ -103,18 +127,27 @@ const makeSketch = (setIsLooping) => new p5((p) => {
       spectrum = fft.analyze();
     }
 
-    for (let k = 0; k < layerAmount; k++) {
-      p.stroke(k * 15);
-      p.beginShape();
-      for (let angle = 359; angle >= 0; angle--) {
-        const modAngle = angle % 180;
-        const i = angle >= 180 ? modAngle : 179 - modAngle;
+    drawSpectrum(p, {
+      spectrum,
+      layerAmount,
+      divider,
+      borderWeight,
+      baseSize,
+      spectrumSize: [minSpectrumSize, maxSpectrumSize],
+    });
+  };
 
-        const spectrumIndex = p.floor(i / divider);
-        const { x, y } = getPosAndRadius(spectrumIndex, angle, k * borderWeight);
-        p.vertex(x, y);
-      }
-      p.endShape(p.CLOSE);
+  // if mouse is on right side of screen, jump the default sound file to 5 second in time
+  // if mouse is on left side of screen, rewind the default sound file by 5 second in time
+  p.doubleClicked = () => {
+    if (!defaultSoundFile?.isPlaying()) return;
+    const currentTime = defaultSoundFile.currentTime();
+    if (isMouseOnRightSide(p)) {
+      if (currentTime + 5 > defaultSoundFile.duration()) return;
+      jumpSoundFile(defaultSoundFile, currentTime + 5);
+    } else {
+      if (currentTime - 5 < 0) return;
+      jumpSoundFile(defaultSoundFile, currentTime - 5);
     }
   };
 });
@@ -125,68 +158,50 @@ const AudioSpectrum = function () {
   const [layerAmountState, setLayerAmountState] = React.useState(layerAmount);
   const [useMicState, setUseMicState] = React.useState(useMic);
   const [dividerState, setDividerState] = React.useState(divider);
-
-  useEffect(() => {
-    const newSketch = makeSketch(setIsLooping);
-
-    setSketch(newSketch);
-
-    return () => {
-      file.pause();
-      file.stop();
-
-      newSketch.remove();
-      center = {};
-      file = null;
-      mic = null;
-      fft = null;
-      fftMic = null;
-      ninetyDegrees = null;
-      layerAmount = 3;
-      divider = 5;
-      useMic = false;
-    };
-  }, []);
+  const [baseSizeState, setBaseSizeState] = React.useState(baseSize);
+  const [spectrumSize, setSpectrumSize] = React.useState([minSpectrumSize, maxSpectrumSize]);
 
   const handleLooping = () => {
     if (isLooping) {
       sketch.noLoop();
-      if (!useMic) {
-        file.pause();
-      } else {
-        mic.stop();
-      }
+      if (useMic) stopMic(mic);
+      else pauseSoundFile(defaultSoundFile);
     } else {
       sketch.loop();
-      if (!useMic) {
-        file.play();
-      } else {
-        mic.start();
-      }
+      if (useMic) startMic(mic);
+      else playSoundFile(defaultSoundFile);
     }
+
     setIsLooping(!isLooping);
   };
 
   const handleRefresh = () => {
     setIsLooping(false);
 
-    file.pause();
-    file.stop();
-    mic.stop();
+    stopSoundFile(defaultSoundFile);
+    stopMic(mic);
 
     sketch.remove();
-    center = {};
-    file = null;
-    mic = null;
-    fft = null;
-    fftMic = null;
-    ninetyDegrees = null;
-    divider = 5;
-    useMic = false;
+    resetVariables();
 
-    const newSketch = makeSketch(setIsLooping);
+    const newSketch = makeSketch(setIsLooping, setUseMicState);
 
     setSketch(newSketch);
+  };
+
+  const handleUseMicChange = () => {
+    if (!useMic) {
+      startMic(mic);
+      stopSoundFile(defaultSoundFile);
+    } else {
+      stopMic(mic);
+      playSoundFile(defaultSoundFile);
+    }
+
+    sketch.loop();
+    setIsLooping(true);
+    setUseMicState(!useMicState);
+    useMic = !useMic;
   };
 
   const handleLayerAmountChange = (v) => {
@@ -194,25 +209,42 @@ const AudioSpectrum = function () {
     setLayerAmountState(v);
   };
 
-  const handleUseMicChange = () => {
-    if (!useMic) {
-      sketch.loop();
-      mic.start();
-      file.stop();
-    } else {
-      sketch.loop();
-      mic.stop();
-      file.play();
-    }
-    setIsLooping(true);
-    setUseMicState(!useMicState);
-    useMic = !useMic;
-  };
-
   const handleDividerChange = (v) => {
     setDividerState(v);
     divider = v;
   };
+
+  const handleBaseSizeChange = (v) => {
+    setBaseSizeState(v);
+    baseSize = v;
+  };
+
+  const handleSpectrumSizeChange = ([min, max]) => {
+    setSpectrumSize([min, max]);
+    minSpectrumSize = min;
+    maxSpectrumSize = max;
+  };
+
+  const handleUpload = (e) => {
+    const tempFile = e.target.files[0];
+    if (tempFile?.name) {
+      dropFiles(sketch, setIsLooping, setUseMicState, tempFile);
+    }
+  };
+
+  useEffect(() => {
+    const newSketch = makeSketch(setIsLooping, setUseMicState);
+
+    setSketch(newSketch);
+
+    return () => {
+      stopSoundFile(defaultSoundFile);
+      stopMic(mic);
+
+      newSketch.remove();
+      resetVariables();
+    };
+  }, []);
 
   return (
     <Layout
@@ -220,6 +252,25 @@ const AudioSpectrum = function () {
       isLooping={isLooping}
       handleLooping={handleLooping}
       controls={[
+        {
+          key: 'Upload File',
+          control: (
+            <Button
+              variant="contained"
+              component="label"
+              fullWidth
+              color="primary"
+            >
+              Upload File
+              <input
+                type="file"
+                hidden
+                onChange={handleUpload}
+                accept="audio/*"
+              />
+            </Button>
+          ),
+        },
         {
           key: 'Use Microphone',
           control: (
@@ -232,6 +283,40 @@ const AudioSpectrum = function () {
                 />
               )}
             />
+          ),
+        },
+        {
+          key: 'Base Size',
+          control: (
+            <>
+              <ListItemText>Base Size</ListItemText>
+              <Slider
+                value={baseSizeState}
+                onChange={(e, v) => handleBaseSizeChange(v)}
+                min={50}
+                max={300}
+                step={10}
+                defaultValue={150}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Spectrum Size',
+          control: (
+            <>
+              <ListItemText>Spectrum Size</ListItemText>
+              <Slider
+                value={spectrumSize}
+                onChange={(e, v) => handleSpectrumSizeChange(v)}
+                min={-200}
+                max={320}
+                step={5}
+                defaultValue={160}
+                valueLabelDisplay="auto"
+              />
+            </>
           ),
         },
         {
@@ -274,9 +359,10 @@ const AudioSpectrum = function () {
         {`
           #file-info {
             position: absolute;
-            top: 51.5px;
+            bottom: 0;
             min-width: 100vw;
             max-width: 100vw;
+            margin: 0;
             z-index: 2;
             background: rgba(0, 0, 0, 0.3);
             color: white;
@@ -303,8 +389,8 @@ const AudioSpectrum = function () {
           }
         `}
       </style>
-      <p id="file-info" />
       <div id="parent" className="sketch-container" />
+      <p id="file-info" />
     </Layout>
   );
 };

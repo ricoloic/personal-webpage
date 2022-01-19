@@ -82,7 +82,7 @@ const Layout = function ({
                   horizontal: 'left',
                 }}
               >
-                <Box minWidth="100px">
+                <Box minWidth="100px" width="300px" maxWidth="100%">
                   <List>
                     {controls.map(({ key, control }, i) => (
                       <React.Fragment key={key}>
