@@ -94,7 +94,7 @@ const MaurerRose = function () {
   };
 
   const handleSave = () => {
-    sketch.saveCanvas(sketch.canvas, 'flowfield', 'png');
+    sketch.saveCanvas(sketch.canvas, 'maurer-rose', 'png');
   };
 
   return (
