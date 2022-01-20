@@ -4,12 +4,11 @@ import mouseFollowPreview from './images/previews/mouse-follow-preview.png';
 import chaosGamePreview from './images/previews/chaos-game-preview.png';
 import intersectingBubblesPreview from './images/previews/intersecting-bubbles-preview.png';
 import blackHolePreview from './images/previews/black-hole-preview.png';
-import flowFieldPreview from './images/previews/flow-field-preview.webp';
+import flowFieldPreview from './images/previews/flow-field-preview.png';
 import flockingPreview from './images/previews/flocking-preview.png';
 import circularMotionPreview from './images/previews/circular-motion-preview.png';
 import mouseConfettiPreview from './images/previews/mouse-confetti-preview.png';
 import maurerRosePreview from './images/previews/maurer-rose-preview.png';
-// import asteroidPreview from './images/previews/asteroid-preview.png';
 import audioSpectrumPreview from './images/previews/audio-spectrum-preview.png';
 import './main.css';
 
@@ -20,7 +19,7 @@ const getImgStyle = (img) => ({
   backgroundRepeat: 'no-repeat',
 });
 
-const Navigation = function () {
+export const Sketches = function () {
   return (
     <main className="gridTestimonial">
       <Link to="/sketches/mouse-follow" className="testimonial title" style={{ ...getImgStyle(mouseFollowPreview) }}>
@@ -45,20 +44,11 @@ const Navigation = function () {
         My head is spinning like CRAZY !! Ahhhhh...
       </Link>
       <Link to="/sketches/mouse-confetti" className="testimonial title" style={{ ...getImgStyle(mouseConfettiPreview) }}>
-        {/* eslint-disable-next-line react/no-unescaped-entities */}
         So many confetties, I think I'm in heaven now
       </Link>
       <Link to="/sketches/maurer-rose" className="testimonial title" style={{ ...getImgStyle(maurerRosePreview) }}>
-        {/* eslint-disable-next-line react/no-unescaped-entities */}
         This Rose is so beautiful, I can't stop thinking about it
       </Link>
-      {/* <Link */}
-      {/*  to="/sketches/asteroid" */}
-      {/*  className="testimonial title" */}
-      {/*  style={{ ...getImgStyle(asteroidPreview) }} */}
-      {/* > */}
-      {/*  So many asteroids, will I survive ?!! */}
-      {/* </Link> */}
       <Link to="/sketches/audio-spectrum" className="testimonial title" style={{ ...getImgStyle(audioSpectrumPreview) }}>
         What ! the sound is moving ?!
       </Link>
@@ -66,4 +56,4 @@ const Navigation = function () {
   );
 };
 
-export default Navigation;
+export default Sketches;

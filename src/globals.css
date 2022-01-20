@@ -1,16 +1,10 @@
-html,
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+
 body {
     padding: 0;
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
-    background-color: hsl(0, 0%, 90%);
+    font-family: 'Source Code Pro', monospace;
 }
-
-p {
-    margin: 0.5rem 0;
-}
-
 a {
     color: inherit;
     text-decoration: none;
