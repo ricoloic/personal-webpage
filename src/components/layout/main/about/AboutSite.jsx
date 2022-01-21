@@ -52,7 +52,11 @@ export const AboutSite = function () {
           .
           I'm currently working on this page on my free time.
           {' '}
-          If you would like to suggest a feature or a bug, feel free to leave a issue on the project repository.
+          If you would like to suggest a feature or a bug, feel free to leave a
+          {' '}
+          <Link blank href="https://github.com/ricoloic/personal-webpage/issues/new">issue</Link>
+          {' '}
+          on the project repository.
           {' '}
           Before I decided to create this page, I was always finding my self searching for a particular project to show to
           someone.
