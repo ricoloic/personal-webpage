@@ -14,6 +14,8 @@ const useStyles = makeStyles({
   img: {
     width: '100%',
     maxWidth: '300px',
+    height: '100%',
+    maxHeight: '300px',
     aspectRatio: 1,
     objectFit: 'cover',
     borderRadius: '50%',
