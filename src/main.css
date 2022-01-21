@@ -3,7 +3,8 @@
   gap: 1.5rem;
   grid-auto-columns: 1fr;
   grid-template-areas: "one" "two" "three" "four" "five" "six" "seven" "eight" "nine";
-  padding-block: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   width: min(95%, 100rem);
   margin: auto;
 }
