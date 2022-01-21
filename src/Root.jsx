@@ -12,9 +12,11 @@ const useStyles = makeStyles({
     padding: '2rem',
   },
   img: {
-    width: '100%',
+    display: 'block',
     maxWidth: '300px',
-    aspectRatio: 1,
+    maxHeight: '300px',
+    width: '100%',
+    height: '100%',
     objectFit: 'cover',
     borderRadius: '50%',
     userSelect: 'none',
@@ -70,9 +72,9 @@ const Root = function () {
     <Grid container justifyContent="center" alignItems="center">
       <Grid className={classes.self} container item alignItems="center" xs={12}>
         <Grid container item justifyContent="center" xs={12} sm={5} md={4}>
-          <img className={classes.img} src={loic} alt="loic rico" />
+          <img className={classes.img} width={300} height={300} src={loic} alt="loic rico" />
         </Grid>
-        <Grid item xs={12} sm={7} md={8}>
+        <Grid className={classes.self__info} item xs={12} sm={7} md={8}>
           <h4 className={classes.name}>
             <a href="https://github.com/ricoloic">Loïc Rico</a>
           </h4>
