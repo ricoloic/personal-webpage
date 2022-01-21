@@ -3,7 +3,7 @@ import P5 from 'p5';
 import {
   FormControl, InputLabel, MenuItem, Select,
 } from '@material-ui/core';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 
 const options = {
   triangle: {
@@ -145,7 +145,7 @@ const ChaosGame = function () {
   };
 
   return (
-    <Layout
+    <Index
       handleRefresh={handleRefresh}
       sketchDescription={`
         This is a chaos game.
@@ -186,7 +186,7 @@ const ChaosGame = function () {
         id="parent"
         className="sketch-container"
       />
-    </Layout>
+    </Index>
   );
 };
 

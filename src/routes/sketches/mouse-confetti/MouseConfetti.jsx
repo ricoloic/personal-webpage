@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 import Confetti from './confetti';
 
 let confettiList = [];
@@ -47,9 +47,9 @@ const MouseConfetti = function () {
   };
 
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Index handleRefresh={handleRefresh}>
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 

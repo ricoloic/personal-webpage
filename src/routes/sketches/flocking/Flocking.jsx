@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { Slider, Typography } from '@material-ui/core';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 import Rectangle from './quadtree/rectangle';
 import Boid from './boid';
 import QuadTree from './quadtree/quadtree';
@@ -109,7 +109,7 @@ const Flocking = function () {
   };
 
   return (
-    <Layout
+    <Index
       isLooping={isLooping}
       handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
@@ -150,7 +150,7 @@ const Flocking = function () {
       ]}
     >
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 

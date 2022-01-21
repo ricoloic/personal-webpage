@@ -4,7 +4,7 @@ import {
   Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
 import { Particle } from './particle';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
@@ -81,7 +81,7 @@ const MouseFollow = function () {
   };
 
   return (
-    <Layout
+    <Index
       handleRefresh={handleRefresh}
       sketchDescription={`
         This sketch is a simple example of how to use the p5.js library to create a simple particle system.
@@ -128,7 +128,7 @@ const MouseFollow = function () {
       ]}
     >
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 
