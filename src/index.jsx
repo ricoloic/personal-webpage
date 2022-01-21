@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Navigation from './Navigation';
+import Root from './Root';
 import './globals.css';
 import BlackHole from './routes/sketches/black-hole/BlackHole';
 import FlowField from './routes/sketches/flow-field/FlowField';
@@ -18,7 +18,7 @@ import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Navigation />} />
+      <Route path="/" element={<Root />} />
       <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
       <Route path="/sketches/chaos-game" element={<ChaosGame />} />
       <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />

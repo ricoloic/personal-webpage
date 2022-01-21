@@ -22,5 +22,6 @@ module.exports = {
     'no-plusplus': 'off',
     'func-names': 'off',
     'no-param-reassign': 'off',
+    'react/no-unescaped-entities': 'off',
   },
 };
