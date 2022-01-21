@@ -23,5 +23,6 @@ module.exports = {
     'func-names': 'off',
     'no-param-reassign': 'off',
     'react/no-unescaped-entities': 'off',
+    'max-len': ['error', { code: 140 }],
   },
 };

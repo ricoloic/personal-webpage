@@ -109,15 +109,6 @@ const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
   p.draw = () => {
     p.background(255);
 
-    // p.fill(0, 0.1);
-    // p.noStroke();
-    // if (isMouseOnRightSide(p)) {
-    //   p.rect(center.x, 0, p.width / 2, p.height);
-    // } else {
-    //   p.rect(0, 0, p.width / 2, p.height);
-    // }
-    // p.noFill();
-
     p.translate(center.x, center.y);
     p.rotate(ninetyDegrees);
 
@@ -251,6 +242,9 @@ const AudioSpectrum = function () {
       handleRefresh={handleRefresh}
       isLooping={isLooping}
       handleLooping={handleLooping}
+      sketchDescription={`
+        This is an audio visualizer that uses the p5.js sound library.
+      `}
       controls={[
         {
           key: 'Upload File',

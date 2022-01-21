@@ -147,6 +147,12 @@ const ChaosGame = function () {
   return (
     <Layout
       handleRefresh={handleRefresh}
+      sketchDescription={`
+        This is a chaos game.
+        The chaos game is a simple way to create a fractal.
+        The chaos game is a type of fractal where the points are generated randomly.
+        The points are then lerped an infinite amount of time to create a smooth line.
+      `}
       controls={[
         {
           key: 'Type',
@@ -175,7 +181,11 @@ const ChaosGame = function () {
         },
       ]}
     >
-      <div style={{ display: 'grid', placeItems: 'center', backgroundColor: 'hsl(0, 0%, 11.7%)' }} id="parent" className="sketch-container" />
+      <div
+        style={{ display: 'grid', placeItems: 'center', backgroundColor: 'hsl(0, 0%, 11.7%)' }}
+        id="parent"
+        className="sketch-container"
+      />
     </Layout>
   );
 };
