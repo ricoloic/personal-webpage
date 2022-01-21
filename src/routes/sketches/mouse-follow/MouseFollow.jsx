@@ -83,6 +83,13 @@ const MouseFollow = function () {
   return (
     <Layout
       handleRefresh={handleRefresh}
+      sketchDescription={`
+        This sketch is a simple example of how to use the p5.js library to create a simple particle system.
+        The particles are created by creating a new Particle object and pushing it into an array every animation frame.
+        The Particle object has a position, velocity, and acceleration.
+        The bigger circle is positioned at the average position of all the particles.
+        Change the options by clicking on the burger menu.
+      `}
       controls={[
         {
           key: 'Show Particles',

@@ -5,29 +5,27 @@ import { Bubble } from './bubble';
 import Layout from '../../../Layout';
 
 let bubbles = [];
+let bubbleAmount = 100;
 
-const makeSketch = (bubbleAmount) => new P5((p) => {
+const makeBubble = (p) => {
+  const r = p.random(20, 60);
+  const x = p.random((r + r / 2), p.width - (r + r / 2));
+  const y = p.random((r + r / 2), p.height - (r + r / 2));
+  return new Bubble(p, x, y, r, 2);
+};
+
+const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
 
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
-    for (let i = 0; i < bubbleAmount; i++) {
-      const r = p.random(20, 60);
-      const x = p.random((r + r / 2), p.width - (r + r / 2));
-      const y = p.random((r + r / 2), p.height - (r + r / 2));
-      const b = new Bubble(p, x, y, r, 2);
-      bubbles.push(b);
-    }
+    p.strokeWeight(2);
 
-    p.mouseDragged = () => {
-      for (let i = bubbles.length - 1; i >= 0; i--) {
-        if (bubbles[i].onBubble(p.mouseX, p.mouseY)) {
-          bubbles.splice(i, 1);
-        }
-      }
-    };
+    for (let i = 0; i < bubbleAmount; i++) {
+      bubbles.push(makeBubble(p));
+    }
   };
 
   p.draw = () => {
@@ -35,34 +33,29 @@ const makeSketch = (bubbleAmount) => new P5((p) => {
 
     bubbles.forEach((b) => {
       b.move();
+      b.circle();
 
-      if (b.onBubble(p.mouseX, p.mouseY)) {
-        b.rect();
-      } else {
-        b.circle();
-      }
-
-      let overlapping = false;
-      bubbles.forEach((b2) => {
-        if (b !== b2 && b.intersect(b2)) {
-          overlapping = true;
-        }
-      });
-      if (overlapping) {
-        b.color(200);
-      } else {
-        b.color(0);
-      }
+      const overlapping = bubbles.some((b2) => b !== b2 && b.intersect(b2));
+      if (overlapping) b.color(200);
+      else b.color(0);
     });
+  };
+
+  p.mouseDragged = () => {
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+      if (bubbles[i].onBubble()) {
+        bubbles.splice(i, 1);
+      }
+    }
   };
 });
 
 const IntersectingBubbles = function () {
   const [sketch, setSketch] = React.useState(null);
-  const [bubbleAmount, setBubbleAmount] = React.useState(120);
+  const [bubbleAmountState, setBubbleAmountState] = React.useState(bubbleAmount);
 
   useEffect(() => {
-    const newSketch = makeSketch(bubbleAmount);
+    const newSketch = makeSketch();
 
     setSketch(newSketch);
 
@@ -75,18 +68,36 @@ const IntersectingBubbles = function () {
   const handleRefresh = () => {
     sketch.remove();
     bubbles = [];
-    const newSketch = makeSketch(bubbleAmount);
+    const newSketch = makeSketch();
     setSketch(newSketch);
   };
 
   const handleBubbleAmountChange = (v) => {
-    setBubbleAmount(v);
-    handleRefresh();
+    setBubbleAmountState(v);
+    bubbleAmount = v;
+    const offsetAmount = bubbleAmount - bubbles.length;
+    if (offsetAmount > 0) {
+      for (let i = 0; i < offsetAmount; i++) {
+        bubbles.push(makeBubble(sketch));
+      }
+    } else if (offsetAmount < 0) {
+      for (let i = 0; i < Math.abs(offsetAmount); i++) {
+        bubbles.pop();
+      }
+    }
   };
 
   return (
     <Layout
       handleRefresh={handleRefresh}
+      sketchDescription={[
+        'Intersecting bubbles',
+        '',
+        'How to use:',
+        '1. Click and drag the mouse to remove bubbles',
+        '2. Adjust the bubble amount slider - burger menu',
+        '3. Refresh the page to regenerate the bubbles - refresh icons',
+      ]}
       controls={[
         {
           key: 'Bubble Amount',
@@ -94,7 +105,7 @@ const IntersectingBubbles = function () {
             <>
               <ListItemText>Bubble Amount</ListItemText>
               <Slider
-                value={bubbleAmount}
+                value={bubbleAmountState}
                 onChange={(e, v) => handleBubbleAmountChange(v)}
                 min={10}
                 max={250}

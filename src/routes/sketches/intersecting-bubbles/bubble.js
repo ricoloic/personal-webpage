@@ -13,8 +13,8 @@ export class Bubble {
     this.alfa = 0;
   }
 
-  onBubble(mx, my) {
-    return this.p5.dist(this.x, this.y, mx, my) <= this.r;
+  onBubble() {
+    return this.p5.dist(this.x, this.y, this.p5.mouseX, this.p5.mouseY) <= this.r;
   }
 
   color(alfa) {
@@ -29,7 +29,6 @@ export class Bubble {
   circle() {
     this.p5.fill(this.colr, this.colg, this.colb, this.alfa);
     this.p5.stroke(255);
-    this.p5.strokeWeight(2);
     this.p5.ellipse(this.x, this.y, this.r * 2);
   }
 
