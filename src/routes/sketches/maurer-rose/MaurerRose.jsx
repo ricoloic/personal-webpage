@@ -3,7 +3,7 @@ import P5 from 'p5';
 import {
   Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 
 let n = 2;
 let d = 29;
@@ -98,7 +98,7 @@ const MaurerRose = function () {
   };
 
   return (
-    <Layout
+    <Index
       handleRefresh={handleRefresh}
       handleSave={handleSave}
       controls={[
@@ -151,7 +151,7 @@ const MaurerRose = function () {
       ]}
     >
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 

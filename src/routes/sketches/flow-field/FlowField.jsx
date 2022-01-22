@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import { Particle } from './particle';
 import { Flow } from './flow';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 import { useLooping } from '../utils';
 
 const colorOptions = {
@@ -173,7 +173,7 @@ const FlowField = function () {
   };
 
   return (
-    <Layout
+    <Index
       isLooping={isLooping}
       handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
@@ -268,7 +268,7 @@ const FlowField = function () {
       ]}
     >
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 

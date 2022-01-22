@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 import { AsteroidGameObject } from './asteroidGameObject';
 
 let game = null;
@@ -63,9 +63,9 @@ const AsteroidGame = function () {
   };
 
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Index handleRefresh={handleRefresh}>
       <div className="sketch-container" id="parent" />
-    </Layout>
+    </Index>
   );
 };
 

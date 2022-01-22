@@ -5,7 +5,7 @@ import {
   Button,
   Checkbox, FormControlLabel, ListItemText, Slider,
 } from '@material-ui/core';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 import kirraAudio from './audio/Kirra.mp3';
 import 'p5/lib/addons/p5.dom';
 
@@ -238,7 +238,7 @@ const AudioSpectrum = function () {
   }, []);
 
   return (
-    <Layout
+    <Index
       handleRefresh={handleRefresh}
       isLooping={isLooping}
       handleLooping={handleLooping}
@@ -385,7 +385,7 @@ const AudioSpectrum = function () {
       </style>
       <div id="parent" className="sketch-container" />
       <p id="file-info" />
-    </Layout>
+    </Index>
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { Particle } from './particle';
-import Layout from '../../../Layout';
+import Index from '../../../components/layout';
 
 let particles = [];
 let center = { x: 0, y: 0 };
@@ -91,9 +91,9 @@ const BlackHole = function () {
   };
 
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Index handleRefresh={handleRefresh}>
       <div id="parent" className="sketch-container" />
-    </Layout>
+    </Index>
   );
 };
 
