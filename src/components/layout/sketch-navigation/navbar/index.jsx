@@ -99,9 +99,9 @@ const Navbar = function () {
         )}
 
         {sketchDescription && (
-        <Button className="btn" onClick={handleOpenSketchDescription}>
-          <InfoIcon htmlColor="#fff" fontSize="large" />
-        </Button>
+          <Button className="btn" onClick={handleOpenSketchDescription}>
+            <InfoIcon htmlColor="#fff" fontSize="large" />
+          </Button>
         )}
 
         {controls && (
