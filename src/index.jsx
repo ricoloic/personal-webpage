@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Root from './Root';
 import './globals.css';
+import Root from './Root';
 import BlackHole from './routes/sketches/black-hole/BlackHole';
 import FlowField from './routes/sketches/flow-field/FlowField';
 import IntersectingBubbles from './routes/sketches/intersecting-bubbles/IntersectingBubbles';
@@ -12,7 +12,6 @@ import Flocking from './routes/sketches/flocking/Flocking';
 import CircularMotion from './routes/sketches/circular-motion/CircularMotion';
 import MouseConfetti from './routes/sketches/mouse-confetti/MouseConfetti';
 import MaurerRose from './routes/sketches/maurer-rose/MaurerRose';
-// import AsteroidGame from './routes/sketches/asteroid/AsteroidGame';
 import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
 
 ReactDOM.render(
@@ -28,7 +27,6 @@ ReactDOM.render(
       <Route path="/sketches/circular-motion" element={<CircularMotion />} />
       <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
       <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
-      {/* <Route path="/sketches/asteroid" element={<AsteroidGame />} /> */}
       <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
     </Routes>
   </BrowserRouter>,

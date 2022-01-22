@@ -7,8 +7,10 @@ import { Particle } from './particle';
 import Index from '../../../components/layout';
 
 let particles = [];
+let particlesPerFrame = 10;
 let center = { x: 0, y: 0 };
-let color = 0;
+let blobColor = 0;
+let particleColor = 0;
 let showParticles = true;
 
 const makeSketch = () => new P5((p) => {
@@ -28,7 +30,7 @@ const makeSketch = () => new P5((p) => {
     p.background(100);
     p.translate(center.x, center.y);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < particlesPerFrame; i++) {
       const particle = new Particle(p, center);
       particles.push(particle);
     }
@@ -36,7 +38,7 @@ const makeSketch = () => new P5((p) => {
     particles.forEach((particle) => {
       particle.update();
       if (!showParticles) return;
-      particle.show();
+      particle.show(particleColor);
     });
     particles = particles.filter((particle) => !particle.finished());
 
@@ -45,14 +47,16 @@ const makeSketch = () => new P5((p) => {
       new p.constructor.Vector(0, 0),
     );
     const cntV = sumV.div(particles.length);
-    p.fill(color, 100, 100);
+    p.fill(blobColor, 100, 100);
     p.circle(cntV.x, cntV.y, 50);
   };
 });
 
 const MouseFollow = function () {
   const [sketch, setSketch] = React.useState(null);
-  const [colorState, setColorState] = React.useState(0);
+  const [blobColorState, setBlobColorState] = React.useState(blobColor);
+  const [particlesPerFrameState, setParticlesPerFrameState] = React.useState(particlesPerFrame);
+  const [particleColorState, setParticleColorState] = React.useState(particleColor);
   const [showParticlesState, setShowParticlesState] = React.useState(true);
 
   useEffect(() => {
@@ -106,15 +110,55 @@ const MouseFollow = function () {
           ),
         },
         {
-          key: 'Color',
+          key: 'Particles per Frame',
           control: (
             <>
-              <ListItemText>Color (HSB)</ListItemText>
+              <ListItemText>Particles per Frame</ListItemText>
               <Slider
-                value={colorState}
+                value={particlesPerFrameState}
                 onChange={(e, v) => {
-                  color = v;
-                  setColorState(v);
+                  particlesPerFrame = v;
+                  setParticlesPerFrameState(v);
+                }}
+                min={1}
+                max={15}
+                step={1}
+                defaultValue={10}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Particles Color',
+          control: (
+            <>
+              <ListItemText>Particles Color (HSB)</ListItemText>
+              <Slider
+                value={particleColorState}
+                onChange={(e, v) => {
+                  particleColor = v;
+                  setParticleColorState(v);
+                }}
+                min={0}
+                max={360}
+                step={1}
+                defaultValue={0}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Blob Color',
+          control: (
+            <>
+              <ListItemText>Blob Color (HSB)</ListItemText>
+              <Slider
+                value={blobColorState}
+                onChange={(e, v) => {
+                  blobColor = v;
+                  setBlobColorState(v);
                 }}
                 min={0}
                 max={360}
