@@ -28,7 +28,7 @@ const useCardStyle = makeStyles({
       '& p': {
         display: 'inline-block',
         margin: '0',
-        padding: '0.4rem',
+        padding: '0.4rem 0.8rem',
         backgroundColor: '#F4ECE6FF',
       },
     };
