@@ -15,10 +15,10 @@ function updateLatestMousePos(p5) {
 }
 
 function updateAvgMousePos(p5) {
-  // eslint-disable-next-line arrow-body-style
-  const tempAvgMousePos = latestMousePos.reduce((acc, curr) => {
-    return { x: acc.x + curr.x, y: acc.y + curr.y };
-  }, { x: 0, y: 0 });
+  const tempAvgMousePos = latestMousePos.reduce(
+    (acc, curr) => ({ x: acc.x + curr.x, y: acc.y + curr.y }),
+    { x: 0, y: 0 },
+  );
   tempAvgMousePos.x = p5.floor(tempAvgMousePos.x / latestMousePos.length);
   tempAvgMousePos.y = p5.floor(tempAvgMousePos.y / latestMousePos.length);
   avgMousePos = { ...tempAvgMousePos };

@@ -60,7 +60,7 @@ const useStyles = makeStyles({
         "six six"
         "seven eight"
         "nine nine"
-        "ten ten"
+        "ten eleven"
       `,
     },
 
@@ -73,7 +73,7 @@ const useStyles = makeStyles({
         "six six"
         "seven eight"
         "seven nine"
-        "ten ten"
+        "ten eleven"
       `,
     },
 
@@ -85,7 +85,7 @@ const useStyles = makeStyles({
         "six six six"
         "seven seven nine"
         "eight eight nine"
-        "ten ten ten"
+        "ten ten eleven"
       `,
     },
 
@@ -95,7 +95,7 @@ const useStyles = makeStyles({
         "three four four five"
         "eight six six six"
         "eight seven seven nine"
-        "ten ten ten ten"
+        "ten ten eleven eleven"
       `,
     },
   },
@@ -155,6 +155,11 @@ export const SketchesCards = function () {
           img={audioSpectrumPreview}
           route="/audio-spectrum"
           title="What ! the sound is moving ?!"
+        />
+        <Card
+          img={audioSpectrumPreview}
+          route="/fireworks"
+          title="Fireworks !!"
         />
       </main>
     </Grid>
