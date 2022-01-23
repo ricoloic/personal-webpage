@@ -1,9 +1,9 @@
 import { Particle } from './particle';
 
 export class Spark extends Particle {
-  constructor(p, position) {
+  constructor(p, position, color) {
     super(p, position);
-    this.color = {
+    this.color = color || {
       r: this.p5.random(20, 255),
       g: this.p5.random(20, 255),
       b: this.p5.random(20, 255),
@@ -13,12 +13,12 @@ export class Spark extends Particle {
 
   update() {
     super.update();
-    this.lifetime -= 2;
+    this.lifetime -= 4;
   }
 
   show() {
     this.p5.stroke(this.color.r, this.color.g, this.color.b, this.lifetime);
-    this.p5.strokeWeight(10);
+    this.p5.strokeWeight(5);
     this.p5.point(this.position.x, this.position.y);
   }
 

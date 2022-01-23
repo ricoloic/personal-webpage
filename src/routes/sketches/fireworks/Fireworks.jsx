@@ -1,22 +1,29 @@
 import React from 'react';
 import P5 from 'p5';
+import {
+  FormControl, ListItemText, MenuItem, Select, Slider,
+} from '@material-ui/core';
 import Layout from '../../../components/layout';
 import { Firework } from './firework';
+import sparksColor from './sparksColor';
+import { capitalizeFirstLetter } from '../utils';
 
-const fireworkAmount = 5;
 let fireworks = [];
 let gravity = null;
-const sparkAmount = 40;
+let fireworkAmount = 20;
+let sparkAmount = 40;
+let selectedSparksColor = sparksColor.random;
+
+const getRandomVector = (p) => p.createVector(0, p.random(-10, -12));
+const createFirework = (p) => {
+  const position = p.createVector(p.random(0, p.width), p.height);
+  const color = Array.isArray(selectedSparksColor) ? p.random(selectedSparksColor) : undefined;
+  const firework = new Firework(p, position, sparkAmount, color);
+  firework.applyForce(getRandomVector(p));
+  return firework;
+};
 
 const makeSketch = () => new P5((p) => {
-  const getRandomVector = () => p.createVector(0, p.random(-10, -12));
-  const createFirework = () => {
-    const position = p.createVector(p.random(0, p.width), p.height);
-    const firework = new Firework(p, position, sparkAmount);
-    firework.applyForce(getRandomVector());
-    return firework;
-  };
-
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
   };
@@ -27,7 +34,11 @@ const makeSketch = () => new P5((p) => {
     gravity = p.createVector(0, 0.1);
 
     for (let i = 0; i < fireworkAmount; i++) {
-      fireworks.push(createFirework());
+      setTimeout(
+        // eslint-disable-next-line no-loop-func
+        () => fireworks.push(createFirework(p)),
+        i * 200,
+      );
     }
   };
 
@@ -43,14 +54,19 @@ const makeSketch = () => new P5((p) => {
       }
 
       if (firework.finished) {
-        fireworks.splice(fireworks.indexOf(firework), 1, createFirework());
+        fireworks.splice(fireworks.indexOf(firework), 1, createFirework(p));
       }
     });
+    // console.log(p.floor(p.frameRate()));
   };
 });
 
 const Fireworks = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [isLooping, setIsLooping] = React.useState(true);
+  const [fireworkAmountState, setFireworkAmountState] = React.useState(fireworkAmount);
+  const [sparkAmountState, setSparkAmountState] = React.useState(sparkAmount);
+  const [selectedSparksColorState, setSelectedSparksColorState] = React.useState('random');
 
   const removeSketch = () => {
     if (sketch) sketch.remove();
@@ -68,10 +84,111 @@ const Fireworks = function () {
     removeSketch();
     const newSketch = makeSketch();
     setSketch(newSketch);
+    setIsLooping(true);
+  };
+
+  const handleLooping = () => {
+    setIsLooping(!isLooping);
+    if (isLooping) sketch.noLoop();
+    else sketch.loop();
+  };
+
+  const handleFireworksAmountChange = (v) => {
+    setFireworkAmountState(v);
+    fireworkAmount = v;
+
+    const offsetAmount = fireworkAmount - fireworks.length;
+    if (offsetAmount > 0) {
+      for (let i = 0; i < offsetAmount; i++) {
+        fireworks.push(createFirework(sketch));
+      }
+    } else if (offsetAmount < 0) {
+      for (let i = 0; i < Math.abs(offsetAmount); i++) {
+        fireworks.pop();
+      }
+    }
+  };
+
+  const handleSparksAmountChange = (v) => {
+    setSparkAmountState(v);
+    sparkAmount = v;
+  };
+
+  const handleSparksColorChange = ({ target: { value } }) => {
+    setSelectedSparksColorState(value);
+    selectedSparksColor = sparksColor[value];
   };
 
   return (
-    <Layout handleRefresh={handleRefresh}>
+    <Layout
+      isLooping={isLooping}
+      handleLooping={handleLooping}
+      handleRefresh={handleRefresh}
+      controls={[
+        {
+          key: 'Sparks Color',
+          control: (
+            <FormControl fullWidth>
+              <ListItemText>
+                Sparks Color
+              </ListItemText>
+              <Select
+                labelId="color-label"
+                id="color-select"
+                value={selectedSparksColorState}
+                label="Color"
+                onChange={handleSparksColorChange}
+                variant="filled"
+                size="small"
+              >
+                {Object.keys(sparksColor).map((color) => (
+                  <MenuItem
+                    key={color}
+                    value={color}
+                  >
+                    {capitalizeFirstLetter(color)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ),
+        },
+        {
+          key: 'Fireworks Amount',
+          control: (
+            <>
+              <ListItemText>Fireworks Amount</ListItemText>
+              <Slider
+                value={fireworkAmountState}
+                min={1}
+                max={30}
+                step={1}
+                onChange={(e, v) => handleFireworksAmountChange(v)}
+                defaultValue={10}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Sparks Amount',
+          control: (
+            <>
+              <ListItemText>Sparks Amount</ListItemText>
+              <Slider
+                value={sparkAmountState}
+                min={10}
+                max={100}
+                step={1}
+                onChange={(e, v) => handleSparksAmountChange(v)}
+                defaultValue={30}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
+    >
       <div id="parent" className="sketch-container" />
     </Layout>
   );

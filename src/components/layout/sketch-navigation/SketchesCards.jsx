@@ -12,6 +12,7 @@ import flockingPreview from '../../../images/previews/flocking-preview.png';
 import circularMotionPreview from '../../../images/previews/circular-motion-preview.png';
 import mouseConfettiPreview from '../../../images/previews/mouse-confetti-preview.png';
 import maurerRosePreview from '../../../images/previews/maurer-rose-preview.png';
+import fireworksPreview from '../../../images/previews/fireworks-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -73,7 +74,8 @@ const useStyles = makeStyles({
         "six six"
         "seven eight"
         "seven nine"
-        "ten eleven"
+        "ten ten"
+        "eleven eleven"
       `,
     },
 
@@ -85,7 +87,7 @@ const useStyles = makeStyles({
         "six six six"
         "seven seven nine"
         "eight eight nine"
-        "ten ten eleven"
+        "ten eleven eleven"
       `,
     },
 
@@ -157,7 +159,7 @@ export const SketchesCards = function () {
           title="What ! the sound is moving ?!"
         />
         <Card
-          img={audioSpectrumPreview}
+          img={fireworksPreview}
           route="/fireworks"
           title="Fireworks !!"
         />

@@ -9,7 +9,7 @@ import {
 import { Particle } from './particle';
 import { Flow } from './flow';
 import Index from '../../../components/layout';
-import { useLooping } from '../utils';
+import { capitalizeFirstLetter, useLooping } from '../utils';
 
 const colorOptions = {
   original: () => [26, 51, 43, 0.1],
@@ -100,10 +100,6 @@ const makeSketch = () => new P5((p) => {
     }
   };
 });
-
-function capitalizeFirstLetter(string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
 
 const FlowField = function () {
   const [sketch, setSketch] = React.useState(null);
