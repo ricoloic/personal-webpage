@@ -12,8 +12,8 @@ import Flocking from './routes/sketches/flocking/Flocking';
 import CircularMotion from './routes/sketches/circular-motion/CircularMotion';
 import MouseConfetti from './routes/sketches/mouse-confetti/MouseConfetti';
 import MaurerRose from './routes/sketches/maurer-rose/MaurerRose';
-// import AsteroidGame from './routes/sketches/asteroid/AsteroidGame';
 import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
+import Fireworks from './routes/sketches/fireworks/Fireworks';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -28,7 +28,7 @@ ReactDOM.render(
       <Route path="/sketches/circular-motion" element={<CircularMotion />} />
       <Route path="/sketches/mouse-confetti" element={<MouseConfetti />} />
       <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
-      {/* <Route path="/sketches/asteroid" element={<AsteroidGame />} /> */}
+      <Route path="/sketches/fireworks" element={<Fireworks />} />
       <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
     </Routes>
   </BrowserRouter>,
