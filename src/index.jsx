@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Root from './Root';
 import './globals.css';
+import Root from './Root';
 import BlackHole from './routes/sketches/black-hole/BlackHole';
 import FlowField from './routes/sketches/flow-field/FlowField';
 import IntersectingBubbles from './routes/sketches/intersecting-bubbles/IntersectingBubbles';
