@@ -8,7 +8,7 @@ import Save from '@material-ui/icons/Save';
 import Pause from '@material-ui/icons/Pause';
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import InfoIcon from '@material-ui/icons/Info';
-import Menu from '@material-ui/icons/Menu';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { makeStyles } from '@material-ui/core/styles';
 import { useNavbar } from './useNavbar';
 
@@ -107,7 +107,7 @@ const Navbar = function () {
         {controls && (
         <>
           <Button onClick={handleOpenOptions} ref={anchorEl}>
-            <Menu htmlColor="#fff" fontSize="large" />
+            <SettingsIcon htmlColor="#fff" fontSize="large" />
           </Button>
           <Popover
             id="controls-menu"

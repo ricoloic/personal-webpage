@@ -12,7 +12,7 @@ export class Firework extends Particle {
   }
 
   applyForce(force) {
-    if (this.exploded) this.sparks.forEach((s) => s.applyForce(force.copy().mult(0.2)));
+    if (this.exploded) this.sparks.forEach((s) => s.applyForce(force));
     else super.applyForce(force);
   }
 
@@ -23,14 +23,13 @@ export class Firework extends Particle {
   update() {
     if (this.exploded) this.sparks.forEach((spark) => spark.update());
     else {
-      this.previousPosition = this.position.copy().sub(this.velocity);
+      this.previousPosition = this.p5.constructor.Vector.sub(this.position, this.velocity);
       super.update();
     }
   }
 
   explode() {
     for (let i = 0; i < this.sparkAmount; i++) {
-      // const sparkColor = this.sparksColor ? this.p5.random(this.sparksColor) : undefined;
       const spark = new Spark(this.p5, this.position.copy(), this.sparksColor);
       const randomDirection = this
         .p5
