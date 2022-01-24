@@ -10,6 +10,7 @@ import { capitalizeFirstLetter } from '../utils';
 
 let fireworks = [];
 let gravity = null;
+let sparksGravity = null;
 let fireworkAmount = 20;
 let sparkAmount = 40;
 let selectedSparksColor = sparksColor.random;
@@ -29,10 +30,11 @@ const makeSketch = () => new P5((p) => {
   };
 
   p.setup = () => {
+    p.pixelDensity(1);
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
 
     gravity = p.createVector(0, 0.1);
-
+    sparksGravity = p.createVector(0, 0.02);
     for (let i = 0; i < fireworkAmount; i++) {
       setTimeout(
         // eslint-disable-next-line no-loop-func
@@ -45,10 +47,6 @@ const makeSketch = () => new P5((p) => {
   p.draw = () => {
     p.background(0);
     fireworks.forEach((firework) => {
-      firework.applyForce(gravity);
-      firework.update();
-      firework.show();
-
       if (firework.isGoingDown() && !firework.exploded) {
         firework.explode();
       }
@@ -56,6 +54,11 @@ const makeSketch = () => new P5((p) => {
       if (firework.finished) {
         fireworks.splice(fireworks.indexOf(firework), 1, createFirework(p));
       }
+
+      firework.applyForce(firework.exploded ? sparksGravity : gravity);
+
+      firework.update();
+      firework.show();
     });
     // console.log(p.floor(p.frameRate()));
   };
