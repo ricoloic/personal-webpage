@@ -26,6 +26,12 @@ const colorPalettes = [
           r: 255, g: 105, b: 180, string: '255, 105, 180',
         },
       },
+      {
+        name: 'Redish',
+        rgbDecimal: {
+          r: 214, g: 40, b: 40, string: '214, 40, 40',
+        },
+      },
     ],
   },
 ];

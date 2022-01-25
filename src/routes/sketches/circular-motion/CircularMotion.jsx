@@ -9,12 +9,12 @@ let latestMousePos = [];
 let avgMousePos = null;
 const sunReadyColors = colorPalettes[0].colors;
 
-function updateLatestMousePos(p5) {
+const updateLatestMousePos = (p5) => {
   if (latestMousePos.length > 17) latestMousePos.splice(0, 1);
   latestMousePos.push({ x: p5.mouseX, y: p5.mouseY });
-}
+};
 
-function updateAvgMousePos(p5) {
+const updateAvgMousePos = (p5) => {
   const tempAvgMousePos = latestMousePos.reduce(
     (acc, curr) => ({ x: acc.x + curr.x, y: acc.y + curr.y }),
     { x: 0, y: 0 },
@@ -22,7 +22,7 @@ function updateAvgMousePos(p5) {
   tempAvgMousePos.x = p5.floor(tempAvgMousePos.x / latestMousePos.length);
   tempAvgMousePos.y = p5.floor(tempAvgMousePos.y / latestMousePos.length);
   avgMousePos = { ...tempAvgMousePos };
-}
+};
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -34,21 +34,43 @@ const makeSketch = () => new P5((p) => {
 
     particles = new Array(10);
     for (let i = 0; i < particles.length; i++) {
-      // eslint-disable-next-line max-len
-      particles[i] = new Particle(p, p.width / 2, p.height / 2, 5, p.random(sunReadyColors), p.random(0.02, 0.04), p.floor(p.random(50, 100)));
+      particles[i] = new Particle(
+        p,
+        p.width / 2,
+        p.height / 2,
+        p.random(sunReadyColors),
+        p.random(0.02, 0.04),
+        p.floor(p.random(15, 40)),
+      );
     }
     latestMousePos = [];
     avgMousePos = { x: 0, y: 0 };
-    p.noStroke();
+    p.noFill();
   };
 
   p.draw = () => {
-    updateLatestMousePos(p);
-    updateAvgMousePos(p);
-    p.background(p.color('black'));
+    if (p.mouseIsPressed) {
+      updateLatestMousePos(p);
+      updateAvgMousePos(p);
+    }
+    p.background(0);
     for (let i = 0; i < particles.length; i++) {
       particles[i].animate(p.mouseIsPressed, avgMousePos);
     }
+  };
+
+  p.mousePressed = () => {
+    avgMousePos = { x: p.mouseX, y: p.mouseY };
+    latestMousePos = [];
+    particles.forEach((particle) => {
+      particle.trails = [];
+    });
+  };
+
+  p.mouseClicked = () => {
+    particles.forEach((particle) => {
+      particle.trails = [];
+    });
   };
 });
 
