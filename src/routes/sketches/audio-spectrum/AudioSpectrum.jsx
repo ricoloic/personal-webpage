@@ -244,6 +244,11 @@ const AudioSpectrum = function () {
       handleLooping={handleLooping}
       sketchDescription={`
         This is an audio visualizer that uses the p5.js sound library.
+        It uses the mic or the default sound file to analyze the audio.
+        The audio is analyzed and the spectrum is drawn.
+        You can change the options/controls for drawing the spectrum by clicking the settings Icon.
+        You can also upload a sound file to play instead of the default sound file.
+        You can fast forward or rewind the sound file by double clicking on right or left side of the screen.
       `}
       controls={[
         {

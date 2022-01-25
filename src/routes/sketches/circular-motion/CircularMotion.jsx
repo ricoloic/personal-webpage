@@ -1,13 +1,18 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import Index from '../../../components/layout';
+import {
+  FormControl, ListItemText, MenuItem, Select, Slider,
+} from '@material-ui/core';
+import Layout from '../../../components/layout';
 import Particle from './particle';
 import colorPalettes from './colorPalettes';
+import { capitalizeFirstLetter } from '../utils';
 
 let particles = [];
 let latestMousePos = [];
+let lineAmount = 10;
 let avgMousePos = null;
-const sunReadyColors = colorPalettes[0].colors;
+let selectedColorPalette = 'default';
 
 const updateLatestMousePos = (p5) => {
   if (latestMousePos.length > 17) latestMousePos.splice(0, 1);
@@ -32,13 +37,13 @@ const makeSketch = () => new P5((p) => {
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
 
-    particles = new Array(10);
+    particles = new Array(lineAmount);
     for (let i = 0; i < particles.length; i++) {
       particles[i] = new Particle(
         p,
         p.width / 2,
         p.height / 2,
-        p.random(sunReadyColors),
+        p.random(colorPalettes[selectedColorPalette]),
         p.random(0.02, 0.04),
         p.floor(p.random(15, 40)),
       );
@@ -76,6 +81,8 @@ const makeSketch = () => new P5((p) => {
 
 const CircularMotion = function () {
   const [sketch, setSketch] = React.useState(null);
+  const [selectedColorPaletteState, setSelectedColorPaletteState] = React.useState(selectedColorPalette);
+  const [lineAmountState, setLineAmountState] = React.useState(lineAmount);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -98,10 +105,82 @@ const CircularMotion = function () {
     setSketch(makeSketch());
   };
 
+  const handleColorPaletteChange = (event) => {
+    selectedColorPalette = event.target.value;
+    setSelectedColorPaletteState(event.target.value);
+    sketch.remove();
+    particles = [];
+    latestMousePos = [];
+    avgMousePos = null;
+    setSketch(makeSketch());
+  };
+
+  const handleLineAmountChange = (v) => {
+    lineAmount = v;
+    setLineAmountState(v);
+    sketch.remove();
+    particles = [];
+    latestMousePos = [];
+    avgMousePos = null;
+    setSketch(makeSketch());
+  };
+
   return (
-    <Index handleRefresh={handleRefresh}>
+    <Layout
+      handleRefresh={handleRefresh}
+      sketchDescription={`
+        A sketch that animates a circular motion.
+        The user can click and drag to create a moving circular motion.
+      `}
+      controls={[
+        {
+          key: 'Color Palette',
+          control: (
+            <FormControl fullWidth>
+              <ListItemText>
+                Color Palette
+              </ListItemText>
+              <Select
+                labelId="color-label"
+                id="color-select"
+                value={selectedColorPaletteState}
+                label="Color"
+                onChange={handleColorPaletteChange}
+                variant="filled"
+                size="small"
+              >
+                {Object.keys(colorPalettes).map((color) => (
+                  <MenuItem
+                    key={color}
+                    value={color}
+                  >
+                    {capitalizeFirstLetter(color)}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          ),
+        },
+        {
+          key: 'Line Amount',
+          control: (
+            <>
+              <ListItemText>Line Amount</ListItemText>
+              <Slider
+                value={lineAmountState}
+                onChange={(e, v) => handleLineAmountChange(v)}
+                min={10}
+                max={20}
+                defaultValue={10}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
+    >
       <div id="parent" className="sketch-container" />
-    </Index>
+    </Layout>
   );
 };
 

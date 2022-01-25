@@ -74,10 +74,10 @@ class QuadTree {
       this.boundary.h * 2,
     );
     if (this.divided) {
-      this.northeast.show();
-      this.northwest.show();
-      this.southeast.show();
-      this.southwest.show();
+      this.northeast.show(p5);
+      this.northwest.show(p5);
+      this.southeast.show(p5);
+      this.southwest.show(p5);
     }
     // eslint-disable-next-line no-restricted-syntax
     for (const p of this.points) {
