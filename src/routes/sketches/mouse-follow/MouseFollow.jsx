@@ -1,17 +1,22 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import {
-  Checkbox, FormControlLabel, ListItemText, Slider,
+  Box,
+  Checkbox, FormControl, FormControlLabel, ListItemText, MenuItem, Select, Slider,
 } from '@material-ui/core';
 import { Particle } from './particle';
 import Index from '../../../components/layout';
+import { COLOR_PALETTES } from '../constants';
+import { capitalizeFirstLetter } from '../utils';
 
+let selectColorPalette = 'happy';
 let particles = [];
 let particlesPerFrame = 10;
 let center = { x: 0, y: 0 };
 let blobColor = 0;
 let particleColor = 0;
 let showParticles = true;
+let showBlob = true;
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -31,24 +36,27 @@ const makeSketch = () => new P5((p) => {
     p.translate(center.x, center.y);
 
     for (let i = 0; i < particlesPerFrame; i++) {
-      const particle = new Particle(p, center);
+      const color = selectColorPalette === 'custom' ? particleColor : p.random(COLOR_PALETTES[selectColorPalette]);
+      const particle = new Particle(p, center, color);
       particles.push(particle);
     }
 
     particles.forEach((particle) => {
       particle.update();
       if (!showParticles) return;
-      particle.show(particleColor);
+      particle.show();
     });
     particles = particles.filter((particle) => !particle.finished());
 
-    const sumV = particles.reduce(
-      (v, particle) => v.add(particle.pos.x, particle.pos.y),
-      new p.constructor.Vector(0, 0),
-    );
-    const cntV = sumV.div(particles.length);
-    p.fill(blobColor, 100, 100);
-    p.circle(cntV.x, cntV.y, 50);
+    if (showBlob) {
+      const sumV = particles.reduce(
+        (v, particle) => v.add(particle.pos.x, particle.pos.y),
+        new p.constructor.Vector(0, 0),
+      );
+      const cntV = sumV.div(particles.length);
+      p.fill(blobColor, 100, 100);
+      p.circle(cntV.x, cntV.y, 50);
+    }
   };
 });
 
@@ -58,6 +66,8 @@ const MouseFollow = function () {
   const [particlesPerFrameState, setParticlesPerFrameState] = React.useState(particlesPerFrame);
   const [particleColorState, setParticleColorState] = React.useState(particleColor);
   const [showParticlesState, setShowParticlesState] = React.useState(true);
+  const [selectedColorPaletteState, setSelectedColorPaletteState] = React.useState('happy');
+  const [showBlobState, setShowBlobState] = React.useState(true);
 
   useEffect(() => {
     const newSketch = makeSketch();
@@ -84,6 +94,16 @@ const MouseFollow = function () {
     setShowParticlesState(showParticles);
   };
 
+  const handleColorPaletteChange = ({ target: { value } }) => {
+    setSelectedColorPaletteState(value);
+    selectColorPalette = value;
+  };
+
+  const handleShowBlobChange = () => {
+    showBlob = !showBlob;
+    setShowBlobState(showBlob);
+  };
+
   return (
     <Index
       handleRefresh={handleRefresh}
@@ -96,6 +116,21 @@ const MouseFollow = function () {
       `}
       controls={[
         {
+          key: 'Show Blob',
+          control: (
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  checked={showBlobState}
+                  onChange={handleShowBlobChange}
+                  name="showBlob"
+                />
+              )}
+              label="Show Blob"
+            />
+          ),
+        },
+        {
           key: 'Show Particles',
           control: (
             <FormControlLabel
@@ -104,6 +139,7 @@ const MouseFollow = function () {
                 <Checkbox
                   checked={showParticlesState}
                   onChange={handleShowParticlesChange}
+                  name="showParticles"
                 />
               )}
             />
@@ -115,6 +151,7 @@ const MouseFollow = function () {
             <>
               <ListItemText>Particles per Frame</ListItemText>
               <Slider
+                name="particlesPerFrame"
                 value={particlesPerFrameState}
                 onChange={(e, v) => {
                   particlesPerFrame = v;
@@ -132,21 +169,59 @@ const MouseFollow = function () {
         {
           key: 'Particles Color',
           control: (
-            <>
-              <ListItemText>Particles Color (HSB)</ListItemText>
-              <Slider
-                value={particleColorState}
-                onChange={(e, v) => {
-                  particleColor = v;
-                  setParticleColorState(v);
-                }}
-                min={0}
-                max={360}
-                step={1}
-                defaultValue={0}
-                valueLabelDisplay="auto"
-              />
-            </>
+            <Box>
+              <FormControl fullWidth>
+                <ListItemText>
+                  Color Palette
+                </ListItemText>
+                <Select
+                  name="colorPalette"
+                  labelId="color-label"
+                  id="color-select"
+                  value={selectedColorPaletteState}
+                  label="Color"
+                  onChange={handleColorPaletteChange}
+                  variant="filled"
+                  size="small"
+                >
+                  <MenuItem
+                    key="custom"
+                    value="custom"
+                  >
+                    Custom
+                  </MenuItem>
+                  {Object.keys(COLOR_PALETTES).map((color) => (
+                    <MenuItem
+                      key={color}
+                      value={color}
+                    >
+                      {capitalizeFirstLetter(color)}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+              <Box sx={{
+                paddingLeft: '1rem',
+                paddingRight: '1rem',
+              }}
+              >
+                <ListItemText disabled>Particles Color (HSB)</ListItemText>
+                <Slider
+                  name="particlesColorHue"
+                  disabled={selectedColorPaletteState !== 'custom'}
+                  value={particleColorState}
+                  onChange={(e, v) => {
+                    particleColor = v;
+                    setParticleColorState(v);
+                  }}
+                  min={0}
+                  max={360}
+                  step={1}
+                  defaultValue={0}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+            </Box>
           ),
         },
         {
@@ -155,6 +230,7 @@ const MouseFollow = function () {
             <>
               <ListItemText>Blob Color (HSB)</ListItemText>
               <Slider
+                name="blobColorHue"
                 value={blobColorState}
                 onChange={(e, v) => {
                   blobColor = v;

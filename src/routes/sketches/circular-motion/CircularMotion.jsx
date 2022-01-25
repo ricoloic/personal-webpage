@@ -5,14 +5,14 @@ import {
 } from '@material-ui/core';
 import Layout from '../../../components/layout';
 import Particle from './particle';
-import colorPalettes from './colorPalettes';
 import { capitalizeFirstLetter } from '../utils';
+import { COLOR_PALETTES } from '../constants';
 
 let particles = [];
 let latestMousePos = [];
 let lineAmount = 10;
 let avgMousePos = null;
-let selectedColorPalette = 'default';
+let selectedColorPalette = 'happy';
 
 const updateLatestMousePos = (p5) => {
   if (latestMousePos.length > 17) latestMousePos.splice(0, 1);
@@ -43,7 +43,7 @@ const makeSketch = () => new P5((p) => {
         p,
         p.width / 2,
         p.height / 2,
-        p.random(colorPalettes[selectedColorPalette]),
+        p.random(COLOR_PALETTES[selectedColorPalette]),
         p.random(0.02, 0.04),
         p.floor(p.random(15, 40)),
       );
@@ -149,7 +149,7 @@ const CircularMotion = function () {
                 variant="filled"
                 size="small"
               >
-                {Object.keys(colorPalettes).map((color) => (
+                {Object.keys(COLOR_PALETTES).map((color) => (
                   <MenuItem
                     key={color}
                     value={color}

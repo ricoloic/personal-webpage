@@ -6,28 +6,10 @@ import {
 import Layout from '../../../components/layout';
 import Confetti from './confetti';
 import { capitalizeFirstLetter } from '../utils';
+import { COLOR_PALETTES } from '../constants';
 
 let confettiList = [];
-const colorPalettes = {
-  default: [
-    'rgb(246, 82, 160)',
-    'rgb(54, 238, 224)',
-    'rgb(188, 236, 224)',
-  ],
-  fun: [
-    '#f94144',
-    '#f3722c',
-    '#f8961e',
-    '#f9844a',
-    '#f9c74f',
-    '#90be6d',
-    '#43aa8b',
-    '#4d908e',
-    '#577590',
-    '#277da1',
-  ],
-};
-let selectedColorPalette = 'default';
+let selectedColorPalette = 'happy';
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -41,7 +23,7 @@ const makeSketch = () => new P5((p) => {
 
   p.draw = () => {
     p.background(30);
-    confettiList.push(new Confetti(p, p.mouseX, p.mouseY, colorPalettes[selectedColorPalette]));
+    confettiList.push(new Confetti(p, p.mouseX, p.mouseY, COLOR_PALETTES[selectedColorPalette]));
     confettiList.forEach((confetti, index) => {
       confetti.animate();
       if (confetti.life < 1) confettiList.splice(index, 1);
@@ -102,7 +84,7 @@ const MouseConfetti = function () {
                 variant="filled"
                 size="small"
               >
-                {Object.keys(colorPalettes).map((color) => (
+                {Object.keys(COLOR_PALETTES).map((color) => (
                   <MenuItem
                     key={color}
                     value={color}

@@ -13,7 +13,7 @@ let gravity = null;
 let sparksGravity = null;
 let fireworkAmount = 20;
 let sparkAmount = 40;
-let selectedSparksColor = sparksColor.random;
+let selectedSparksColor = sparksColor.vibrant;
 
 const getRandomVector = (p) => p.createVector(0, p.random(-10, -12));
 const createFirework = (p) => {
@@ -69,7 +69,7 @@ const Fireworks = function () {
   const [isLooping, setIsLooping] = React.useState(true);
   const [fireworkAmountState, setFireworkAmountState] = React.useState(fireworkAmount);
   const [sparkAmountState, setSparkAmountState] = React.useState(sparkAmount);
-  const [selectedSparksColorState, setSelectedSparksColorState] = React.useState('random');
+  const [selectedSparksColorState, setSelectedSparksColorState] = React.useState('vibrant');
 
   const removeSketch = () => {
     if (sketch) sketch.remove();
