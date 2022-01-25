@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
-import { Slider, Typography } from '@material-ui/core';
+import {
+  Checkbox, FormControlLabel, ListItemText, Slider,
+} from '@material-ui/core';
 import Index from '../../../components/layout';
 import Rectangle from './quadtree/rectangle';
 import Boid from './boid';
@@ -16,6 +18,7 @@ let quadTree = null;
 let alignmentForce = 0.5;
 let cohesionForce = 0.2;
 let separationForce = 4.3;
+let displayQuadTree = false;
 
 const makeSketch = (boidAmount) => new P5((p) => {
   p.windowResized = () => {
@@ -39,7 +42,7 @@ const makeSketch = (boidAmount) => new P5((p) => {
     for (const boid of boids) {
       quadTree.insert(new Point(boid.pos.x, boid.pos.y, boid));
     }
-    // quadTree.show(p);
+    if (displayQuadTree) quadTree.show(p);
 
     const tempBoids = [...boids];
     // eslint-disable-next-line no-restricted-syntax
@@ -70,6 +73,7 @@ const Flocking = function () {
   const [boidAmount, setBoidAmount] = React.useState(250);
   const [separationValue, setSeparationValue] = React.useState(4.3);
   const [isLooping, setIsLooping] = useLooping(sketch);
+  const [displayQuadTreeState, setDisplayQuadTreeState] = React.useState(displayQuadTree);
 
   useEffect(() => {
     const newSketch = makeSketch(boidAmount);
@@ -108,17 +112,42 @@ const Flocking = function () {
     setSeparationValue(v);
   };
 
+  const handleDisplayQuadTreeChange = () => {
+    displayQuadTree = !displayQuadTree;
+    setDisplayQuadTreeState(displayQuadTree);
+  };
+
   return (
     <Index
       isLooping={isLooping}
       handleLooping={setIsLooping}
       handleRefresh={handleRefresh}
+      sketchDescription={`
+        This is a simulation of flocking behavior.
+        The boids will try to stay close to each other, avoid each other and try to go in the direction.
+        The separation force is the distance at which the boids will try to keep a minimum distance from each other.
+        You change the amount of boids and some of the forces to see how it affects the behavior.
+      `}
       controls={[
+        {
+          key: 'Display QuadTree',
+          control: (
+            <FormControlLabel
+              label={<ListItemText>Display QuadTree</ListItemText>}
+              control={(
+                <Checkbox
+                  checked={displayQuadTreeState}
+                  onChange={handleDisplayQuadTreeChange}
+                />
+              )}
+            />
+          ),
+        },
         {
           key: 'Separation Force',
           control: (
             <>
-              <Typography>Separation Force</Typography>
+              <ListItemText>Separation Force</ListItemText>
               <Slider
                 value={separationValue}
                 onChange={(e, v) => handleSeparationForceChange(v)}
@@ -135,7 +164,7 @@ const Flocking = function () {
           key: 'Boid Amount',
           control: (
             <>
-              <Typography>Boid Amount</Typography>
+              <ListItemText>Boid Amount</ListItemText>
               <Slider
                 value={boidAmount}
                 onChange={(e, v) => handleBoidAmountChange(v)}
