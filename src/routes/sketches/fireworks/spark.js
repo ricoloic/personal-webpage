@@ -1,9 +1,19 @@
 import { Particle } from './particle';
 
+const parseColorRGBValues = (strRGB) => {
+  if (!strRGB) return null;
+  const rgbValues = strRGB.replaceAll(/[rgb(|)]/g, '').split(',');
+  return {
+    r: parseInt(rgbValues[0], 10),
+    g: parseInt(rgbValues[1], 10),
+    b: parseInt(rgbValues[2], 10),
+  };
+};
+
 export class Spark extends Particle {
   constructor(p, position, color) {
     super(p, position);
-    this.color = color || {
+    this.color = parseColorRGBValues(color) || {
       r: this.p5.random(20, 255),
       g: this.p5.random(20, 255),
       b: this.p5.random(20, 255),
