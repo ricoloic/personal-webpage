@@ -13,6 +13,7 @@ import circularMotionPreview from '../../../images/previews/circular-motion-prev
 import mouseConfettiPreview from '../../../images/previews/mouse-confetti-preview.png';
 import maurerRosePreview from '../../../images/previews/maurer-rose-preview.png';
 import fireworksPreview from '../../../images/previews/fireworks-preview.png';
+import rayCastingPreview from '../../../images/previews/ray-casting-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -169,7 +170,7 @@ export const SketchesCards = function () {
           title="Fireworks !!"
         />
         <Card
-          img={mouseFollowPreview}
+          img={rayCastingPreview}
           route="/ray-casting"
           title="Ray casting"
         />

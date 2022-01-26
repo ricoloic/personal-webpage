@@ -63,16 +63,17 @@ const makeSketch = () => new P5((p) => {
 const RayCasting = function () {
   const [sketch, setSketch] = React.useState(null);
 
-  const removeSketch = () => {
-    sketch.remove();
+  const removeSketch = (s = sketch) => {
+    s.remove();
     setSketch(null);
     caster = null;
     boundaries = [];
   };
 
   React.useEffect(() => {
-    setSketch(makeSketch());
-    return removeSketch;
+    const newSketch = makeSketch();
+    setSketch(newSketch);
+    return () => removeSketch(newSketch);
   }, []);
 
   const handleRefresh = () => {
