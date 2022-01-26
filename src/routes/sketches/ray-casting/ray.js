@@ -2,6 +2,7 @@ export class Ray {
   constructor(p5, origin, angle) {
     this.p5 = p5;
     this.origin = origin;
+    this.angle = angle;
     this.direction = this.p5.constructor.Vector.fromAngle(angle);
   }
 
@@ -38,14 +39,6 @@ export class Ray {
     }
 
     return null;
-  }
-
-  show() {
-    // this.p5.push();
-    // this.p5.stroke(255);
-    // this.p5.translate(this.origin.x, this.origin.y);
-    // this.p5.line(0, 0, this.direction.x, this.direction.y);
-    // this.p5.pop();
   }
 
   static #calculateIntersection({ x1, y1 }, { x2, y2 }, t) {

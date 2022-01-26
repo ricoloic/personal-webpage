@@ -2,10 +2,28 @@ import React from 'react';
 import P5 from 'p5';
 import Layout from '../../../components/layout';
 import { Caster } from './caster';
-import { LineBoundary } from './lineBoundary';
+import { BoxBoundary } from './boxBoundary';
 
-const boundaries = [];
+let boundaries = [];
 let caster = null;
+
+const getSidesBoundaries = (p) => {
+  const w = p.width - 1;
+  const h = p.height - 1;
+  return new BoxBoundary(
+    p,
+    p.createVector(1, 1),
+    p.createVector(w, 1),
+    p.createVector(w, h),
+    p.createVector(1, h),
+  );
+};
+
+const getRandomVertex = (p) => {
+  const x = p.random(10, p.width - 10);
+  const y = p.random(10, p.height - 10);
+  return p.createVector(x, y);
+};
 
 const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
@@ -14,34 +32,30 @@ const makeSketch = () => new P5((p) => {
 
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
-    const seed = p.floor(p.random(100000));
-    p.randomSeed(seed);
-    console.log(seed);
+    // const seed = p.floor(p.random(100000));
+    // good seeds: 64411
+    p.randomSeed(64411);
+    // console.log(64411);
 
     const centerPos = p.createVector(p.width / 2, p.height / 2);
     caster = new Caster(p, centerPos);
 
-    for (let i = 0; i < 5; i += 1) {
-      const pt1 = p.createVector(p.random(p.width), p.random(p.height));
-      const pt2 = p.createVector(p.random(p.width), p.random(p.height));
-      boundaries.push(new LineBoundary(p, pt1, pt2));
+    for (let i = 0; i < 2; i++) {
+      boundaries.push(new BoxBoundary(
+        p,
+        getRandomVertex(p),
+        getRandomVertex(p),
+        getRandomVertex(p),
+        getRandomVertex(p),
+      ));
     }
-
-    const top = new LineBoundary(p, p.createVector(0, 0), p.createVector(p.width, 0));
-    const bottom = new LineBoundary(p, p.createVector(0, p.height), p.createVector(p.width, p.height));
-    const left = new LineBoundary(p, p.createVector(0, 0), p.createVector(0, p.height));
-    const right = new LineBoundary(p, p.createVector(p.width, 0), p.createVector(p.width, p.height));
-    [top, bottom, left, right].forEach((boundary) => {
-      boundaries.push(boundary);
-    });
+    boundaries.push(getSidesBoundaries(p));
   };
 
   p.draw = () => {
     p.background(30);
-
-    caster.show();
     caster.setPos(p.mouseX, p.mouseY);
-    caster.cast(boundaries);
+    caster.cast(boundaries.map((boundary) => boundary.lines).flat());
     boundaries.forEach((b) => b.show());
   };
 });
@@ -53,6 +67,7 @@ const RayCasting = function () {
     sketch.remove();
     setSketch(null);
     caster = null;
+    boundaries = [];
   };
 
   React.useEffect(() => {
@@ -60,8 +75,13 @@ const RayCasting = function () {
     return removeSketch;
   }, []);
 
+  const handleRefresh = () => {
+    removeSketch();
+    setSketch(makeSketch());
+  };
+
   return (
-    <Layout>
+    <Layout handleRefresh={handleRefresh}>
       <div className="sketch-container" id="parent" />
     </Layout>
   );
