@@ -50,6 +50,7 @@ const useStyles = makeStyles({
       "ten"
       "eleven"
       "twelve"
+      "twelve"
     `,
 
     '@media (min-width: 33em)': {
@@ -62,6 +63,7 @@ const useStyles = makeStyles({
         "seven eight"
         "nine nine"
         "ten eleven"
+        "twelve twelve"
       `,
     },
 
@@ -76,6 +78,7 @@ const useStyles = makeStyles({
         "seven nine"
         "ten ten"
         "eleven eleven"
+        "twelve twelve"
       `,
     },
 
@@ -88,6 +91,7 @@ const useStyles = makeStyles({
         "seven seven nine"
         "eight eight nine"
         "ten eleven eleven"
+        "twelve twelve twelve"
       `,
     },
 
@@ -98,6 +102,7 @@ const useStyles = makeStyles({
         "eight six six six"
         "eight seven seven nine"
         "ten ten eleven eleven"
+        "twelve twelve twelve twelve"
       `,
     },
   },
@@ -162,6 +167,11 @@ export const SketchesCards = function () {
           img={fireworksPreview}
           route="/fireworks"
           title="Fireworks !!"
+        />
+        <Card
+          img={mouseFollowPreview}
+          route="/ray-casting"
+          title="Ray casting"
         />
       </main>
     </Grid>
