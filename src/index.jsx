@@ -14,6 +14,7 @@ import MouseConfetti from './routes/sketches/mouse-confetti/MouseConfetti';
 import MaurerRose from './routes/sketches/maurer-rose/MaurerRose';
 import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
 import Fireworks from './routes/sketches/fireworks/Fireworks';
+import RayCasting from './routes/sketches/ray-casting/RayCasting';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -30,6 +31,7 @@ ReactDOM.render(
       <Route path="/sketches/maurer-rose" element={<MaurerRose />} />
       <Route path="/sketches/fireworks" element={<Fireworks />} />
       <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
+      <Route path="/sketches/ray-casting" element={<RayCasting />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

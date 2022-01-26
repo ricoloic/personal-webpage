@@ -71,8 +71,8 @@ const Fireworks = function () {
   const [sparkAmountState, setSparkAmountState] = React.useState(sparkAmount);
   const [selectedSparksColorState, setSelectedSparksColorState] = React.useState('vibrant');
 
-  const removeSketch = () => {
-    if (sketch) sketch.remove();
+  const removeSketch = (s = sketch) => {
+    if (s) s.remove();
     fireworks = [];
   };
 
@@ -80,7 +80,7 @@ const Fireworks = function () {
     const newSketch = makeSketch();
     setSketch(newSketch);
 
-    return removeSketch;
+    return () => removeSketch(newSketch);
   }, []);
 
   const handleRefresh = () => {

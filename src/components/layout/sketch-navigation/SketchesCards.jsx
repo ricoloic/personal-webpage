@@ -13,6 +13,7 @@ import circularMotionPreview from '../../../images/previews/circular-motion-prev
 import mouseConfettiPreview from '../../../images/previews/mouse-confetti-preview.png';
 import maurerRosePreview from '../../../images/previews/maurer-rose-preview.png';
 import fireworksPreview from '../../../images/previews/fireworks-preview.png';
+import rayCastingPreview from '../../../images/previews/ray-casting-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -50,6 +51,7 @@ const useStyles = makeStyles({
       "ten"
       "eleven"
       "twelve"
+      "twelve"
     `,
 
     '@media (min-width: 33em)': {
@@ -62,6 +64,7 @@ const useStyles = makeStyles({
         "seven eight"
         "nine nine"
         "ten eleven"
+        "twelve twelve"
       `,
     },
 
@@ -76,6 +79,7 @@ const useStyles = makeStyles({
         "seven nine"
         "ten ten"
         "eleven eleven"
+        "twelve twelve"
       `,
     },
 
@@ -88,6 +92,7 @@ const useStyles = makeStyles({
         "seven seven nine"
         "eight eight nine"
         "ten eleven eleven"
+        "twelve twelve twelve"
       `,
     },
 
@@ -98,6 +103,7 @@ const useStyles = makeStyles({
         "eight six six six"
         "eight seven seven nine"
         "ten ten eleven eleven"
+        "twelve twelve twelve twelve"
       `,
     },
   },
@@ -162,6 +168,11 @@ export const SketchesCards = function () {
           img={fireworksPreview}
           route="/fireworks"
           title="Fireworks !!"
+        />
+        <Card
+          img={rayCastingPreview}
+          route="/ray-casting"
+          title="Ray casting"
         />
       </main>
     </Grid>
