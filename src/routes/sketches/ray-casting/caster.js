@@ -1,10 +1,13 @@
 import { Ray } from './ray';
 
 export class Caster {
-  constructor(p5, pos) {
+  constructor(p5, pos, rayColor, rayBgColor, rayThickness) {
     this.p5 = p5;
     this.pos = pos;
     this.radius = 10;
+    this.rayColor = rayColor || this.p5.color(150);
+    this.rayBgColor = rayBgColor || this.p5.color(220, 50);
+    this.rayThickness = rayThickness || 1;
   }
 
   cast(boundaries) {
@@ -31,12 +34,15 @@ export class Caster {
       }
     }
 
-    this.p5.stroke(240);
-    this.p5.fill(220);
+    this.p5.noStroke();
+    this.p5.fill(this.rayBgColor);
     foundIntersections.sort((a, b) => a[1] - b[1]);
     this.p5.beginShape();
     foundIntersections.forEach(([{ x, y }]) => this.p5.vertex(x, y));
     this.p5.endShape();
+
+    this.p5.strokeWeight(this.rayThickness);
+    this.p5.stroke(this.rayColor);
     foundIntersections.forEach(([{ x, y }]) => this.p5.line(this.pos.x, this.pos.y, x, y));
   }
 
@@ -52,12 +58,12 @@ export class Caster {
       const p = this.pos;
 
       const a1 = this.#getAngle(b.pt1, p);
-      const a11 = a1 + 0.00001;
-      const a12 = a1 - 0.00001;
+      const a11 = a1 + 0.001;
+      const a12 = a1 - 0.001;
 
       const a2 = this.#getAngle(b.pt2, p);
-      const a21 = a2 + 0.00001;
-      const a22 = a2 - 0.00001;
+      const a21 = a2 + 0.001;
+      const a22 = a2 - 0.001;
 
       rays.push(new Ray(this.p5, this.pos, a1));
       rays.push(new Ray(this.p5, this.pos, a11));
