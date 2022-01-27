@@ -10,6 +10,7 @@ let boundaries = [];
 let centerPos = null;
 let caster = null;
 let editing = false;
+let autoMove = false;
 
 const getSidesBoundaries = (p, thickness = 0) => {
   const w = p.width - 1;
@@ -47,6 +48,9 @@ const createB = (p) => {
 };
 
 const makeSketch = () => new P5((p) => {
+  let xoff = 0;
+  let yoff = 111111;
+
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
     centerPos.set(p.width / 2, p.height / 2);
@@ -64,7 +68,15 @@ const makeSketch = () => new P5((p) => {
 
   p.draw = () => {
     p.background(30);
-    caster.setPos(p.mouseX, p.mouseY);
+
+    if (autoMove) {
+      caster?.setPos(p.noise(xoff) * p.width, p.noise(yoff) * p.height);
+      xoff += 0.01;
+      yoff += 0.01;
+    } else {
+      caster.setPos(p.mouseX, p.mouseY);
+    }
+
     if (!editing) {
       caster.cast(boundaries.map((boundary) => boundary.lines).flat());
     }
@@ -93,6 +105,7 @@ const makeSketch = () => new P5((p) => {
 const RayCasting = function () {
   const [sketch, setSketch] = React.useState(null);
   const [editingBoundaries, setEditingBoundaries] = React.useState(editing);
+  const [autoMoveState, setAutoMoveState] = React.useState(autoMove);
 
   const removeSketch = (s = sketch) => {
     s.remove();
@@ -125,9 +138,23 @@ const RayCasting = function () {
     }
   };
 
+  const handleAutoMoveChange = () => {
+    autoMove = !autoMove;
+    setAutoMoveState(autoMove);
+  };
+
   return (
     <Layout
       handleRefresh={handleRefresh}
+      sketchDescription={`
+        Ray Casting is a technique for detecting collisions between a ray and a set of polygons.
+        The ray is defined by a starting point and a direction.
+        The polygons are defined by a set of points.
+        The ray is cast against the polygons and the closest collision is returned.
+        The position of the rays are based on mouse position by default.
+        The rays can be moved automatically with perlin noise, see the settings icon.
+        The points of each polygons can also be edited, see the settings icon.
+      `}
       controls={[
         {
           key: 'Add Box Boundary',
@@ -155,6 +182,21 @@ const RayCasting = function () {
                 />
               )}
               label="Edit Boundaries"
+            />
+          ),
+        },
+        {
+          key: 'Auto Movement',
+          control: (
+            <FormControlLabel
+              control={(
+                <Checkbox
+                  checked={autoMoveState}
+                  onChange={handleAutoMoveChange}
+                  name="autoMove"
+                />
+              )}
+              label="Auto Movement"
             />
           ),
         },
