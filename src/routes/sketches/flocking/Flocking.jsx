@@ -60,7 +60,7 @@ const makeSketch = (boidAmount) => new P5((p) => {
         },
       );
     }
-    theOne.flock(tempBoids, true, {
+    theOne?.flock(tempBoids, true, {
       alignmentForce,
       cohesionForce,
       separationForce,
@@ -75,20 +75,25 @@ const Flocking = function () {
   const [isLooping, setIsLooping] = useLooping(sketch);
   const [displayQuadTreeState, setDisplayQuadTreeState] = React.useState(displayQuadTree);
 
+  const removeSketch = (s = sketch) => {
+    s.remove();
+    setSketch(null);
+    boundary = null;
+    boids = [];
+    theOne = null;
+    quadTree = null;
+    alignmentForce = 0.5;
+    cohesionForce = 0.2;
+    separationForce = 4.3;
+  };
+
   useEffect(() => {
     const newSketch = makeSketch(boidAmount);
 
     setSketch(newSketch);
 
     return () => {
-      boundary = null;
-      boids = [];
-      theOne = null;
-      quadTree = null;
-      alignmentForce = 0.5;
-      cohesionForce = 0.2;
-      separationForce = 4.3;
-      newSketch.remove();
+      removeSketch(newSketch);
     };
   }, []);
 

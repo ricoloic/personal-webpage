@@ -75,10 +75,10 @@ const BlackHole = function () {
     setSketch(newSketch);
 
     return () => {
+      newSketch.remove();
       particles = [];
       center = { x: 0, y: 0 };
       blackHole = { pos: null };
-      newSketch.remove();
     };
   }, []);
 
