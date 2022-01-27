@@ -87,18 +87,34 @@ const makeSketch = () => new P5((p) => {
     }
   };
 
-  p.mouseReleased = () => {
+  const onRelease = () => {
     boundaries.forEach((boundary) => boundary.points.forEach((pt) => {
       pt.moving = false;
     }));
   };
 
-  p.mousePressed = () => {
+  const onPress = () => {
     boundaries.forEach((boundary) => boundary.points.forEach((pt) => {
       if (pt.hovering) {
         pt.moving = true;
       }
     }));
+  };
+
+  p.touchEnded = () => {
+    onRelease();
+  };
+
+  p.touchStarted = () => {
+    onPress();
+  };
+
+  p.mouseReleased = () => {
+    onRelease();
+  };
+
+  p.mousePressed = () => {
+    onPress();
   };
 });
 
@@ -113,6 +129,7 @@ const RayCasting = function () {
     caster = null;
     boundaries = [];
     editing = false;
+    setEditingBoundaries(false);
   };
 
   React.useEffect(() => {
