@@ -8,6 +8,8 @@ export class Caster {
     this.rayColor = rayColor || this.p5.color(150);
     this.rayBgColor = rayBgColor || this.p5.color(220, 50);
     this.rayThickness = rayThickness || 1;
+
+    this.fov = this.p5.radians(45);
   }
 
   cast(boundaries) {
@@ -65,13 +67,8 @@ export class Caster {
       const a21 = a2 + 0.001;
       const a22 = a2 - 0.001;
 
-      rays.push(new Ray(this.p5, this.pos, a1));
-      rays.push(new Ray(this.p5, this.pos, a11));
-      rays.push(new Ray(this.p5, this.pos, a12));
-
-      rays.push(new Ray(this.p5, this.pos, a2));
-      rays.push(new Ray(this.p5, this.pos, a21));
-      rays.push(new Ray(this.p5, this.pos, a22));
+      const angles = [a1, a12, a11, a2, a21, a22];
+      angles.forEach((a) => rays.push(new Ray(this.p5, this.pos, a)));
     }
     return rays;
   }
