@@ -1,10 +1,13 @@
 import React from 'react';
 import P5 from 'p5';
-import { Button, Checkbox, FormControlLabel } from '@material-ui/core';
+import {
+  Button, Checkbox, FormControlLabel, ListItemText, Slider,
+} from '@material-ui/core';
 import Layout from '../../../components/layout';
 import { Caster } from './caster';
 import { BoxBoundary } from './boxBoundary';
 import { Point } from './point';
+import { Boundary } from './boundary';
 
 let boundaries = [];
 let centerPos = null;
@@ -26,27 +29,6 @@ const getSidesBoundaries = (p, thickness = 0) => {
   );
 };
 
-const predefinedBoxes = [
-  {
-    pt1: { x: 0, y: 0 },
-    pt2: { x: 160, y: 80 },
-    pt3: { x: 140, y: 200 },
-    pt4: { x: 0, y: 140 },
-  },
-];
-
-const createB = (p) => {
-  const makeV = (x, y) => new Point(p, x, y);
-
-  return new BoxBoundary(
-    p,
-    makeV(predefinedBoxes[0].pt1.x + centerPos.x, predefinedBoxes[0].pt1.y + centerPos.y),
-    makeV(predefinedBoxes[0].pt2.x + centerPos.x, predefinedBoxes[0].pt2.y + centerPos.y),
-    makeV(predefinedBoxes[0].pt3.x + centerPos.x, predefinedBoxes[0].pt3.y + centerPos.y),
-    makeV(predefinedBoxes[0].pt4.x + centerPos.x, predefinedBoxes[0].pt4.y + centerPos.y),
-  );
-};
-
 const makeSketch = () => new P5((p) => {
   let xoff = 0;
   let yoff = 111111;
@@ -54,6 +36,8 @@ const makeSketch = () => new P5((p) => {
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight);
     centerPos.set(p.width / 2, p.height / 2);
+
+    boundaries.splice(0, 1, getSidesBoundaries(p));
   };
 
   p.setup = () => {
@@ -63,7 +47,7 @@ const makeSketch = () => new P5((p) => {
 
     boundaries.push(getSidesBoundaries(p));
 
-    boundaries.push(createB(p));
+    boundaries.push(new Boundary(p, 5));
   };
 
   p.draw = () => {
@@ -83,7 +67,7 @@ const makeSketch = () => new P5((p) => {
     // eslint-disable-next-line for-direction
     boundaries[0].show();
     for (let i = 1; i < boundaries.length; i++) {
-      boundaries[i].show(editing);
+      boundaries[i].show({ editing });
     }
   };
 
@@ -101,27 +85,17 @@ const makeSketch = () => new P5((p) => {
     }));
   };
 
-  p.touchEnded = () => {
-    onRelease();
-  };
-
-  p.touchStarted = () => {
-    onPress();
-  };
-
-  p.mouseReleased = () => {
-    onRelease();
-  };
-
-  p.mousePressed = () => {
-    onPress();
-  };
+  p.touchEnded = () => { onRelease(); };
+  p.touchStarted = () => { onPress(); };
+  p.mouseReleased = () => { onRelease(); };
+  p.mousePressed = () => { onPress(); };
 });
 
 const RayCasting = function () {
   const [sketch, setSketch] = React.useState(null);
   const [editingBoundaries, setEditingBoundaries] = React.useState(editing);
   const [autoMoveState, setAutoMoveState] = React.useState(autoMove);
+  const [pointAmount, setPointAmount] = React.useState(2);
 
   const removeSketch = (s = sketch) => {
     s.remove();
@@ -148,8 +122,13 @@ const RayCasting = function () {
     setEditingBoundaries(editing);
   };
 
-  const handleAddBoxBoundary = () => {
-    boundaries.push(createB(sketch));
+  const handlePointAmountChange = (v) => {
+    setPointAmount(v);
+  };
+
+  const handleAddBoundary = () => {
+    boundaries.push(new Boundary(sketch, pointAmount));
+
     if (!editing) {
       handleEditingBoundariesChange();
     }
@@ -174,17 +153,30 @@ const RayCasting = function () {
       `}
       controls={[
         {
-          key: 'Add Box Boundary',
+          key: 'Add Boundary',
           control: (
-            <Button
-              variant="contained"
-              component="label"
-              fullWidth
-              color="primary"
-              onClick={handleAddBoxBoundary}
-            >
-              Add Box Boundary
-            </Button>
+            <>
+              <ListItemText>Point Amount</ListItemText>
+              <Slider
+                name="pointAmount"
+                value={pointAmount}
+                onChange={(e, v) => handlePointAmountChange(v)}
+                min={1}
+                max={15}
+                step={1}
+                defaultValue={2}
+                valueLabelDisplay="auto"
+              />
+              <Button
+                variant="contained"
+                component="label"
+                fullWidth
+                color="primary"
+                onClick={handleAddBoundary}
+              >
+                Add Boundary
+              </Button>
+            </>
           ),
         },
         {

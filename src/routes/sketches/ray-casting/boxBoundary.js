@@ -11,7 +11,7 @@ export class BoxBoundary {
     this.thickness = thickness === undefined ? 2 : thickness;
   }
 
-  show(editing) {
+  show({ editing } = { editing: false }) {
     const params = {
       editing,
       color: this.color,
