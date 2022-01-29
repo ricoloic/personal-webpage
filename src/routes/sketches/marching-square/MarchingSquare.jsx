@@ -55,7 +55,7 @@ const makeSketch = () => new P5((p) => {
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
     p.pixelDensity(1);
-    p.noiseSeed(10);
+    // p.noiseSeed(10);
     p.noiseDetail(30);
     p.stroke(255);
 
