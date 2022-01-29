@@ -50,7 +50,7 @@ const AsteroidGame = function () {
     const newSketch = makeSketch();
     setSketch(newSketch);
     return () => {
-      sketch.remove();
+      newSketch.remove();
       game = null;
     };
   }, []);

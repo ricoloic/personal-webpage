@@ -100,7 +100,9 @@ const MarchingSquare = function () {
   const removeSketch = (s = sketch) => {
     if (s) {
       s.remove();
-      grid = [];
+      grid = null;
+      rows = null;
+      cols = null;
     }
   };
 
@@ -108,8 +110,7 @@ const MarchingSquare = function () {
     const newSketch = makeSketch();
     setSketch(newSketch);
     return () => {
-      removeSketch();
-      setSketch(null);
+      removeSketch(newSketch);
     };
   }, []);
 

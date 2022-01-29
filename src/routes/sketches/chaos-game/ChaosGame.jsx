@@ -119,6 +119,7 @@ const ChaosGame = function () {
     setSketch(newSketch);
 
     return () => {
+      newSketch.remove();
       option = options.triangle;
       randomPoints = false;
       iteration = 100;
@@ -127,7 +128,6 @@ const ChaosGame = function () {
       seedPoints = [];
       current = null;
       previous = null;
-      newSketch.remove();
     };
   }, []);
 
