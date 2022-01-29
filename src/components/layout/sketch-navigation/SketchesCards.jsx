@@ -14,6 +14,7 @@ import mouseConfettiPreview from '../../../images/previews/mouse-confetti-previe
 import maurerRosePreview from '../../../images/previews/maurer-rose-preview.png';
 import fireworksPreview from '../../../images/previews/fireworks-preview.png';
 import rayCastingPreview from '../../../images/previews/ray-casting-preview.png';
+import marchingSquarePreview from '../../../images/previews/marching-square-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -37,6 +38,7 @@ const useStyles = makeStyles({
     '& > a:nth-child(10)': { gridArea: 'ten' },
     '& > a:nth-child(11)': { gridArea: 'eleven' },
     '& > a:nth-child(12)': { gridArea: 'twelve' },
+    '& > a:nth-child(13)': { gridArea: 'thirteen' },
 
     gridTemplateAreas: `
       "one"
@@ -51,59 +53,61 @@ const useStyles = makeStyles({
       "ten"
       "eleven"
       "twelve"
-      "twelve"
+      "thirteen"
     `,
 
     '@media (min-width: 33em)': {
       gridTemplateAreas: `
-        "one one"
-        "two three"
-        "four four"
-        "five five"
-        "six six"
-        "seven eight"
-        "nine nine"
-        "ten eleven"
-        "twelve twelve"
+        "one      one"
+        "two      three"
+        "four     four"
+        "five     five"
+        "six      six"
+        "seven    eight"
+        "nine     nine"
+        "ten      eleven"
+        "twelve   twelve"
+        "thirteen thirteen"
       `,
     },
 
     '@media (min-width: 38em)': {
       gridTemplateAreas: `
-        "one one"
-        "two three"
-        "five three"
-        "four four"
-        "six six"
-        "seven eight"
-        "seven nine"
-        "ten ten"
+        "one    one"
+        "two    three"
+        "five   three"
+        "four   four"
+        "six    six"
+        "seven  eight"
+        "seven  nine"
+        "ten    ten"
         "eleven eleven"
-        "twelve twelve"
+        "twelve thirteen"
+        "twelve thirteen"
       `,
     },
 
     '@media (min-width: 54em)': {
       gridTemplateAreas: `
-        "one one two"
-        "five five five"
-        "three four four"
-        "six six six"
-        "seven seven nine"
-        "eight eight nine"
-        "ten eleven eleven"
-        "twelve twelve twelve"
+        "one      one    two"
+        "five     five   five"
+        "three    four   four"
+        "six      six    six"
+        "seven    seven  nine"
+        "eight    eight  nine"
+        "thirteen ten    eleven"
+        "thirteen twelve twelve"
       `,
     },
 
     '@media (min-width: 75em)': {
       gridTemplateAreas: `
-        "one one two five"
-        "three four four five"
-        "eight six six six"
-        "eight seven seven nine"
-        "ten ten eleven eleven"
-        "twelve twelve twelve twelve"
+        "one      one      two      five"
+        "three    four     four     five"
+        "eight    six      six      six"
+        "eight    seven    eleven   nine"
+        "ten      ten      eleven   twelve"
+        "thirteen thirteen thirteen twelve"
       `,
     },
   },
@@ -173,6 +177,11 @@ export const SketchesCards = function () {
           img={rayCastingPreview}
           route="/ray-casting"
           title="Ray casting"
+        />
+        <Card
+          img={marchingSquarePreview}
+          route="/marching-square"
+          title="Marching square"
         />
       </main>
     </Grid>

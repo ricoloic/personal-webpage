@@ -8,8 +8,6 @@ export class Caster {
     this.rayColor = rayColor || this.p5.color(150);
     this.rayBgColor = rayBgColor || this.p5.color(220, 50);
     this.rayThickness = rayThickness || 1;
-
-    this.fov = this.p5.radians(45);
   }
 
   cast(boundaries) {
