@@ -60,8 +60,8 @@ const IntersectingBubbles = function () {
     setSketch(newSketch);
 
     return () => {
-      bubbles = [];
       newSketch.remove();
+      bubbles = [];
     };
   }, []);
 
