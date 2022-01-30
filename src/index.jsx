@@ -16,6 +16,7 @@ import AudioSpectrum from './routes/sketches/audio-spectrum/AudioSpectrum';
 import Fireworks from './routes/sketches/fireworks/Fireworks';
 import RayCasting from './routes/sketches/ray-casting/RayCasting';
 import MarchingSquare from './routes/sketches/marching-square/MarchingSquare';
+import Sorting from './routes/sketches/sorting/Sorting';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -34,6 +35,7 @@ ReactDOM.render(
       <Route path="/sketches/audio-spectrum" element={<AudioSpectrum />} />
       <Route path="/sketches/ray-casting" element={<RayCasting />} />
       <Route path="/sketches/marching-square" element={<MarchingSquare />} />
+      <Route path="/sketches/sorting" element={<Sorting />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

@@ -15,6 +15,7 @@ import maurerRosePreview from '../../../images/previews/maurer-rose-preview.png'
 import fireworksPreview from '../../../images/previews/fireworks-preview.png';
 import rayCastingPreview from '../../../images/previews/ray-casting-preview.png';
 import marchingSquarePreview from '../../../images/previews/marching-square-preview.png';
+import sortingPreview from '../../../images/previews/sorting-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -39,6 +40,7 @@ const useStyles = makeStyles({
     '& > a:nth-child(11)': { gridArea: 'eleven' },
     '& > a:nth-child(12)': { gridArea: 'twelve' },
     '& > a:nth-child(13)': { gridArea: 'thirteen' },
+    '& > a:nth-child(14)': { gridArea: 'fourteen' },
 
     gridTemplateAreas: `
       "one"
@@ -54,6 +56,7 @@ const useStyles = makeStyles({
       "eleven"
       "twelve"
       "thirteen"
+      "fourteen"
     `,
 
     '@media (min-width: 33em)': {
@@ -68,35 +71,38 @@ const useStyles = makeStyles({
         "ten      eleven"
         "twelve   twelve"
         "thirteen thirteen"
+        "fourteen fourteen"
       `,
     },
 
     '@media (min-width: 38em)': {
       gridTemplateAreas: `
-        "one    one"
-        "two    three"
-        "five   three"
-        "four   four"
-        "six    six"
-        "seven  eight"
-        "seven  nine"
-        "ten    ten"
-        "eleven eleven"
-        "twelve thirteen"
-        "twelve thirteen"
+        "one      one"
+        "two      three"
+        "five     three"
+        "four     four"
+        "six      six"
+        "seven    eight"
+        "seven    nine"
+        "ten      ten"
+        "eleven   eleven"
+        "twelve   thirteen"
+        "twelve   thirteen"
+        "fourteen fourteen"
       `,
     },
 
     '@media (min-width: 54em)': {
       gridTemplateAreas: `
-        "one      one    two"
-        "five     five   five"
-        "three    four   four"
-        "six      six    six"
-        "seven    seven  nine"
-        "eight    eight  nine"
-        "thirteen ten    eleven"
-        "thirteen twelve twelve"
+        "one      one      two"
+        "five     five     five"
+        "three    four     four"
+        "six      six      six"
+        "seven    seven    nine"
+        "eight    eight    nine"
+        "thirteen ten      eleven"
+        "thirteen twelve   twelve"
+        "fourteen fourteen fourteen"
       `,
     },
 
@@ -108,6 +114,7 @@ const useStyles = makeStyles({
         "eight    seven    eleven   nine"
         "ten      ten      eleven   twelve"
         "thirteen thirteen thirteen twelve"
+        "fourteen fourteen fourteen fourteen"
       `,
     },
   },
@@ -182,6 +189,11 @@ export const SketchesCards = function () {
           img={marchingSquarePreview}
           route="/marching-square"
           title="Marching square"
+        />
+        <Card
+          img={sortingPreview}
+          route="/sorting"
+          title="Visualize multiple sorting algorithms"
         />
       </main>
     </Grid>
