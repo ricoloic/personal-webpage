@@ -9,6 +9,7 @@ import { drawContourBasedOnState, getMiddles, getState } from './utils';
 let isMovingTime = false;
 let isShowingPoint = false;
 
+let isMoving = false;
 let lastMousePosition = {
   x: 0,
   y: 0,
@@ -21,10 +22,18 @@ let rows = null;
 let cols = null;
 let zoff = 0;
 
+const startMoving = () => {
+  isMoving = true;
+};
+
+const stopMoving = () => {
+  isMoving = false;
+};
+
 const makeSketch = () => new P5((p) => {
   const forSpotInGrid = (action) => {
     const position = lastMousePosition;
-    if (!isMovingTime) {
+    if (isMoving) {
       position.x = p.mouseX;
       position.y = p.mouseY;
     }
@@ -89,6 +98,11 @@ const makeSketch = () => new P5((p) => {
       }
     });
   };
+
+  p.touchEnded = () => stopMoving();
+  p.touchStarted = () => startMoving();
+  p.mouseReleased = () => stopMoving();
+  p.mousePressed = () => startMoving();
 });
 
 const MarchingSquare = function () {
@@ -151,6 +165,7 @@ const MarchingSquare = function () {
         You are also able to make the noise map move through time.
         When the map is moving through time you won't be able to move the map.
         You can also show the points of the map.
+        The map can be moved by clicking and dragging the mouse.
       `}
       controls={[
         {

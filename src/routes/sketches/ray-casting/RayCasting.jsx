@@ -42,6 +42,7 @@ const makeSketch = () => new P5((p) => {
 
   p.setup = () => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
+    p.noiseDetail(2, 0.5);
     centerPos = p.createVector(p.width / 2, p.height / 2);
     caster = new Caster(p, centerPos);
 
