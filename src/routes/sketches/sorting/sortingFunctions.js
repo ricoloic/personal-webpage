@@ -48,15 +48,15 @@ export const quickSort = async (list, lo, hi, sleepTime) => {
     const p = await partition(list, lo, hi);
 
     if (sleepTime) await sleep(sleepTime);
-    await Promise.all([
-      quickSort(list, lo, p - 1, sleepTime),
-      quickSort(list, p + 1, hi, sleepTime),
-    ]);
+    // await Promise.all([
+    //   quickSort(list, lo, p - 1, sleepTime),
+    //   quickSort(list, p + 1, hi, sleepTime),
+    // ]);
 
-    // await sleep(sleepTime);
-    // await quickSort(list, lo, p - 1, sleepTime);
-    // await sleep(sleepTime);
-    // await quickSort(list, p + 1, hi, sleepTime);
+    await sleep(sleepTime / 2);
+    await quickSort(list, lo, p - 1, sleepTime);
+    await sleep(sleepTime / 2);
+    await quickSort(list, p + 1, hi, sleepTime);
 
     for (let i = lo; i < hi; i++) {
       list[i].current = 0;
