@@ -16,6 +16,7 @@ import fireworksPreview from '../../../images/previews/fireworks-preview.png';
 import rayCastingPreview from '../../../images/previews/ray-casting-preview.png';
 import marchingSquarePreview from '../../../images/previews/marching-square-preview.png';
 import sortingPreview from '../../../images/previews/sorting-preview.png';
+import timesTablesPreview from '../../../images/previews/times-tables-preview.png';
 
 const useStyles = makeStyles({
   container: {
@@ -41,6 +42,7 @@ const useStyles = makeStyles({
     '& > a:nth-child(12)': { gridArea: 'twelve' },
     '& > a:nth-child(13)': { gridArea: 'thirteen' },
     '& > a:nth-child(14)': { gridArea: 'fourteen' },
+    '& > a:nth-child(15)': { gridArea: 'fifteen' },
 
     gridTemplateAreas: `
       "one"
@@ -57,6 +59,7 @@ const useStyles = makeStyles({
       "twelve"
       "thirteen"
       "fourteen"
+      "fifteen"
     `,
 
     '@media (min-width: 33em)': {
@@ -72,6 +75,7 @@ const useStyles = makeStyles({
         "twelve   twelve"
         "thirteen thirteen"
         "fourteen fourteen"
+        "fifteen fifteen"
       `,
     },
 
@@ -89,6 +93,7 @@ const useStyles = makeStyles({
         "twelve   thirteen"
         "twelve   thirteen"
         "fourteen fourteen"
+        "fifteen fifteen"
       `,
     },
 
@@ -102,7 +107,7 @@ const useStyles = makeStyles({
         "eight    eight    nine"
         "thirteen ten      eleven"
         "thirteen twelve   twelve"
-        "fourteen fourteen fourteen"
+        "fourteen fourteen fifteen"
       `,
     },
 
@@ -114,7 +119,7 @@ const useStyles = makeStyles({
         "eight    seven    eleven   nine"
         "ten      ten      eleven   twelve"
         "thirteen thirteen thirteen twelve"
-        "fourteen fourteen fourteen fourteen"
+        "fourteen fourteen fifteen  fifteen"
       `,
     },
   },
@@ -194,6 +199,11 @@ export const SketchesCards = function () {
           img={sortingPreview}
           route="/sorting"
           title="Visualize multiple sorting algorithms"
+        />
+        <Card
+          img={timesTablesPreview}
+          route="/times-tables"
+          title="Times Tables - Cardioid"
         />
       </main>
     </Grid>
