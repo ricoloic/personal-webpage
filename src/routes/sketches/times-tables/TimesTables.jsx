@@ -3,9 +3,10 @@ import P5 from 'p5';
 import { Input, ListItemText, Slider } from '@material-ui/core';
 import Layout from '../../../components/layout';
 
-const amt = 4000;
+let amt = 4000;
 let r;
 let f = 2;
+let transparency = 100;
 let cx;
 let cy;
 
@@ -26,7 +27,6 @@ const makeSketch = () => new P5((p) => {
     cx = (p.width / 2);
     cy = (p.height / 2);
     r = p.min(cx, cy) - 50;
-    p.stroke(33, 50);
     p.strokeWeight(1);
     p.frameRate(30);
     p.textSize(45);
@@ -34,6 +34,7 @@ const makeSketch = () => new P5((p) => {
 
   p.draw = () => {
     p.background(220);
+    p.stroke(33, transparency);
     for (let i = 0; i < amt; i++) {
       const { x: x1, y: y1 } = getPos(i);
       const j = (i * f) % amt;
@@ -47,6 +48,8 @@ const makeSketch = () => new P5((p) => {
 const TimesTables = function () {
   const [sketch, setSketch] = React.useState(null);
   const [multiplier, setMultiplier] = React.useState(f);
+  const [lineAmount, setLineAmount] = React.useState(amt);
+  const [transparencyState, setTransparencyState] = React.useState(transparency);
 
   const removeSketch = (s = sketch) => {
     s.remove();
@@ -67,6 +70,16 @@ const TimesTables = function () {
   const handleMultiplierChange = (v) => {
     f = v;
     setMultiplier(v);
+  };
+
+  const handleLineAmountChange = (v) => {
+    amt = v;
+    setLineAmount(v);
+  };
+
+  const handleTransparencyChange = (v) => {
+    transparency = v;
+    setTransparencyState(v);
   };
 
   return (
@@ -97,7 +110,44 @@ const TimesTables = function () {
               />
             </>
           ),
-        }]}
+        },
+        {
+          key: 'Line Amount',
+          control: (
+            <>
+              <ListItemText>Line Amount</ListItemText>
+              <Slider
+                name="lineAmount"
+                value={lineAmount}
+                onChange={(e, v) => handleLineAmountChange(v)}
+                min={10}
+                max={4000}
+                step={10}
+                defaultValue={10}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+        {
+          key: 'Transparency',
+          control: (
+            <>
+              <ListItemText>Transparency</ListItemText>
+              <Slider
+                name="transparency"
+                value={transparencyState}
+                onChange={(e, v) => handleTransparencyChange(v)}
+                min={10}
+                max={255}
+                step={10}
+                defaultValue={10}
+                valueLabelDisplay="auto"
+              />
+            </>
+          ),
+        },
+      ]}
     >
       <div className="sketch-container" id="parent" />
     </Layout>
