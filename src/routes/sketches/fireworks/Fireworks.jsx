@@ -114,7 +114,9 @@ const Fireworks = function () {
   const handleSparksAmountChange = (v) => {
     setSparkAmountState(v);
     sparkAmount = v;
-    fireworks.forEach((firework) => firework.sparkAmount = v);
+    fireworks.forEach((firework) => {
+      firework.sparkAmount = v;
+    });
   };
 
   const handleSparksColorChange = ({ target: { value } }) => {

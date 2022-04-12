@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import P5 from 'p5';
 import { ListItemText, Slider } from '@material-ui/core';
 import { Bubble } from './bubble';
-import Index from '../../../components/layout';
+import Layout from '../../../components/layout';
 
 let bubbles = [];
 let bubbleAmount = 100;
@@ -88,7 +88,7 @@ const IntersectingBubbles = function () {
   };
 
   return (
-    <Index
+    <Layout
       handleRefresh={handleRefresh}
       sketchDescription={[
         'Intersecting bubbles',
@@ -118,7 +118,7 @@ const IntersectingBubbles = function () {
       ]}
     >
       <div id="parent" className="sketch-container" />
-    </Index>
+    </Layout>
   );
 };
 

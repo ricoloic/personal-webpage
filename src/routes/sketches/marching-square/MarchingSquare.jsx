@@ -23,8 +23,9 @@ let cols = null;
 let zoff = 0;
 
 const positionStart = {
-  x: 0, y: 0
-}
+  x: 0,
+  y: 0,
+};
 
 const makeSketch = () => new P5((p) => {
   const startMoving = () => {
@@ -32,7 +33,7 @@ const makeSketch = () => new P5((p) => {
     positionStart.x = p.mouseX;
     positionStart.y = p.mouseY;
   };
-  
+
   const stopMoving = () => {
     isMoving = false;
   };
