@@ -10,7 +10,7 @@ let isMovingTime = false;
 let isShowingPoint = false;
 
 let isMoving = false;
-let lastMousePosition = {
+let position = {
   x: 0,
   y: 0,
 };
@@ -22,20 +22,29 @@ let rows = null;
 let cols = null;
 let zoff = 0;
 
-const startMoving = () => {
-  isMoving = true;
-};
-
-const stopMoving = () => {
-  isMoving = false;
+const positionStart = {
+  x: 0,
+  y: 0,
 };
 
 const makeSketch = () => new P5((p) => {
+  const startMoving = () => {
+    isMoving = true;
+    positionStart.x = p.mouseX;
+    positionStart.y = p.mouseY;
+  };
+
+  const stopMoving = () => {
+    isMoving = false;
+  };
+
   const forSpotInGrid = (action) => {
-    const position = lastMousePosition;
     if (isMoving) {
-      position.x = p.mouseX;
-      position.y = p.mouseY;
+      position.x -= p.mouseX - positionStart.x;
+      position.y -= p.mouseY - positionStart.y;
+
+      positionStart.x = p.mouseX;
+      positionStart.y = p.mouseY;
     }
 
     for (let i = 0; i < grid.length - 1; i++) {
@@ -65,7 +74,7 @@ const makeSketch = () => new P5((p) => {
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
     p.pixelDensity(1);
     // p.noiseSeed(10);
-    p.noiseDetail(30);
+    p.noiseDetail(100);
     p.stroke(255);
 
     cols = p.floor(p.width / scl) + 2;
@@ -88,7 +97,6 @@ const makeSketch = () => new P5((p) => {
     }) => {
       const middles = getMiddles(scl, x, y);
       const state = getState(grid, i, j);
-      p.stroke(255);
       p.strokeWeight(1);
       drawContourBasedOnState(p, state, middles);
 
@@ -99,10 +107,10 @@ const makeSketch = () => new P5((p) => {
     });
   };
 
-  p.touchEnded = () => stopMoving();
-  p.touchStarted = () => startMoving();
-  p.mouseReleased = () => stopMoving();
-  p.mousePressed = () => startMoving();
+  p.touchEnded = stopMoving;
+  p.touchStarted = startMoving;
+  p.mouseReleased = stopMoving;
+  p.mousePressed = startMoving;
 });
 
 const MarchingSquare = function () {
@@ -138,7 +146,7 @@ const MarchingSquare = function () {
     isMovingTime = !isMovingTime;
     setIsMovingTimeState(isMovingTime);
     if (isMovingTime) {
-      lastMousePosition = { x: sketch.mouseX, y: sketch.mouseY };
+      position = { x: sketch.mouseX, y: sketch.mouseY };
     }
   };
 

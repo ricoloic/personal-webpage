@@ -63,8 +63,8 @@ export const AboutMe = function () {
           This page is a personal website of mine where I can display my creations.
           I'm currently working at
           {' '}
-          <Link href="https://www.codeboxx.biz/">
-            Codeboxx
+          <Link href="https://www.ebay.com/">
+            EBay
           </Link>
           {' '}
           as a full-stack developer.

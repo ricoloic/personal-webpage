@@ -5,6 +5,7 @@ body {
     margin: 0;
     font-family: 'Source Code Pro', monospace;
 }
+
 a {
     color: inherit;
     text-decoration: none;
@@ -24,10 +25,30 @@ a:active {
 }
 
 .sketch-container {
-    height: 100vh;
+    max-height: 100vh;
     overflow-y: hidden;
 }
 
+.sketch-container::-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
 canvas {
-    display: block
+    display: block;
+    max-height: 100%;
+}
+
+canvas::-webkit-full-screen {
+    width: 100%;
+    height: 100%;
+}
+
+.no-move {
+    overflow: hidden !important;
+    width: 100% !important;
+}
+
+.no-move * {
+    user-select: text;
 }

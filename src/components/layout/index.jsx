@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable no-trailing-spaces */
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { LayoutProvider } from './providers/LayoutProvider';
@@ -24,6 +25,16 @@ const Layout = function ({
   controls,
 }) {
   const classes = useStyles();
+
+  useEffect(() => {
+    window.scrollTo(0, 1);
+    const html = document.body.parentNode;
+    html.className = 'no-move';
+
+    return () => {
+      html.className = '';
+    };
+  }, []); 
 
   return (
     <LayoutProvider
