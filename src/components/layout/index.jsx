@@ -28,6 +28,12 @@ const Layout = function ({
 
   useEffect(() => {
     window.scrollTo(0, 1);
+    const html = document.body.parentNode;
+    html.className = 'no-move';
+
+    return () => {
+      html.className = '';
+    };
   }, []); 
 
   return (
