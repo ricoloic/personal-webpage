@@ -15,12 +15,11 @@ let fireworkAmount = 20;
 let sparkAmount = 40;
 let selectedSparksColor = sparksColor.vibrant;
 
-const getRandomVector = (p) => p.createVector(0, p.random(-10, -12));
 const createFirework = (p) => {
   const position = p.createVector(p.random(0, p.width), p.height);
   const color = Array.isArray(selectedSparksColor) ? p.random(selectedSparksColor) : undefined;
   const firework = new Firework(p, position, sparkAmount, color);
-  firework.applyForce(getRandomVector(p));
+  firework.applyForce(p.createVector(0, p.random(-10, -12)));
   return firework;
 };
 
@@ -52,7 +51,7 @@ const makeSketch = () => new P5((p) => {
       }
 
       if (firework.finished) {
-        fireworks.splice(fireworks.indexOf(firework), 1, createFirework(p));
+        firework.reset();
       }
 
       firework.applyForce(firework.exploded ? sparksGravity : gravity);
@@ -115,6 +114,7 @@ const Fireworks = function () {
   const handleSparksAmountChange = (v) => {
     setSparkAmountState(v);
     sparkAmount = v;
+    fireworks.forEach((firework) => firework.sparkAmount = v);
   };
 
   const handleSparksColorChange = ({ target: { value } }) => {

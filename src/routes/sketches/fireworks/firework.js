@@ -42,6 +42,15 @@ export class Firework extends Particle {
     }
   }
 
+  reset() {
+    this.position.set(this.p5.random(0, this.p5.width), this.p5.random(this.p5.height + 1, this.p5.height + 6));
+    this.previousPosition.set(this.position.x, this.position.y);
+    this.velocity.set(0, 0);
+    this.acceleration.set(0, 0);
+    this.sparks = [];
+    this.applyForce(this.p5.createVector(0, this.p5.random(-10, -12)));
+  }
+
   show() {
     if (this.exploded) {
       this.sparks.forEach((spark) => spark.show());
@@ -49,7 +58,6 @@ export class Firework extends Particle {
       this.p5.stroke(255);
       this.p5.strokeWeight(7);
       this.p5.point(this.position.x, this.position.y);
-      this.p5.strokeWeight(5);
       this.p5.line(this.previousPosition.x, this.previousPosition.y, this.position.x, this.position.y);
     }
   }
