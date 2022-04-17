@@ -44,6 +44,3 @@ const hexToRgb = (hex) => {
 
 export { COLOR_PALETTES, hexToRgb };
 export default COLOR_PALETTES;
-// strHEX: '#ffffff'
-// return: 'rgb(255, 255, 255)'
-// given a hex color as string return rgb color as string

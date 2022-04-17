@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter, Route, Routes,
+} from 'react-router-dom';
 import './globals.css';
-import Root from './Root';
 import BlackHole from './routes/sketches/black-hole/BlackHole';
 import FlowField from './routes/sketches/flow-field/FlowField';
 import IntersectingBubbles from './routes/sketches/intersecting-bubbles/IntersectingBubbles';
@@ -19,11 +20,14 @@ import MarchingSquare from './routes/sketches/marching-square/MarchingSquare';
 import Sorting from './routes/sketches/sorting/Sorting';
 import PrimeSpiral from './routes/sketches/prime-spiral/PrimeSpiral';
 import TimesTables from './routes/sketches/times-tables/TimesTables';
+import Main from './routes/main';
+import Clock from './routes/sketches/clock/Clock';
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route path="/" element={<Root />} />
+      <Route exact path="/" element={<Main />} />
+      <Route path="/main" element={<Main />} />
       <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
       <Route path="/sketches/chaos-game" element={<ChaosGame />} />
       <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />
@@ -38,6 +42,7 @@ ReactDOM.render(
       <Route path="/sketches/ray-casting" element={<RayCasting />} />
       <Route path="/sketches/marching-square" element={<MarchingSquare />} />
       <Route path="/sketches/sorting" element={<Sorting />} />
+      <Route path="/sketches/clock" element={<Clock />} />
       <Route path="/sketches/prime-spiral" element={<PrimeSpiral />} />
       <Route path="/sketches/times-tables" element={<TimesTables />} />
     </Routes>

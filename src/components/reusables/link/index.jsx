@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useLinkStyles } from '../../layout/main/styles/link';
+import { useLinkStyles } from '../../../routes/main/styles/link';
 
 export const Link = function ({
   children, href, blank,

@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { useLineStyles } from '../styles/line';
-import { Link } from '../../../reusables/link';
+import { Link } from '../../../components/reusables/link';
 
 const useStyles = makeStyles({
   about: {
