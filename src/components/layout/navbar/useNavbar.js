@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLayout } from '../../providers/LayoutProvider';
+import { useLayout } from '../providers/LayoutProvider';
 
 export const useNavbar = () => {
   const {
