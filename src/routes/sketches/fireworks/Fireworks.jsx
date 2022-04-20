@@ -66,7 +66,7 @@ const Fireworks = function () {
     p.draw = () => {
       p.background(0);
       fireworks.forEach((firework) => {
-        if (firework.isGoingDown() && !firework.exploded) { firework.explode(); }
+        if (firework.isGoingDown() && !firework.exploded) { firework.explode(p.random(selectedSparksColor)); }
         if (firework.finished) { firework.reset(); }
         firework.applyForce(firework.exploded ? sparksGravity : gravity);
         firework.update();
@@ -74,7 +74,7 @@ const Fireworks = function () {
       });
       // console.log(p.floor(p.frameRate()));
     };
-  })));
+  })), []);
 
   const removeSketch = (s = sketch) => {
     if (s) s.remove();

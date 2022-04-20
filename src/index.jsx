@@ -22,6 +22,7 @@ import PrimeSpiral from './routes/sketches/prime-spiral/PrimeSpiral';
 import TimesTables from './routes/sketches/times-tables/TimesTables';
 import Main from './routes/main';
 import Clock from './routes/sketches/clock/Clock';
+import ColoredMusic from './routes/sketches/colored-music/ColoredMusic';
 
 ReactDOM.render(
   <BrowserRouter>
@@ -45,6 +46,7 @@ ReactDOM.render(
       <Route path="/sketches/clock" element={<Clock />} />
       <Route path="/sketches/prime-spiral" element={<PrimeSpiral />} />
       <Route path="/sketches/times-tables" element={<TimesTables />} />
+      <Route path="/sketches/colored-music" element={<ColoredMusic />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

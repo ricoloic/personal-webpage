@@ -28,9 +28,9 @@ export class Firework extends Particle {
     }
   }
 
-  explode() {
+  explode(sparkColor = this.sparksColor) {
     for (let i = 0; i < this.sparkAmount; i++) {
-      const spark = new Spark(this.p5, this.position.copy(), this.sparksColor);
+      const spark = new Spark(this.p5, this.position.copy(), sparkColor);
       const randomDirection = this
         .p5
         .constructor
