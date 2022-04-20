@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Box, Button, Divider, List, ListItem, Modal, Popover,
+  Box, Button, Divider, IconButton, List, ListItem, Modal, Popover, Tooltip,
 } from '@material-ui/core';
 import KeyboardBackspace from '@material-ui/icons/KeyboardBackspace';
 import Replay from '@material-ui/icons/Replay';
@@ -72,43 +72,55 @@ const Navbar = function () {
   return (
     <div className={classes.navbar}>
       <div className={classes.navbar__inside}>
-        <Button className="btn" onClick={handleGoBack}>
-          <KeyboardBackspace htmlColor="#fff" fontSize="large" />
-        </Button>
+        <Tooltip title="Go Back To Main Page" placement="bottom">
+          <IconButton className="btn" onClick={handleGoBack}>
+            <KeyboardBackspace htmlColor="#fff" fontSize="large" />
+          </IconButton>
+        </Tooltip>
 
         {handleRefresh && (
-        <Button className="btn" onClick={handleRefresh}>
-          <Replay htmlColor="#fff" fontSize="large" />
-        </Button>
+          <Tooltip title="Refresh The Sketch" placement="bottom">
+            <Button className="btn" onClick={handleRefresh}>
+              <Replay htmlColor="#fff" fontSize="large" />
+            </Button>
+          </Tooltip>
         )}
 
         {handleSave && (
-        <Button className="btn" onClick={handleSave}>
-          <Save htmlColor="#fff" fontSize="large" />
-        </Button>
+          <Tooltip title="Save A Picture Of The Sketch" placement="bottom">
+            <Button className="btn" onClick={handleSave}>
+              <Save htmlColor="#fff" fontSize="large" />
+            </Button>
+          </Tooltip>
         )}
 
         {handleLooping && (
-        <Button className="btn" onClick={handleLooping}>
-          {isLooping ? (
-            <Pause htmlColor="#fff" fontSize="large" />
-          ) : (
-            <PlayArrow htmlColor="#fff" fontSize="large" />
-          )}
-        </Button>
+          <Tooltip title="Start/Pause The Sketch" placement="bottom">
+            <Button className="btn" onClick={handleLooping}>
+              {isLooping ? (
+                <Pause htmlColor="#fff" fontSize="large" />
+              ) : (
+                <PlayArrow htmlColor="#fff" fontSize="large" />
+              )}
+            </Button>
+          </Tooltip>
         )}
 
         {sketchDescription && (
-          <Button className="btn" onClick={handleOpenSketchDescription}>
-            <InfoIcon htmlColor="#fff" fontSize="large" />
-          </Button>
+          <Tooltip title="See Sketch Description" placement="bottom">
+            <Button className="btn" onClick={handleOpenSketchDescription}>
+              <InfoIcon htmlColor="#fff" fontSize="large" />
+            </Button>
+          </Tooltip>
         )}
 
         {controls && (
         <>
-          <Button onClick={handleOpenOptions} ref={anchorEl}>
-            <SettingsIcon htmlColor="#fff" fontSize="large" />
-          </Button>
+          <Tooltip title="Sketch Options/Settings/Color Palettes" placement="bottom">
+            <Button onClick={handleOpenOptions} ref={anchorEl}>
+              <SettingsIcon htmlColor="#fff" fontSize="large" />
+            </Button>
+          </Tooltip>
           <Popover
             id="controls-menu"
             open={openOptions}

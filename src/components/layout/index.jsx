@@ -68,7 +68,7 @@ Layout.defaultProps = {
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
-  sketchDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string)]),
+  sketchDescription: PropTypes.oneOfType([PropTypes.string, PropTypes.arrayOf(PropTypes.string), PropTypes.node]),
   controls: PropTypes.arrayOf(PropTypes.shape({
     key: PropTypes.string.isRequired,
     control: PropTypes.node.isRequired,

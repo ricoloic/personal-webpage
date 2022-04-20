@@ -17,6 +17,7 @@ import marchingSquarePreview from '../../../images/previews/marching-square-prev
 // import sortingPreview from '../../../images/previews/sorting-preview.png';
 import clockPreview from '../../../images/previews/clock-preview.png';
 import timesTablesPreview from '../../../images/previews/times-tables-preview.png';
+import coloredMusicPreview from '../../../images/previews/colored-music-preview.png';
 import useSketchCardsStyles from './useSketchCardsStyles';
 
 export const SketchesCards = function () {
@@ -103,6 +104,11 @@ export const SketchesCards = function () {
           img={timesTablesPreview}
           route="/times-tables"
           title="Times Tables - Cardioid"
+        />
+        <Card
+          img={coloredMusicPreview}
+          route="/colored-music"
+          title="Colored Music - ref to Max Mitchell https://youtu.be/_yXQayoxJOg"
         />
       </main>
     </Grid>

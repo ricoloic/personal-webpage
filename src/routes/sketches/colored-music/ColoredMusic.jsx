@@ -3,31 +3,24 @@ import p5 from 'p5';
 import '../../../js/p5/p5.sound';
 import {
   Button,
-  Checkbox, FormControlLabel, ListItemText, Slider,
+  Checkbox, FormControlLabel, ListItemText,
 } from '@material-ui/core';
-import Index from '../../../components/layout';
+import Layout from '../../../components/layout';
 import kirraAudio from './audio/Kirra.mp3';
 import 'p5/lib/addons/p5.dom';
-import drawSpectrum from './drawSpectrum';
 import {
   onClick, onKey, pauseSoundFile, playSoundFile, startMic, stopMic, stopSoundFile,
 } from '../audioUtils';
+import { COLOR_PALETTES } from '../constants';
+import Disclaimer from './Disclaimer';
 
 let fft;
 let fftMic;
 let mic;
 let defaultSoundFile;
 let useMic = false;
-let layerAmount = 3;
-let divider = 2;
 const bands = 1024;
-const borderWeight = 5;
-let spectrum = null;
-let minSpectrumSize = -50;
-let maxSpectrumSize = 160;
-let baseSize = 150;
 let fileInfoP = null;
-let ninetyDegrees = null;
 let center = {};
 
 const resetVariables = () => {
@@ -36,9 +29,7 @@ const resetVariables = () => {
   mic = null;
   fft = null;
   fftMic = null;
-  ninetyDegrees = null;
   useMic = false;
-  baseSize = 150;
 };
 
 const displayFileInfo = (fileData) => {
@@ -69,7 +60,14 @@ const isMouseOnRightSide = (p) => p.mouseX > p.width / 2;
 
 // eslint-disable-next-line new-cap
 const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
-  // const cnv = null;
+  const NUM_RINGS = 6;
+  const RING_GROWTH_RATE = 30;
+  const NUM_DOTS = 560;
+  const beatState = 0;
+  let dimension;
+  const c = COLOR_PALETTES.deep.reverse();
+  const times = [0, 0, 0, 0, 0, 0, 0];
+
   p.windowResized = () => {
     p.resizeCanvas(window.innerWidth, window.innerHeight);
     center.x = p.width / 2;
@@ -84,16 +82,15 @@ const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
     fileInfoP = p.select('#file-info');
     p.createCanvas(window.innerWidth, window.innerHeight).parent('parent');
 
+    dimension = p.min(p.windowWidth / 1.5, p.windowHeight / 1.5);
     const cnv = p.select('canvas');
     cnv.drop(p, setIsLooping, setUseMic, dropFiles);
 
-    ninetyDegrees = p.PI / 2;
     center.x = p.width / 2;
     center.y = p.height / 2;
 
     p.colorMode(p.HSB);
-    p.noFill();
-    p.strokeWeight(borderWeight);
+    p.strokeWeight(1);
     p.noLoop();
 
     mic = new p5.AudioIn();
@@ -108,26 +105,66 @@ const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
 
   p.draw = () => {
     p.background(255);
+    p.translate(p.width / 2, p.height / 2);
+    const currFft = useMic ? fftMic : fft;
+    if (useMic) fftMic.analyze(); else fft.analyze();
 
-    p.translate(center.x, center.y);
-    p.rotate(ninetyDegrees);
-
-    if (useMic) {
-      spectrum = fftMic.analyze();
-    } else {
-      spectrum = fft.analyze();
+    const sizes = currFft.linAverages(NUM_DOTS / 2); // Number of Dots
+    for (let i = 0; i < sizes.length; i++) {
+      sizes[i] = p.map(sizes[i], 0, 255, 5.0, 23.0); // scales the FFT values to a good size range
     }
 
-    drawSpectrum(p, {
-      spectrum,
-      layerAmount,
-      divider,
-      borderWeight,
-      baseSize,
-      spectrumSize: [minSpectrumSize, maxSpectrumSize],
-    });
+    // Calculate the "volume" at each frequency range to control the speed of rotation for each ring
+    const beatLevels = [];
+    beatLevels.push(p.map(currFft.getEnergy(16, 60), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(60, 250), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(250, 500), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(500, 2000), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(2000, 4000), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(4000, 6000), 0, 255, 0, 1.0));
+    beatLevels.push(p.map(currFft.getEnergy(6000, 20000), 0, 255, 0, 1.0));
+
+    for (let i = 0; i < NUM_RINGS; i++) {
+      times[i] += (p.constrain(0.012 * beatLevels[i], 0.0009, 0.012) * (-2 * beatState + 1));
+    }
+
+    // Main loop to draw the dots among each frequency ring.
+    let curDot = 0;
+    for (let i = 1; i < NUM_RINGS + 1; i++) {
+      p.fill(c[i - 1]); // Update the color for the current ring
+
+      const ringDotCount = i * RING_GROWTH_RATE;
+      const r = ringDotCount * 1.6 * (dimension / 600); // Scale the radius by canvas dimensions
+
+      // Iterate through half of the dots, adding 2 each iteration so that the end result is symmetric
+      for (let angleIter = 0; angleIter < ringDotCount / 2; angleIter++) {
+        const angle1 = times[i - 1] * (-2 * (i % 2) + 1) + angleIter * (p.TWO_PI / ringDotCount);
+        const angle2 = times[i - 1] * (-2 * (i % 2) + 1) - angleIter * (p.TWO_PI / ringDotCount);
+        sizes[curDot] **= (i / NUM_RINGS + 0.9); // Scale the sizes exponentially so that the edges are larger
+
+        let x = r * p.sin(angle1);
+        let y = r * p.cos(angle1);
+        p.circle(x, y, sizes[curDot]);
+
+        x = r * p.sin(angle2);
+        y = r * p.cos(angle2);
+        p.circle(x, y, sizes[curDot]);
+
+        // Handle the final dot edge case so that curDot is properly handled and there isn't a missing dot
+        if (angleIter + 1 === ringDotCount / 2) {
+          const angle = times[i - 1] * (-2 * (i % 2) + 1) + (angleIter + 1) * (p.TWO_PI / ringDotCount);
+          x = r * p.sin(angle);
+          y = r * p.cos(angle);
+          p.circle(x, y, sizes[curDot]);
+        }
+
+        curDot++;
+      }
+    }
   };
 
+  // space to stop/play
+  // right/left arrow to move through time in sound
   p.keyPressed = () => {
     onKey(p, setIsLooping, defaultSoundFile, useMic, mic);
   };
@@ -139,14 +176,10 @@ const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
   };
 });
 
-const AudioSpectrum = function () {
+const ColoredMusic = function () {
   const [sketch, setSketch] = React.useState();
   const [isLooping, setIsLooping] = React.useState(false);
-  const [layerAmountState, setLayerAmountState] = React.useState(layerAmount);
   const [useMicState, setUseMicState] = React.useState(useMic);
-  const [dividerState, setDividerState] = React.useState(divider);
-  const [baseSizeState, setBaseSizeState] = React.useState(baseSize);
-  const [spectrumSize, setSpectrumSize] = React.useState([minSpectrumSize, maxSpectrumSize]);
 
   const handleLooping = () => {
     if (isLooping) {
@@ -191,27 +224,6 @@ const AudioSpectrum = function () {
     useMic = !useMic;
   };
 
-  const handleLayerAmountChange = (v) => {
-    layerAmount = v;
-    setLayerAmountState(v);
-  };
-
-  const handleDividerChange = (v) => {
-    setDividerState(v);
-    divider = v;
-  };
-
-  const handleBaseSizeChange = (v) => {
-    setBaseSizeState(v);
-    baseSize = v;
-  };
-
-  const handleSpectrumSizeChange = ([min, max]) => {
-    setSpectrumSize([min, max]);
-    minSpectrumSize = min;
-    maxSpectrumSize = max;
-  };
-
   const handleUpload = (e) => {
     const tempFile = e.target.files[0];
     if (tempFile?.name) {
@@ -234,18 +246,11 @@ const AudioSpectrum = function () {
   }, []);
 
   return (
-    <Index
+    <Layout
       handleRefresh={handleRefresh}
       isLooping={isLooping}
       handleLooping={handleLooping}
-      sketchDescription={`
-        This is an audio visualizer that uses the p5.js sound library.
-        It uses the mic or the default sound file to analyze the audio.
-        The audio is analyzed and the spectrum is drawn.
-        You can change the options/controls for drawing the spectrum by clicking the settings Icon.
-        You can also upload a sound file to play instead of the default sound file.
-        You can fast forward or rewind the sound file by double clicking on right or left side of the screen.
-      `}
+      sketchDescription={<Disclaimer />}
       controls={[
         {
           key: 'Upload File',
@@ -278,74 +283,6 @@ const AudioSpectrum = function () {
                 />
               )}
             />
-          ),
-        },
-        {
-          key: 'Base Size',
-          control: (
-            <>
-              <ListItemText>Base Size</ListItemText>
-              <Slider
-                value={baseSizeState}
-                onChange={(e, v) => handleBaseSizeChange(v)}
-                min={50}
-                max={300}
-                step={10}
-                defaultValue={150}
-                valueLabelDisplay="auto"
-              />
-            </>
-          ),
-        },
-        {
-          key: 'Spectrum Size',
-          control: (
-            <>
-              <ListItemText>Spectrum Size</ListItemText>
-              <Slider
-                value={spectrumSize}
-                onChange={(e, v) => handleSpectrumSizeChange(v)}
-                min={-200}
-                max={320}
-                step={5}
-                defaultValue={160}
-                valueLabelDisplay="auto"
-              />
-            </>
-          ),
-        },
-        {
-          key: 'Layer Amount',
-          control: (
-            <>
-              <ListItemText>Layer Amount</ListItemText>
-              <Slider
-                value={layerAmountState}
-                onChange={(e, v) => handleLayerAmountChange(v)}
-                min={1}
-                max={10}
-                step={1}
-                defaultValue={3}
-                valueLabelDisplay="auto"
-              />
-            </>
-          ),
-        },
-        {
-          key: 'Divider',
-          control: (
-            <>
-              <ListItemText>Divider</ListItemText>
-              <Slider
-                value={dividerState}
-                onChange={(e, v) => handleDividerChange(v)}
-                min={1}
-                max={5}
-                step={1}
-                defaultValue={5}
-                valueLabelDisplay="auto"
-              />
-            </>
           ),
         },
       ]}
@@ -386,8 +323,8 @@ const AudioSpectrum = function () {
       </style>
       <div id="parent" className="sketch-container" />
       <p id="file-info" />
-    </Index>
+    </Layout>
   );
 };
 
-export default AudioSpectrum;
+export default ColoredMusic;
