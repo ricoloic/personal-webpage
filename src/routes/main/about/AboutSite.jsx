@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import {
-  Box, Grid, TextField, Tooltip,
+  Box, Grid, IconButton, TextField, Tooltip,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { Search } from '@material-ui/icons';
+import { Close, Search } from '@material-ui/icons';
 import { useLineStyles } from '../styles/line';
 import { Link } from '../../../components/reusables/link';
 import { useSearchContext } from '../contexts/SearchContext';
@@ -33,6 +33,7 @@ export const AboutSite = function () {
   const lineClasses = useLineStyles();
   const { setSearch } = useSearchContext();
   const searchInput = React.useRef(null);
+  const [isSearching, setIsSearching] = React.useState(false);
 
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
@@ -50,28 +51,48 @@ export const AboutSite = function () {
   return (
     <Grid className={classes.about} container item justifyContent="center" xs={12}>
       <Grid item xs={12} lg={10}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <h4 className={classes.about__title}>
-            About this page
-          </h4>
-          <Box width="350px">
-            <Tooltip title="Search for a specific sketch">
-              <TextField
-                inputRef={searchInput}
-                variant="outlined"
-                placeholder="Search.."
-                label="Search A Sketch"
-                name="search"
-                fullWidth
-                onChange={(e) => setSearch(e.target.value.toLowerCase())}
-                InputProps={{
-                  endAdornment: (
-                    <Search fontSize="large" />
-                  ),
-                }}
-              />
-            </Tooltip>
-          </Box>
+        <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap">
+          {isSearching ? (
+            <Box width="100%">
+              <Tooltip title="Search for a specific sketch">
+                <TextField
+                  inputRef={searchInput}
+                  variant="outlined"
+                  placeholder="Search.."
+                  label="Search A Sketch"
+                  name="search"
+                  fullWidth
+                  onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                  InputProps={{
+                    endAdornment: (
+                      <IconButton onClick={() => setIsSearching(false)}>
+                        <Close fontSize="large" />
+                      </IconButton>
+                    ),
+                  }}
+                />
+              </Tooltip>
+            </Box>
+          ) : (
+            <Box width="100%" display="flex" justifyContent="space-between">
+              <h4 className={classes.about__title}>
+                About this page
+              </h4>
+              <Tooltip title="Search for a specific sketch">
+                <IconButton
+                  onClick={() => setIsSearching(true)}
+                  sx={{
+                    color: '#DBCFC4',
+                    '&:hover': {
+                      color: '#DBCFC4',
+                    },
+                  }}
+                >
+                  <Search fontSize="large" />
+                </IconButton>
+              </Tooltip>
+            </Box>
+          )}
         </Box>
         <hr className={lineClasses.line} />
         <p className={classes.about__description}>
