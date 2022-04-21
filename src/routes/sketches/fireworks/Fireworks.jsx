@@ -164,9 +164,8 @@ const Fireworks = function () {
                 labelId="color-label"
                 id="color-select"
                 value={selectedSparksColorState}
-                label="Color"
                 onChange={handleSparksColorChange}
-                variant="filled"
+                variant="outlined"
                 size="small"
               >
                 {Object.keys(sparksColor).map((color) => (

@@ -23,12 +23,13 @@ import TimesTables from './routes/sketches/times-tables/TimesTables';
 import Main from './routes/main';
 import Clock from './routes/sketches/clock/Clock';
 import ColoredMusic from './routes/sketches/colored-music/ColoredMusic';
+import ColorPalettes from './routes/color-palettes';
 
 ReactDOM.render(
   <BrowserRouter>
     <Routes>
-      <Route exact path="/" element={<Main />} />
-      <Route path="/main" element={<Main />} />
+      <Route path="/*" element={<Main />} />
+      <Route path="/color-palettes" element={<ColorPalettes />} />
       <Route path="/sketches/mouse-follow" element={<MouseFollow />} />
       <Route path="/sketches/chaos-game" element={<ChaosGame />} />
       <Route path="/sketches/intersecting-bubbles" element={<IntersectingBubbles />} />

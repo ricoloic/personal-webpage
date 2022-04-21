@@ -19,11 +19,7 @@ export class Particle {
   show(color = this.color) {
     this.p5.noStroke();
     this.p5.stroke(255);
-    if (typeof color === 'number') {
-      this.p5.fill(color, 100, 100);
-    } else {
-      this.p5.fill(color);
-    }
+    this.p5.fill(color);
     this.p5.ellipse(this.pos.x, this.pos.y, 16);
   }
 

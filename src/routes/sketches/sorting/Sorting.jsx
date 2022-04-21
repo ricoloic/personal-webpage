@@ -161,9 +161,8 @@ const Sorting = function () {
                 labelId="sort-type-label"
                 id="sort-type-select"
                 value={selectedSortState}
-                label="Sort Type"
                 onChange={handleSortTypeChange}
-                variant="filled"
+                variant="outlined"
                 size="small"
               >
                 {sortingOptions.map((sortingType) => (

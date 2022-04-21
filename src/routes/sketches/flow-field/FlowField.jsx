@@ -77,7 +77,6 @@ const makeSketch = () => new P5((p) => {
         if (!flow) return;
         flow.update(xoff, yoff, zoff);
         if (displayFlow) {
-          // console.log('hey');
           p.stroke(0, 0, 0, 1);
           p.strokeWeight(2);
           flow.show(scl, x, y);
@@ -244,9 +243,8 @@ const FlowField = function () {
                 labelId="color-label"
                 id="color-select"
                 value={colorState}
-                label="Color"
                 onChange={handleColorChange}
-                variant="filled"
+                variant="outlined"
                 size="small"
               >
                 {Object.keys(colorOptions).map((color) => (

@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import p5 from 'p5';
 import '../../../js/p5/p5.sound';
 import {
+  Box,
   Button,
-  Checkbox, FormControlLabel, ListItemText, Slider,
+  Checkbox, FormControlLabel, ListItemText, Slider, Tooltip,
 } from '@material-ui/core';
 import Index from '../../../components/layout';
 import kirraAudio from './audio/Kirra.mp3';
@@ -283,69 +284,85 @@ const AudioSpectrum = function () {
         {
           key: 'Base Size',
           control: (
-            <>
-              <ListItemText>Base Size</ListItemText>
-              <Slider
-                value={baseSizeState}
-                onChange={(e, v) => handleBaseSizeChange(v)}
-                min={50}
-                max={300}
-                step={10}
-                defaultValue={150}
-                valueLabelDisplay="auto"
-              />
-            </>
+            <Tooltip
+              title="the base size of the spectrum"
+            >
+              <Box>
+                <ListItemText>Base Size</ListItemText>
+                <Slider
+                  value={baseSizeState}
+                  onChange={(e, v) => handleBaseSizeChange(v)}
+                  min={50}
+                  max={300}
+                  step={10}
+                  defaultValue={150}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+            </Tooltip>
           ),
         },
         {
           key: 'Spectrum Size',
           control: (
-            <>
-              <ListItemText>Spectrum Size</ListItemText>
-              <Slider
-                value={spectrumSize}
-                onChange={(e, v) => handleSpectrumSizeChange(v)}
-                min={-200}
-                max={320}
-                step={5}
-                defaultValue={160}
-                valueLabelDisplay="auto"
-              />
-            </>
+            <Tooltip
+              title="the range of size the spectrum will use to size with the music"
+            >
+              <Box>
+                <ListItemText>Spectrum Size</ListItemText>
+                <Slider
+                  value={spectrumSize}
+                  onChange={(e, v) => handleSpectrumSizeChange(v)}
+                  min={-200}
+                  max={320}
+                  step={5}
+                  defaultValue={160}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+            </Tooltip>
           ),
         },
         {
           key: 'Layer Amount',
           control: (
-            <>
-              <ListItemText>Layer Amount</ListItemText>
-              <Slider
-                value={layerAmountState}
-                onChange={(e, v) => handleLayerAmountChange(v)}
-                min={1}
-                max={10}
-                step={1}
-                defaultValue={3}
-                valueLabelDisplay="auto"
-              />
-            </>
+            <Tooltip
+              title="the amount of layer to be drawn"
+            >
+              <Box>
+                <ListItemText>Layer Amount</ListItemText>
+                <Slider
+                  value={layerAmountState}
+                  onChange={(e, v) => handleLayerAmountChange(v)}
+                  min={1}
+                  max={10}
+                  step={1}
+                  defaultValue={3}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+            </Tooltip>
           ),
         },
         {
           key: 'Divider',
           control: (
-            <>
-              <ListItemText>Divider</ListItemText>
-              <Slider
-                value={dividerState}
-                onChange={(e, v) => handleDividerChange(v)}
-                min={1}
-                max={5}
-                step={1}
-                defaultValue={5}
-                valueLabelDisplay="auto"
-              />
-            </>
+            <Tooltip
+              title="a bigger divider will have more low wave (more bass) and a smaller divider will have more high wave (more treble)"
+            >
+              <Box>
+                <ListItemText>Divider</ListItemText>
+                <Slider
+                  value={dividerState}
+                  onChange={(e, v) => handleDividerChange(v)}
+                  min={1}
+                  max={5}
+                  step={1}
+                  defaultValue={5}
+                  valueLabelDisplay="auto"
+                />
+              </Box>
+            </Tooltip>
           ),
         },
       ]}
