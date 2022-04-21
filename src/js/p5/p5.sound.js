@@ -1404,8 +1404,6 @@ helpers = function () {
         var extension = paths[i].split('.').pop();
         var supported = p5.prototype.isFileSupported(extension);
         if (supported) {
-          // console.log('.'+extension + ' is ' + supported +
-          //  ' supported by your browser.');
           path = paths[i];
           break;
         }

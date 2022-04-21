@@ -79,9 +79,8 @@ const MouseConfetti = function () {
                 labelId="color-label"
                 id="color-select"
                 value={selectedColorPaletteState}
-                label="Color"
                 onChange={handleColorPaletteChange}
-                variant="filled"
+                variant="outlined"
                 size="small"
               >
                 {Object.keys(COLOR_PALETTES).map((color) => (

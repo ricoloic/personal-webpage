@@ -2,6 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Tooltip } from '@material-ui/core';
 
 const useCardStyle = makeStyles({
   card: ({
@@ -35,19 +36,22 @@ const useCardStyle = makeStyles({
   },
 });
 
-export const Card = function ({ img, route, title }) {
-  const classes = useCardStyle({ img });
+export const Card = function ({ image, route, title }) {
+  const classes = useCardStyle({ img: image });
+  const path = `/sketches${route}`;
   return (
-    <Link to={`/sketches${route}`} className={classes.card}>
-      <p>{title}</p>
-    </Link>
+    <Tooltip title={title}>
+      <Link to={path} className={classes.card}>
+        <p>{title}</p>
+      </Link>
+    </Tooltip>
   );
 };
 
 export default Card;
 
 Card.propTypes = {
-  img: PropTypes.string.isRequired,
+  image: PropTypes.string.isRequired,
   route: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
 };

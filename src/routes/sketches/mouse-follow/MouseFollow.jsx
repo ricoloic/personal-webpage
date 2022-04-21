@@ -2,8 +2,9 @@ import React, { useEffect } from 'react';
 import P5 from 'p5';
 import {
   Box,
-  Checkbox, FormControl, FormControlLabel, ListItemText, MenuItem, Select, Slider,
+  Checkbox, FormControl, FormControlLabel, InputLabel, ListItemText, MenuItem, Select, Slider,
 } from '@material-ui/core';
+import { TwitterPicker } from 'react-color';
 import { Particle } from './particle';
 import Index from '../../../components/layout';
 import { COLOR_PALETTES } from '../constants';
@@ -13,8 +14,8 @@ let selectColorPalette = 'happy';
 let particles = [];
 let particlesPerFrame = 10;
 let center = { x: 0, y: 0 };
-let blobColor = 0;
-let particleColor = 0;
+let blobColor = '#65aa65';
+let particleColor = '#6b49a6';
 let showParticles = true;
 let showBlob = true;
 
@@ -28,11 +29,10 @@ const makeSketch = () => new P5((p) => {
     center.x = p.width / 2;
     center.y = p.height / 2;
     p.noStroke();
-    p.colorMode(p.HSB);
   };
 
   p.draw = () => {
-    p.background(100);
+    p.background(250);
     p.translate(center.x, center.y);
 
     for (let i = 0; i < particlesPerFrame; i++) {
@@ -54,7 +54,7 @@ const makeSketch = () => new P5((p) => {
         new p.constructor.Vector(0, 0),
       );
       const cntV = sumV.div(particles.length);
-      p.fill(blobColor, 100, 100);
+      p.fill(blobColor);
       p.circle(cntV.x, cntV.y, 50);
     }
   };
@@ -62,9 +62,7 @@ const makeSketch = () => new P5((p) => {
 
 const MouseFollow = function () {
   const [sketch, setSketch] = React.useState(null);
-  const [blobColorState, setBlobColorState] = React.useState(blobColor);
   const [particlesPerFrameState, setParticlesPerFrameState] = React.useState(particlesPerFrame);
-  const [particleColorState, setParticleColorState] = React.useState(particleColor);
   const [showParticlesState, setShowParticlesState] = React.useState(true);
   const [selectedColorPaletteState, setSelectedColorPaletteState] = React.useState('happy');
   const [showBlobState, setShowBlobState] = React.useState(true);
@@ -102,6 +100,14 @@ const MouseFollow = function () {
   const handleShowBlobChange = () => {
     showBlob = !showBlob;
     setShowBlobState(showBlob);
+  };
+
+  const handleParticleColorChange = (color) => {
+    particleColor = color;
+  };
+
+  const handleBlobColorChange = (color) => {
+    blobColor = color;
   };
 
   return (
@@ -179,9 +185,8 @@ const MouseFollow = function () {
                   labelId="color-label"
                   id="color-select"
                   value={selectedColorPaletteState}
-                  label="Color"
                   onChange={handleColorPaletteChange}
-                  variant="filled"
+                  variant="outlined"
                   size="small"
                 >
                   <MenuItem
@@ -200,49 +205,37 @@ const MouseFollow = function () {
                   ))}
                 </Select>
               </FormControl>
-              <Box sx={{
-                paddingLeft: '1rem',
-                paddingRight: '1rem',
-              }}
-              >
-                <ListItemText disabled>Particles Color (HSB)</ListItemText>
-                <Slider
-                  name="particlesColorHue"
-                  disabled={selectedColorPaletteState !== 'custom'}
-                  value={particleColorState}
-                  onChange={(e, v) => {
-                    particleColor = v;
-                    setParticleColorState(v);
-                  }}
-                  min={0}
-                  max={360}
-                  step={1}
-                  defaultValue={0}
-                  valueLabelDisplay="auto"
-                />
-              </Box>
+            </Box>
+          ),
+        },
+        {
+          key: 'Custom Particle Color',
+          control: (
+            <Box>
+              {selectedColorPaletteState === 'custom' && (
+                <>
+                  <InputLabel id="custom-color-label">Custom Particle Color</InputLabel>
+                  <br />
+                  <TwitterPicker
+                    triangle="hide"
+                    onChange={(color) => handleParticleColorChange(color.hex)}
+                  />
+                </>
+              )}
             </Box>
           ),
         },
         {
           key: 'Blob Color',
           control: (
-            <>
-              <ListItemText>Blob Color (HSB)</ListItemText>
-              <Slider
-                name="blobColorHue"
-                value={blobColorState}
-                onChange={(e, v) => {
-                  blobColor = v;
-                  setBlobColorState(v);
-                }}
-                min={0}
-                max={360}
-                step={1}
-                defaultValue={0}
-                valueLabelDisplay="auto"
+            <Box>
+              <InputLabel id="custom-color-label">Custom Blob Color</InputLabel>
+              <br />
+              <TwitterPicker
+                triangle="hide"
+                onChange={(color) => handleBlobColorChange(color.hex)}
               />
-            </>
+            </Box>
           ),
         },
       ]}
