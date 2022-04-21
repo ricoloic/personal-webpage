@@ -17,7 +17,7 @@ const initialColors = [
 
 function ColorPalettes() {
   const [selectedColor, setSelectedColor] = React.useState(initialColors[0]);
-  const [colors, setColors] = React.useState(initialColors);
+  const [colors] = React.useState(initialColors);
 
   return (
     <Box
