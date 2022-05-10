@@ -1,20 +1,20 @@
 import React, { useEffect } from 'react';
 import P5 from 'p5';
 import {
-  Box,
-  Checkbox, FormControl, FormControlLabel, InputLabel, ListItemText, MenuItem, Select, Slider,
+  Box, FormControl, InputLabel, ListItemText, MenuItem, Select, Slider,
 } from '@material-ui/core';
 import { TwitterPicker } from 'react-color';
 import { Particle } from './particle';
 import Index from '../../../components/layout';
 import { COLOR_PALETTES } from '../constants';
 import { capitalizeFirstLetter } from '../utils';
+import Checkbox from '../../color-palettes/components/checkbox';
 
 let selectColorPalette = 'happy';
 let particles = [];
 let particlesPerFrame = 10;
 let center = { x: 0, y: 0 };
-let blobColor = '#65aa65';
+let blobColor = '#333333';
 let particleColor = '#6b49a6';
 let showParticles = true;
 let showBlob = true;
@@ -36,7 +36,7 @@ const makeSketch = () => new P5((p) => {
     p.translate(center.x, center.y);
 
     for (let i = 0; i < particlesPerFrame; i++) {
-      const color = selectColorPalette === 'custom' ? particleColor : p.random(COLOR_PALETTES[selectColorPalette]);
+      const color = selectColorPalette === 'custom' ? particleColor : p.random(COLOR_PALETTES[selectColorPalette]).color;
       const particle = new Particle(p, center, color);
       particles.push(particle);
     }
@@ -64,7 +64,7 @@ const MouseFollow = function () {
   const [sketch, setSketch] = React.useState(null);
   const [particlesPerFrameState, setParticlesPerFrameState] = React.useState(particlesPerFrame);
   const [showParticlesState, setShowParticlesState] = React.useState(true);
-  const [selectedColorPaletteState, setSelectedColorPaletteState] = React.useState('happy');
+  const [selectedColorPaletteState, setSelectedColorPaletteState] = React.useState('deep');
   const [showBlobState, setShowBlobState] = React.useState(true);
 
   useEffect(() => {
@@ -124,30 +124,22 @@ const MouseFollow = function () {
         {
           key: 'Show Blob',
           control: (
-            <FormControlLabel
-              control={(
-                <Checkbox
-                  checked={showBlobState}
-                  onChange={handleShowBlobChange}
-                  name="showBlob"
-                />
-              )}
+            <Checkbox
+              name="show-blob-checkbox"
               label="Show Blob"
+              checked={showBlobState}
+              onChange={handleShowBlobChange}
             />
           ),
         },
         {
           key: 'Show Particles',
           control: (
-            <FormControlLabel
-              label={<ListItemText>Show Particles</ListItemText>}
-              control={(
-                <Checkbox
-                  checked={showParticlesState}
-                  onChange={handleShowParticlesChange}
-                  name="showParticles"
-                />
-              )}
+            <Checkbox
+              name="show-particles-checkbox"
+              label="Show Particles"
+              checked={showParticlesState}
+              onChange={handleShowParticlesChange}
             />
           ),
         },

@@ -7,6 +7,7 @@ import { Close, Search } from '@material-ui/icons';
 import { useLineStyles } from '../styles/line';
 import { Link } from '../../../components/reusables/link';
 import { useSearchContext } from '../contexts/SearchContext';
+import useMediaQuery from '../../../hooks/useMediaQuery';
 
 const useStyles = makeStyles({
   about: {
@@ -26,6 +27,11 @@ const useStyles = makeStyles({
     marginLeft: '1rem',
     marginRight: '1rem',
   },
+  search: {
+    '& .MuiInputBase-root': {
+      backgroundColor: '#f4ece6',
+    },
+  },
 });
 
 export const AboutSite = function () {
@@ -34,6 +40,7 @@ export const AboutSite = function () {
   const { setSearch } = useSearchContext();
   const searchInput = React.useRef(null);
   const [isSearching, setIsSearching] = React.useState(false);
+  const isTabletPortraitMin = useMediaQuery('(max-width: 800px)');
 
   useEffect(() => {
     window.addEventListener('keydown', (e) => {
@@ -79,17 +86,29 @@ export const AboutSite = function () {
                 About this page
               </h4>
               <Tooltip title="Search for a specific sketch">
-                <IconButton
-                  onClick={() => setIsSearching(true)}
-                  sx={{
-                    color: '#DBCFC4',
-                    '&:hover': {
+                {isTabletPortraitMin ? (
+                  <IconButton
+                    onClick={() => setIsSearching(true)}
+                    sx={{
                       color: '#DBCFC4',
-                    },
-                  }}
-                >
-                  <Search fontSize="large" />
-                </IconButton>
+                      '&:hover': {
+                        color: '#DBCFC4',
+                      },
+                    }}
+                  >
+                    <Search fontSize="large" />
+                  </IconButton>
+                ) : (
+                  <TextField
+                    className={classes.search}
+                    inputRef={searchInput}
+                    variant="outlined"
+                    placeholder="Search.."
+                    label="Search A Sketch"
+                    name="search"
+                    onChange={(e) => setSearch(e.target.value.toLowerCase())}
+                  />
+                )}
               </Tooltip>
             </Box>
           )}

@@ -43,7 +43,7 @@ const makeSketch = () => new P5((p) => {
         p,
         p.width / 2,
         p.height / 2,
-        p.random(COLOR_PALETTES[selectedColorPalette]),
+        p.random(COLOR_PALETTES[selectedColorPalette]).color,
         p.random(0.02, 0.04),
         p.floor(p.random(15, 40)),
       );

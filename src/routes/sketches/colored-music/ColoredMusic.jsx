@@ -65,7 +65,7 @@ const makeSketch = (setIsLooping, setUseMic) => new p5((p) => {
   const NUM_DOTS = 560;
   const beatState = 0;
   let dimension;
-  const c = COLOR_PALETTES.deep.reverse();
+  const c = COLOR_PALETTES.deep.reverse().map(({ color }) => color);
   const times = [0, 0, 0, 0, 0, 0, 0];
 
   p.windowResized = () => {

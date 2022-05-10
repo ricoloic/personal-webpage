@@ -23,7 +23,7 @@ const makeSketch = () => new P5((p) => {
 
   p.draw = () => {
     p.background(30);
-    confettiList.push(new Confetti(p, p.mouseX, p.mouseY, COLOR_PALETTES[selectedColorPalette]));
+    confettiList.push(new Confetti(p, p.mouseX, p.mouseY, COLOR_PALETTES[selectedColorPalette].map(({ color }) => color)));
     confettiList.forEach((confetti, index) => {
       confetti.animate();
       if (confetti.life < 1) confettiList.splice(index, 1);

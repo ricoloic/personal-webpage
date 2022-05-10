@@ -99,7 +99,7 @@ export const SKETCHES_ROUTES = {
     route: '/colored-music',
     title: 'Colored Music - credits to Max Mitchell',
     isActive: true,
-    show: true,
+    show: false,
   },
   'prime-spiral': {
     route: '/prime-spiral',
