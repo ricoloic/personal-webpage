@@ -9,16 +9,16 @@ import {
 } from 'recharts';
 import Layout from '../../../components/layout';
 import { Firework } from './firework';
-import sparksColor from './sparksColor';
 import { capitalizeFirstLetter } from '../utils';
 import useFrameRate from '../../../hooks/useFrameRate';
+import { COLOR_PALETTES } from '../constants';
 
 let fireworks = [];
 let gravity = null;
 let sparksGravity = null;
 let fireworkAmount = 20;
 let sparkAmount = 40;
-let selectedSparksColor = sparksColor.vibrant;
+let selectedSparksColor = COLOR_PALETTES.vibrant.map(({ color }) => color);
 const margin = {
   top: 20,
   right: 70,
@@ -36,7 +36,7 @@ const Fireworks = function () {
 
   const createFirework = (p) => {
     const position = p.createVector(p.random(0, p.width), p.height);
-    const color = Array.isArray(selectedSparksColor) ? p.random(selectedSparksColor) : undefined;
+    const color = p.random(selectedSparksColor);
     const firework = new Firework(p, position, sparkAmount, color);
     firework.applyForce(p.createVector(0, p.random(-10, -12)));
     return firework;
@@ -131,7 +131,7 @@ const Fireworks = function () {
 
   const handleSparksColorChange = ({ target: { value } }) => {
     setSelectedSparksColorState(value);
-    selectedSparksColor = sparksColor[value];
+    selectedSparksColor = COLOR_PALETTES[value].map(({ color }) => color);
   };
 
   return (
@@ -168,7 +168,7 @@ const Fireworks = function () {
                 variant="outlined"
                 size="small"
               >
-                {Object.keys(sparksColor).map((color) => (
+                {Object.keys(COLOR_PALETTES).map((color) => (
                   <MenuItem
                     key={color}
                     value={color}

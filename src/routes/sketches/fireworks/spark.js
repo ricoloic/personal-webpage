@@ -13,11 +13,7 @@ const parseColorRGBValues = (strRGB) => {
 export class Spark extends Particle {
   constructor(p, position, color) {
     super(p, position);
-    this.color = parseColorRGBValues(color) || {
-      r: this.p5.random(20, 255),
-      g: this.p5.random(20, 255),
-      b: this.p5.random(20, 255),
-    };
+    this.color = parseColorRGBValues(color);
     this.lifetime = 255;
   }
 
