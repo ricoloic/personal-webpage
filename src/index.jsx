@@ -46,8 +46,8 @@ ReactDOM.render(
       <Route path="/sketches/sorting" element={<Sorting />} />
       <Route path="/sketches/clock" element={<Clock />} />
       <Route path="/sketches/prime-spiral" element={<PrimeSpiral />} />
-      <Route path="/sketches/times-tables" element={<TimesTables />} />
       <Route path="/sketches/colored-music" element={<ColoredMusic />} />
+      <Route path="/sketches/times-table" element={<TimesTables />} />
     </Routes>
   </BrowserRouter>,
   document.getElementById('root'),

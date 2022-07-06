@@ -3,7 +3,7 @@ import P5 from 'p5';
 import { Input, ListItemText, Slider } from '@material-ui/core';
 import Layout from '../../../components/layout';
 
-let amt = 4000;
+let amt = 200;
 let r;
 let f = 2;
 let transparency = 100;
